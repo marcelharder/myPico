@@ -1,0 +1,9 @@
+.occupied{ color:white;    background-color: brown;     width:25px;}
+.vacant{  background-color:bisque;     width:25px;}
+.requested{  color:white;    background-color:blue;     width:25px; }
+.out_of_calendar{  background-color:lightgray;     width:25px;}
+.extra-padding{ padding-right:5px; padding-left:5px;}
+.column { float: left;    width: 33.33%;}
+/* Clear floats after the columns */
+.row:after { content: "";    display: table;    clear: both;}
+.dateInput{ width:25px;}

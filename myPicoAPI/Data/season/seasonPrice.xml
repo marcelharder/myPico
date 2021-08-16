@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <unit id="1">
+    <priceLowSeason>5000</priceLowSeason>
+    <priceMidSeason>6000</priceMidSeason>
+    <priceHighSeason>7000</priceHighSeason>
+  </unit>
+  <unit id="2">
+    <priceLowSeason>5050</priceLowSeason>
+    <priceMidSeason>6000</priceMidSeason>
+    <priceHighSeason>7500</priceHighSeason>
+  </unit>
+</root>

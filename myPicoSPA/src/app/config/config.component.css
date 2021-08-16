@@ -1,0 +1,10 @@
+.high{ background-color:red;        width:25px;color:white;}
+.low{  background-color:lightgreen; width:25px;}
+.mid{  background-color:lightsalmon;width:25px;}
+.out_of_calendar{  background-color:lightgray;     width:25px;}
+.extra-padding{ padding-right:2px; padding-left:2px;}
+.column { float: left;    width: 33.33%;}
+/* Clear floats after the columns */
+.row:after { content: "";    display: table;    clear: both;}
+.dateInput{ width:25px;}
+

@@ -1,0 +1,135 @@
+<form #f="ngForm">
+  <div style=padding-top:25px></div>
+  <div class=container style=background-color:lightgrey>
+    <div class=row>
+      <div class=col-sm-12 align="center" style="background-color:beige">
+        <h4>Availability for Unit {{selectedUnit}}</h4>
+      </div>
+    </div>
+    <div class=row>
+      <div class=col-sm-4>
+        <div class="row">
+          <div class=col-sm-4>Arrival: </div>
+          <div class=col-sm-8>
+            <input class="form-control" type="text" name="arrival" bsDatepicker [bsConfig]="bsConfig" [(ngModel)]="arrivalDate"
+              (ngModelChange)="arrivalDateChanged($event)" autocomplete="off">
+          </div>
+        </div>
+      </div>
+      <div class=col-sm-8>
+        <span>Occupancy overview</span>
+        <select name="occupancyMonth" [(ngModel)]="selectedMonth">
+          <option *ngFor="let m of hmos"> {{m}}</option>
+        </select>
+
+        <select name="occupancyYear" [(ngModel)]="selectedYear">
+          <option *ngFor="let y of years"> {{y}} </option>
+        </select>
+        <button type=button class="btn btn-primary btn-xs" (click)="buttonclicked()">Check</button>
+      </div>
+    </div>
+    <div class=row>
+      <div class=col-sm-4>
+        <div class="row">
+          <div class=col-sm-4>Departure: </div>
+          <div class=col-sm-8>
+            <input class="form-control" type="text" name="departure" bsDatepicker [bsConfig]="bsConfig" [(ngModel)]="dischargeDate"
+              (ngModelChange)="dischargeDateChanged($event)" autocomplete="off">
+          </div>
+        </div>
+
+      </div>
+      <div class="col-sm-8"></div>
+    </div>
+    <!--
+      Start the 3 column style here
+      -->
+    <div class="row" style="padding-left:25px">
+      <div class="column" style=background-color:lightgrey>
+
+
+
+        <div class="row">
+          <div class="col-sm-4">
+            <h5>Requested days:</h5>
+          </div>
+          <div class="col-sm-3">
+            <h5>Season:</h5>
+          </div>
+          <div class="col-sm-5">
+            <h5>Rent:</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <div *ngIf="requestedDays?.length > 0">
+              <span *ngFor="let item of requestedDays">
+                <div>
+                  <label class="lbl">{{item}}</label>
+                </div>
+              </span>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div *ngIf="requestedDays?.length > 0">
+              <span *ngFor="let sea of requestedDaysSeason">
+                <div>
+                  <label class="lbl">{{sea}}</label>
+                </div>
+              </span>
+            </div>
+          </div>
+          <div class="col-sm-5">
+            <div *ngIf="requestedDays?.length > 0">
+              <span *ngFor="let price of requestedDaysPrices">
+                <div>
+                  <label class="lbl">{{price}}</label>
+                </div>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4"></div>
+          <div class="col-sm-3"></div>
+          <div class="col-sm-5">
+            <label class="lbl">
+              <strong>Rent: </strong><span style="color:red">{{totalRent}}</span></label>
+          </div>
+        </div>
+      </div>
+      <div class="column" style=background-color:lightgrey>
+        <app-first-month 
+        [rm]="firstMonth" 
+        (addOccupancy)="addOccupancy($event)" 
+        (removeOccupancy)="removeOccupancy($event)" 
+        [obs]="allowAddingOccupancy" 
+        [bordersequence]="allowDeletingOccupancy">
+      </app-first-month>
+      </div>
+      <div class="column" style=background-color:lightgrey>
+        <app-second-month 
+        [rm]="secondMonth" 
+        (addOccupancy)="addOccupancy($event)" 
+        (removeOccupancy)="removeOccupancy($event)" 
+        [obs]="allowAddingOccupancy" 
+        [bordersequence]="allowDeletingOccupancy">
+      </app-second-month>
+      </div>
+    </div>
+
+    <div class="row" style="padding-top:25px; padding-bottom:25px">
+      <div class=col-sm-4>
+        <div class="row">
+          <div class=col-sm-2>
+            <button type=button (click)='cancelBooking()'>Cancel</button>
+          </div>
+          <div class=col-sm-10>
+            <button type=button (click)='requestBooking()'>Request booking</button>
+          </div>
+        </div>
+      </div>
+      <div class=col-sm-8></div>
+    </div>
+  </div>
+</form>

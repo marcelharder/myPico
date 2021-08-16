@@ -1,0 +1,8 @@
+bin
+obj
+.vscode
+*.db
+appsettings.json
+appsettings.Development.json
+myPicoSPA/src/assets/images/pico-pictures/*.*
+myPicoSPA/src/assets/images/unit-pictures/*.*
