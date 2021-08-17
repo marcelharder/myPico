@@ -2,6 +2,7 @@ namespace DatingApp.API.Dtos
 {
     public class UserForUpdateDto
     {
+    public int Id { get; set; }
     public string Introduction { get; set; }
     public string Email {get; set;}
     public string LookingFor { get; set; }

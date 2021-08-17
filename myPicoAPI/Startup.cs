@@ -53,6 +53,7 @@ namespace Dating.API
             services.AddAutoMapper(System.Reflection.Assembly.GetExecutingAssembly());
             services.AddScoped<IDatingRepository, DatingRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<LogUserActivity>();
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>

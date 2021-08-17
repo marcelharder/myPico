@@ -55,12 +55,14 @@ namespace DatingApp.API.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
             // get the current user fron JWT token
             var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var userFromRepo = await _repo.GetUser(id);
+            if (currentUserId != id) return Unauthorized();
+            
+            var userFromRepo = await _repo.GetUser(userForUpdateDto.Id);
             if (userFromRepo == null) return NotFound($"Could not find user with an Id of {id}");
-            if (currentUserId != userFromRepo.Id) return Unauthorized();
+           
             _mapper.Map(userForUpdateDto, userFromRepo);
-            if (await _repo.SaveAll()) return NoContent();
-            throw new Exception($"Updating user with an ID of {id} failed on save");
+            if (await _repo.SaveAll()) return Ok("updated");
+            throw new Exception($"Updating user with an ID of {userForUpdateDto.Id} failed on save");
         }
        
     }

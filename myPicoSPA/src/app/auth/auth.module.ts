@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Http, RequestOptions } from '@angular/http';
+import { Http, RequestOptions } from '@angular/common';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 
 
