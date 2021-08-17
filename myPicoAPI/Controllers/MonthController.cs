@@ -70,8 +70,8 @@ namespace myPicoAPI.Controllers {
             DateTime theDate = new DateTime (year, 1, 1).AddDays (day - 1);
             var selectedMonth = await _repo.GetMonth (year, theDate.Month); // so this gives the month number of 3 for example
             // get the day from theDate.day, so we can focus on the needed day in the occupancy table
-            var selectedMonthDateNumber = await _repo.getDateNumber (selectedMonth.Id);
-            var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.Id);
+            var selectedMonthDateNumber = await _repo.getDateNumber (selectedMonth.UserId);
+            var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.UserId);
             var loc = findLocation (selectedMonthDateNumber, selectedMonthOccupancy, theDate.Day, type);
 
         }
@@ -114,7 +114,7 @@ namespace myPicoAPI.Controllers {
 
         private async void MakeMonthUnchangeable (int year, int month) {
             var selectedMonth = await _repo.GetMonth (year, month); // so this gives the month number of 3 for example
-            var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.Id);
+            var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.UserId);
             if (selectedMonthOccupancy.day_1 != 3 || selectedMonthOccupancy.day_10 != 3 || selectedMonthOccupancy.day_20 != 3) { // check to see if this month is already blocked out
                 selectedMonthOccupancy.day_1 = changeToUnchangeable(selectedMonthOccupancy.day_1);
                 selectedMonthOccupancy.day_2 = changeToUnchangeable(selectedMonthOccupancy.day_2);

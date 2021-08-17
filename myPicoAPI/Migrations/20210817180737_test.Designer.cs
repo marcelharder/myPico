@@ -3,14 +3,16 @@ using System;
 using DatingApp.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Dating.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210817180737_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,16 +49,11 @@ namespace Dating.API.Migrations
                     b.Property<int>("SenderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("RecipientId");
 
                     b.HasIndex("SenderId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Messages");
                 });
@@ -94,7 +91,7 @@ namespace Dating.API.Migrations
 
             modelBuilder.Entity("DatingApp.API.Models.User", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -152,7 +149,7 @@ namespace Dating.API.Migrations
                     b.Property<string>("Username")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.HasKey("UserId");
+                    b.HasKey("Id");
 
                     b.ToTable("Users");
                 });
@@ -205,6 +202,9 @@ namespace Dating.API.Migrations
                     b.Property<string>("comment")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<string>("picoUnitPhotoUrl")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
                     b.Property<int?>("puUnitId")
                         .HasColumnType("int");
 
@@ -215,12 +215,14 @@ namespace Dating.API.Migrations
 
                     b.HasIndex("puUnitId");
 
+                    b.HasIndex("userId");
+
                     b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("myPicoAPI.Models.Month_Model", b =>
                 {
-                    b.Property<int>("MonthId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -236,7 +238,7 @@ namespace Dating.API.Migrations
                     b.Property<int>("Year")
                         .HasColumnType("int");
 
-                    b.HasKey("MonthId");
+                    b.HasKey("Id");
 
                     b.ToTable("Months");
                 });
@@ -247,7 +249,7 @@ namespace Dating.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("MonthId")
+                    b.Property<int>("Month_ModelId")
                         .HasColumnType("int");
 
                     b.Property<int>("day_1")
@@ -376,12 +378,9 @@ namespace Dating.API.Migrations
                     b.Property<int>("day_9")
                         .HasColumnType("int");
 
-                    b.Property<int?>("mmMonthId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("mmMonthId");
+                    b.HasIndex("Month_ModelId");
 
                     b.ToTable("DateNumbers");
                 });
@@ -392,7 +391,7 @@ namespace Dating.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("MonthId")
+                    b.Property<int>("Month_ModelId")
                         .HasColumnType("int");
 
                     b.Property<int>("day_1")
@@ -521,12 +520,9 @@ namespace Dating.API.Migrations
                     b.Property<int>("day_9")
                         .HasColumnType("int");
 
-                    b.Property<int?>("mmMonthId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("mmMonthId");
+                    b.HasIndex("Month_ModelId");
 
                     b.ToTable("DateOccupancy");
                 });
@@ -594,12 +590,6 @@ namespace Dating.API.Migrations
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("DatingApp.API.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("DatingApp.API.Models.Photo", b =>
@@ -616,20 +606,30 @@ namespace Dating.API.Migrations
                     b.HasOne("myPicoAPI.Models.picoUnit", "pu")
                         .WithMany("Appointments")
                         .HasForeignKey("puUnitId");
+
+                    b.HasOne("DatingApp.API.Models.User", null)
+                        .WithMany("Appointments")
+                        .HasForeignKey("userId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("myPicoAPI.Models.dateNumber", b =>
                 {
-                    b.HasOne("myPicoAPI.Models.Month_Model", "mm")
+                    b.HasOne("myPicoAPI.Models.Month_Model", null)
                         .WithMany("DateNumbers")
-                        .HasForeignKey("mmMonthId");
+                        .HasForeignKey("Month_ModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("myPicoAPI.Models.dateOccupancy", b =>
                 {
-                    b.HasOne("myPicoAPI.Models.Month_Model", "mm")
+                    b.HasOne("myPicoAPI.Models.Month_Model", null)
                         .WithMany("DateOccupancy")
-                        .HasForeignKey("mmMonthId");
+                        .HasForeignKey("Month_ModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

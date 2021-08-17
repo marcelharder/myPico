@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dating.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20210816150528_initial")]
+    [Migration("20210817180137_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -194,6 +194,9 @@ namespace Dating.API.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UnitId")
                         .HasColumnType("int");
 
                     b.Property<int>("Year")
@@ -529,7 +532,7 @@ namespace Dating.API.Migrations
 
             modelBuilder.Entity("myPicoAPI.Models.picoUnit", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("UnitId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -572,7 +575,7 @@ namespace Dating.API.Migrations
                     b.Property<string>("picoUnitNumber")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.HasKey("Id");
+                    b.HasKey("UnitId");
 
                     b.ToTable("PicoUnits");
                 });
@@ -603,7 +606,7 @@ namespace Dating.API.Migrations
 
             modelBuilder.Entity("myPicoAPI.Models.Appointment", b =>
                 {
-                    b.HasOne("myPicoAPI.Models.picoUnit", null)
+                    b.HasOne("myPicoAPI.Models.picoUnit", "pu")
                         .WithMany("Appointments")
                         .HasForeignKey("picoUnitId")
                         .OnDelete(DeleteBehavior.Cascade)

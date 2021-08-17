@@ -12,7 +12,7 @@
         "NoOfNights": "3",
         "Rent": "2400",
         "DownPayment": "100",
-        "Paid_InFull": "True"
+        "Paid_InFull": 1
     },
     {
         "userId": "1",
@@ -27,7 +27,7 @@
         "NoOfNights": "3",
         "Rent": "2400",
         "DownPayment": "100",
-        "Paid_InFull": "True"
+        "Paid_InFull": 0
     },
     {
         "userId": "1",
@@ -42,7 +42,7 @@
         "NoOfNights": "3",
         "Rent": "2400",
         "DownPayment": "100",
-        "Paid_InFull": "False"
+        "Paid_InFull": 1
     },
     {
         "userId": "1",
@@ -57,7 +57,7 @@
         "NoOfNights": "3",
         "Rent": "2400",
         "DownPayment": "100",
-        "Paid_InFull": "False"
+        "Paid_InFull": 0
     },
     {
         "userId": "1",
@@ -72,7 +72,7 @@
         "NoOfNights": "3",
         "Rent": "2400",
         "DownPayment": "100",
-        "Paid_InFull": "True"
+        "Paid_InFull": 1
     },
     {
         "userId": "1",
@@ -87,7 +87,7 @@
         "NoOfNights": "3",
         "Rent": "2400",
         "DownPayment": "100",
-        "Paid_InFull": "True"
+        "Paid_InFull": 0
     },
     {
         "userId": "1",
@@ -102,7 +102,7 @@
         "NoOfNights": "5",
         "Rent": "2400",
         "DownPayment": "100",
-        "Paid_InFull": "false"
+        "Paid_InFull": 0
     },
     {
         "userId": "1",
@@ -117,6 +117,6 @@
         "NoOfNights": "3",
         "Rent": "2400",
         "DownPayment": "100",
-        "Paid_InFull": "False"
+        "Paid_InFull": 1
     }
 ]

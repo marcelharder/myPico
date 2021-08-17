@@ -47,7 +47,7 @@ namespace Dating.API
 
          
             //services.AddTransient<Seed>();
-            services.AddTransient<seedDates>();
+            //services.AddTransient<seedDates>();
             services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddCors();
             services.AddAutoMapper(System.Reflection.Assembly.GetExecutingAssembly());
@@ -88,7 +88,7 @@ namespace Dating.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, seedDates seeder)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -110,7 +110,7 @@ namespace Dating.API
                     });
                 });
             }
-            //seeder.SeedDates();
+           
             app.UseCors("CorsPolicy");
             
             app.UseRouting();

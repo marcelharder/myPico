@@ -3,7 +3,8 @@ namespace myPicoAPI.Models
     public class dateNumber
     {
         public int Id { get; set; }
-        public int Month_ModelId {get; set;}
+        public int MonthId {get; set;}
+        public Month_Model mm {get; set;}
         public int day_1 { get; set; }
         public int day_2 { get; set; }
         public int day_3 { get; set; }

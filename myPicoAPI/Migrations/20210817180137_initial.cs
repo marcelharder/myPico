@@ -28,7 +28,7 @@ namespace Dating.API.Migrations
                 name: "PicoUnits",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    UnitId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ownerId = table.Column<int>(nullable: false),
                     picoUnitNumber = table.Column<string>(nullable: true),
@@ -46,7 +46,7 @@ namespace Dating.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PicoUnits", x => x.Id);
+                    table.PrimaryKey("PK_PicoUnits", x => x.UnitId);
                 });
 
             migrationBuilder.CreateTable(
@@ -223,7 +223,8 @@ namespace Dating.API.Migrations
                     Rent = table.Column<float>(nullable: false),
                     DownPayment = table.Column<float>(nullable: false),
                     Paid_InFull = table.Column<int>(nullable: false),
-                    BookingAlertSent = table.Column<int>(nullable: false)
+                    BookingAlertSent = table.Column<int>(nullable: false),
+                    UnitId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -232,7 +233,7 @@ namespace Dating.API.Migrations
                         name: "FK_Appointments_PicoUnits_picoUnitId",
                         column: x => x.picoUnitId,
                         principalTable: "PicoUnits",
-                        principalColumn: "Id",
+                        principalColumn: "UnitId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Appointments_Users_userId",

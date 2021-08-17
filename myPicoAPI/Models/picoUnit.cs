@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace myPicoAPI.Models {
     public class picoUnit {
-        public int Id { get; set; }
+        
+        [Key]
+        public int UnitId { get; set; }
         public int ownerId { get; set; }
         public string picoUnitNumber { get; set; }
         public float LowSeasonRent { get; set; }

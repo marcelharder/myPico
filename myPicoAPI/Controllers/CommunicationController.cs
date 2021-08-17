@@ -125,7 +125,7 @@ namespace myPicoAPI.Controllers {
                 //assuming that english is the current language, thats why attribute is 1
                 var language = 1;
                 var model = new SMSFormModel ();
-                model.Phone = await gen.getCaretakerMobile (a.picoUnitId); // this will be the number of the caretaker
+                model.Phone = await gen.getCaretakerMobile (a.UnitId); // this will be the number of the caretaker
                 model.User = "m_harder88";
                 model.Password = "AYaaDGUSTPDcaI";
                 model.api_id = "3582069";

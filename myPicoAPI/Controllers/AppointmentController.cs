@@ -72,7 +72,7 @@ namespace myPicoAPI.Controllers {
             if (currentUserId != userId) return Unauthorized ();
             var cr = new CalculateRent (_repo, _mapper);
             var ap = _mapper.Map<Appointment> (app);
-            var calcRent = cr.getRentPHP (ap.RequestedDays, ap.StartDate.Year, ap.picoUnitId);
+            var calcRent = cr.getRentPHP (ap.RequestedDays, ap.StartDate.Year, ap.UnitId);
             ap.Rent = Convert.ToSingle (calcRent);
             ap.Year = ap.StartDate.Year;
             _repo.Add (ap);
@@ -138,8 +138,8 @@ namespace myPicoAPI.Controllers {
             DateTime theDate = new DateTime (year, 1, 1).AddDays (day - 1);
             var selectedMonth = await _repo.GetMonth (year, theDate.Month); // so this gives the month number of 3 for example
             // get the day from theDate.day, so we can focus on the needed day in the occupancy table
-            var selectedMonthDateNumber = await _repo.getDateNumber (selectedMonth.Id);
-            var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.Id);
+            var selectedMonthDateNumber = await _repo.getDateNumber (selectedMonth.UserId);
+            var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.UserId);
             var loc = findLocation (selectedMonthDateNumber, selectedMonthOccupancy, theDate.Day, type);
 
         }

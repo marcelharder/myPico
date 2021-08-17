@@ -25,7 +25,7 @@ namespace DatingApp.API.Data {
         }
 
         public async Task<User> GetUser (int id) {
-            var user = await _context.Users.Include (p => p.Photos).FirstOrDefaultAsync (u => u.Id == id);
+            var user = await _context.Users.Include (p => p.Photos).FirstOrDefaultAsync (u => u.UserId == id);
             return user;
         }
         public async Task<Photo> GetPhoto (int id) {
@@ -51,7 +51,7 @@ namespace DatingApp.API.Data {
             List<int> userIds = new List<int> ();
             var users = _context.Users.Include (p => p.Photos).OrderByDescending (u => u.LastActive).AsQueryable ();
             // filter out the current loggedin user
-            users = users.Where (u => u.Id != userParams.UserId);
+            users = users.Where (u => u.UserId != userParams.UserId);
             // filter out the same sex
             users = users.Where (u => u.Gender == userParams.Gender);
             // filter the age
@@ -131,7 +131,7 @@ namespace DatingApp.API.Data {
         }
 
         public async Task<PagedList<Appointment>> getAppointmentsForAdministrator (int picoUnitId, MessageParams messageParams) { // this gets the appointments from a particular pico unit
-            var appts = _context.Appointments.Where (b => b.picoUnitId == picoUnitId).AsQueryable ();
+            var appts = _context.Appointments.Where (b => b.UnitId == picoUnitId).AsQueryable ();
             appts = appts.OrderByDescending (d => d.StartDate);
             return await PagedList<Appointment>.CreateAsync (appts, messageParams.PageNumber, messageParams.PageSize);
         }
@@ -143,19 +143,19 @@ namespace DatingApp.API.Data {
         public async Task<int> getUnitIdForThisUser (int userId) {
             var pico = new picoUnit ();
             pico = await _context.PicoUnits.Where (p => p.ownerId == userId).FirstOrDefaultAsync ();
-            return pico.Id;
+            return pico.UnitId;
         }
         public async Task<dateOccupancy> getDateOccupancy (int id) {
-            return await _context.DateOccupancy.Where (m => m.Month_ModelId == id).FirstOrDefaultAsync ();
+            return await _context.DateOccupancy.Where (m => m.MonthId == id).FirstOrDefaultAsync ();
         }
 
         public async Task<dateNumber> getDateNumber (int id) {
-            return await _context.DateNumbers.Where (m => m.Month_ModelId == id).FirstOrDefaultAsync ();
+            return await _context.DateNumbers.Where (m => m.MonthId == id).FirstOrDefaultAsync ();
         }
 
         public async Task<picoUnit> GetPicoUnit (int picoUnitId) {
             var pico = new picoUnit ();
-            pico = await _context.PicoUnits.Where (p => p.Id == picoUnitId).FirstOrDefaultAsync ();
+            pico = await _context.PicoUnits.Where (p => p.UnitId == picoUnitId).FirstOrDefaultAsync ();
             return pico;
         }
 
@@ -168,7 +168,7 @@ namespace DatingApp.API.Data {
         public async Task<List<User>> getAppartmentUsers (int appartmentId) {
             var help = new List<User> ();
             var listOfUserIds = new List<int> ();
-            var appts = _context.Appointments.Where (p => p.picoUnitId == appartmentId).AsQueryable ();
+            var appts = _context.Appointments.Where (p => p.UnitId == appartmentId).AsQueryable ();
             foreach (Appointment a in appts) { listOfUserIds.Add (a.userId); }
             foreach (int i in listOfUserIds) { help.Add (await GetUser (i)); }
             return help;

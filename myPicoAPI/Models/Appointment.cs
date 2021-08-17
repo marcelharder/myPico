@@ -10,9 +10,6 @@ namespace myPicoAPI.Models
         public int Year { get; set; }
         public int Month { get; set; }
         public int Day { get; set; }
-        public int PicoUnit { get; set; }
-        public int picoUnitId { get; set; }
-        public string picoUnitPhotoUrl { get; set;}
         public string comment {get; set;}
         public int Status { get; set; }
         public string RequestedDays { get; set; }
@@ -23,7 +20,8 @@ namespace myPicoAPI.Models
         public float DownPayment { get; set; }
         public int Paid_InFull { get; set; }
         public int BookingAlertSent {get; set;}
-      
+        public int UnitId { get; set; }
+        public picoUnit pu {get; set;}
         
      
 }

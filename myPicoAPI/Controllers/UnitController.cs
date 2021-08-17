@@ -42,7 +42,7 @@ namespace myPicoAPI.Controllers {
         public async Task<IActionResult> savePicoUnitDetails (int userId, [FromBody] picoUnit pic) {
             var currentUserId = int.Parse (User.FindFirst (ClaimTypes.NameIdentifier).Value);
             if (currentUserId != userId) return Unauthorized ();
-            var picoUnit = await _repo.GetPicoUnit (pic.Id);
+            var picoUnit = await _repo.GetPicoUnit (pic.UnitId);
             picoUnit.LowSeasonRent = pic.LowSeasonRent;
             picoUnit.MidSeasonRent = pic.MidSeasonRent;
             picoUnit.HighSeasonRent = pic.HighSeasonRent;

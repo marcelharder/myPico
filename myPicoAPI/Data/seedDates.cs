@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 using DatingApp.API.Data;
+using DatingApp.API.Models;
+using Microsoft.EntityFrameworkCore;
 using myPicoAPI.Models;
 
 namespace myPicoAPI.Data {
@@ -10,28 +14,29 @@ namespace myPicoAPI.Data {
         public seedDates (DataContext repo) {
             _repo = repo;
         }
+
+        public async Task seedAppointmentsAsync(){
+            if(await _repo.Appointments.AnyAsync()) return;
+            var appt = new Appointment ();
+            var help_appt = Newtonsoft.Json.JsonConvert.DeserializeObject<Appointment[]> (System.IO.File.ReadAllText ("Data/appointmentSeed/app.json"));
+            foreach (Appointment app in help_appt) { _repo.Appointments.Add (app); }
+            _repo.SaveChanges ();
+        }
+
+        public async Task seedUnitsAsync(){
+            if(await _repo.PicoUnits.AnyAsync()) return;
+            var unit = new picoUnit();
+            unit.picoUnitNumber = "Myna 610-A";
+            _repo.PicoUnits.Add(unit);
+            _repo.SaveChanges();
+        }
         public void SeedDates () {
             _repo.Months.RemoveRange (_repo.Months);
             _repo.Appointments.RemoveRange (_repo.Appointments);
             _repo.DateNumbers.RemoveRange (_repo.DateNumbers);
             _repo.DateOccupancy.RemoveRange (_repo.DateOccupancy);
             _repo.SaveChanges ();
-
-            var appt = new Appointment ();
-            var help_appt = Newtonsoft.Json.JsonConvert.DeserializeObject<Appointment[]> (System.IO.File.ReadAllText ("Data/appointmentSeed/app.json"));
-            foreach (Appointment app in help_appt) { _repo.Appointments.Add (app); }
-            _repo.SaveChanges ();
-
-            // var json_2018 = "Data/dayNumbers/2018/dates-2018.json";
-            // var json_2019 = "Data/dayNumbers/2019/dates-2019.json";
-            //  var json_2020 = "Data/dayNumbers/2020/dates-2020.json";
-            //  var json_2021 = "Data/dayNumbers/2021/dates-2021.json";
-
-            /*  var l = new List<string> ();
-             l.Add (json_2018);
-             l.Add (json_2019);
-             l.Add (json_2020);
-             l.Add (json_2021); */
+          
 
             var help = new Model_Year ();
             help = Newtonsoft.Json.JsonConvert.DeserializeObject<Model_Year>
@@ -55,10 +60,39 @@ namespace myPicoAPI.Data {
 
         }
 
-        private void updateTheMonths (int year,
-            int month, string unit, int userId,
-            string[] help, string[] help_occ) {
+         public async Task SeedUsersAsync()
+        {
+           if(await _repo.Users.AnyAsync()) return;
 
+            var userData = System.IO.File.ReadAllText("Data/UserSeedData.json");
+            var users = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.List<User>>(userData);
+            foreach (var user in users)
+            {
+                //create the password hash
+                byte[] passwordHash, passwordSalt;
+                this.CreatePasswordhash("password", out passwordHash, out passwordSalt);
+
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+                user.Username = user.Username.ToLower();
+                _repo.Users.Add(user);
+            }
+            _repo.SaveChanges();
+        }
+
+        private void CreatePasswordhash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        {
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+
+            };
+
+        }
+        private void updateTheMonths (int year,
+            int month, string unit,int userId,
+            string[] help, string[] help_occ) {
             var m = new Month_Model ();
             m.Year = year;
             m.Month = month;
@@ -66,10 +100,10 @@ namespace myPicoAPI.Data {
             m.UserId = userId;
             _repo.Months.Add (m);
             var dn = new dateNumber ();
-            dn = AddDateNumber (m.Id, help);
+            dn = AddDateNumber (m.MonthId, help);
             _repo.DateNumbers.Add (dn);
             var occ = new dateOccupancy ();
-            occ = AddDateOccupancy (m.Id, help_occ);
+            occ = AddDateOccupancy (m.MonthId, help_occ);
             _repo.DateOccupancy.Add (occ);
             _repo.SaveChanges ();
         }
@@ -77,7 +111,7 @@ namespace myPicoAPI.Data {
         private dateNumber AddDateNumber (int Id, string[] help) {
             var d = new dateNumber ();
             try {
-                d.Month_ModelId = Id;
+                d.MonthId = Id;
                 d.day_1 = Convert.ToInt32 (help[0]);
                 d.day_2 = Convert.ToInt32 (help[1]);
                 d.day_3 = Convert.ToInt32 (help[2]);
@@ -126,7 +160,7 @@ namespace myPicoAPI.Data {
         private dateOccupancy AddDateOccupancy (int Id, string[] help) {
             var d = new dateOccupancy ();
             try {
-                d.Month_ModelId = Id;
+                d.MonthId = Id;
                 d.day_1 = Convert.ToInt32 (help[0]);
                 d.day_2 = Convert.ToInt32 (help[1]);
                 d.day_3 = Convert.ToInt32 (help[2]);

@@ -58,7 +58,7 @@ namespace DatingApp.API.Controllers
             var user = await _repo.GetUser(userId);
             if (user == null) return BadRequest("Could not find user");
             var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            if (currentUserId != user.Id) return Unauthorized();
+            if (currentUserId != user.UserId) return Unauthorized();
             var file = photoDto.File;
             var uploadResult = new ImageUploadResult();
             if (file.Length > 0)

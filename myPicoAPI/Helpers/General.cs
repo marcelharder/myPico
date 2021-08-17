@@ -32,6 +32,7 @@ namespace myPicoAPI.Helpers {
             return a.KnownAs;
         }
 
+        
         public double getPrice (int unit, int dayNumber, int year) {
             var season = getSeasonForThisDay (dayNumber, year);
             return getSeasonPrices (unit, season);
@@ -66,7 +67,7 @@ namespace myPicoAPI.Helpers {
 
             foreach (XElement j in h) {
                 help.Id = year;
-                help.Month_ModelId = month;
+                help.MonthId = month;
                 help.day_1 = getDailySeason (1, h);
                 help.day_2 = getDailySeason (2, h);
                 help.day_3 = getDailySeason (3, h);
@@ -178,7 +179,7 @@ namespace myPicoAPI.Helpers {
             select t;
 
             IEnumerable<XElement> h = from s in el.Descendants ("month")
-            where (int) s.Attribute ("id") == help.Month_ModelId
+            where (int) s.Attribute ("id") == help.MonthId
             select s;
 
             foreach (XElement j in h) {
