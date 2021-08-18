@@ -7,7 +7,6 @@ namespace myPicoAPI.Dtos
         public string[] RequestedDays { get; set; }
         public int userId {get; set;}
         public int picoUnitId { get; set; }
-        public string picoUnitPhotoUrl { get; set;}
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int Day { get; set; }
@@ -29,7 +28,6 @@ namespace myPicoAPI.Dtos
            Month = 0;
            NoOfNights = 1;
            Status = 0;
-           picoUnitPhotoUrl = "";
         }
         
 }}

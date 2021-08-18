@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using DatingApp.API.Models;
 
 namespace myPicoAPI.Models
@@ -12,7 +13,9 @@ namespace myPicoAPI.Models
         public int Day { get; set; }
         public string comment {get; set;}
         public int Status { get; set; }
-        public string RequestedDays { get; set; }
+        
+        [NotMapped]
+        public string[] RequestedDays { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int NoOfNights { get; set; }

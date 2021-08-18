@@ -15,7 +15,7 @@ namespace myPicoAPI.Data {
             _repo = repo;
         }
 
-        public async Task seedAppointmentsAsync(){
+        public async Task seedAppointments(){
             if(await _repo.Appointments.AnyAsync()) return;
             var appt = new Appointment ();
             var help_appt = Newtonsoft.Json.JsonConvert.DeserializeObject<Appointment[]> (System.IO.File.ReadAllText ("Data/appointmentSeed/app.json"));
@@ -23,7 +23,7 @@ namespace myPicoAPI.Data {
             _repo.SaveChanges ();
         }
 
-        public async Task seedUnitsAsync(){
+        public async Task seedUnits(){
             if(await _repo.PicoUnits.AnyAsync()) return;
             var unit = new picoUnit();
             unit.picoUnitNumber = "Myna 610-A";
@@ -32,7 +32,7 @@ namespace myPicoAPI.Data {
         }
         public void SeedDates () {
             _repo.Months.RemoveRange (_repo.Months);
-            _repo.Appointments.RemoveRange (_repo.Appointments);
+            //_repo.Appointments.RemoveRange (_repo.Appointments);
             _repo.DateNumbers.RemoveRange (_repo.DateNumbers);
             _repo.DateOccupancy.RemoveRange (_repo.DateOccupancy);
             _repo.SaveChanges ();
@@ -45,22 +45,22 @@ namespace myPicoAPI.Data {
             help_occ = Newtonsoft.Json.JsonConvert.DeserializeObject<Model_YearOccupancy>
                 (System.IO.File.ReadAllText ("Data/occupancy/2018/occupancy-2018.json"));
 
-            updateTheMonths (2018, 0, "610-A", 1, help.January, help_occ.January);
-            updateTheMonths (2018, 1, "610-A", 1, help.February, help_occ.February);
-            updateTheMonths (2018, 2, "610-A", 1, help.March, help_occ.March);
-            updateTheMonths (2018, 3, "610-A", 1, help.April, help_occ.April);
-            updateTheMonths (2018, 4, "610-A", 1, help.May, help_occ.May);
-            updateTheMonths (2018, 5, "610-A", 1, help.June, help_occ.June);
-            updateTheMonths (2018, 6, "610-A", 1, help.July, help_occ.July);
-            updateTheMonths (2018, 7, "610-A", 1, help.August, help_occ.August);
-            updateTheMonths (2018, 8, "610-A", 1, help.September, help_occ.September);
-            updateTheMonths (2018, 9, "610-A", 1, help.October, help_occ.October);
-            updateTheMonths (2018, 10, "610-A", 1, help.November, help_occ.November);
-            updateTheMonths (2018, 11, "610-A", 1, help.December, help_occ.December);
+            updateTheMonths (2018, 1, "610-A", 1, help.January, help_occ.January);
+            updateTheMonths (2018, 2, "610-A", 1, help.February, help_occ.February);
+            updateTheMonths (2018, 3, "610-A", 1, help.March, help_occ.March);
+            updateTheMonths (2018, 4, "610-A", 1, help.April, help_occ.April);
+            updateTheMonths (2018, 5, "610-A", 1, help.May, help_occ.May);
+            updateTheMonths (2018, 6, "610-A", 1, help.June, help_occ.June);
+            updateTheMonths (2018, 7, "610-A", 1, help.July, help_occ.July);
+            updateTheMonths (2018, 8, "610-A", 1, help.August, help_occ.August);
+            updateTheMonths (2018, 9, "610-A", 1, help.September, help_occ.September);
+            updateTheMonths (2018, 10, "610-A", 1, help.October, help_occ.October);
+            updateTheMonths (2018, 11, "610-A", 1, help.November, help_occ.November);
+            updateTheMonths (2018, 12, "610-A", 1, help.December, help_occ.December);
 
         }
 
-         public async Task SeedUsersAsync()
+         public async Task seedUsers()
         {
            if(await _repo.Users.AnyAsync()) return;
 
@@ -93,18 +93,12 @@ namespace myPicoAPI.Data {
         private void updateTheMonths (int year,
             int month, string unit,int userId,
             string[] help, string[] help_occ) {
-            var m = new Month_Model ();
-            m.Year = year;
-            m.Month = month;
-            m.PicoUnit = unit;
-            m.UserId = userId;
-            _repo.Months.Add (m);
-            var dn = new dateNumber ();
-            dn = AddDateNumber (m.MonthId, help);
-            _repo.DateNumbers.Add (dn);
-            var occ = new dateOccupancy ();
-            occ = AddDateOccupancy (m.MonthId, help_occ);
-            _repo.DateOccupancy.Add (occ);
+
+            var m = new Month_Model ();m.Year = year;m.Month = month;m.PicoUnit = unit;m.UserId = userId;_repo.Months.Add (m);
+            
+            var dn = new dateNumber ();dn = AddDateNumber (m.MonthId, help);_repo.DateNumbers.Add (dn);
+            
+            var occ = new dateOccupancy ();occ = AddDateOccupancy (m.MonthId, help_occ);_repo.DateOccupancy.Add (occ);
             _repo.SaveChanges ();
         }
 

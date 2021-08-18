@@ -44,8 +44,9 @@ namespace myPicoAPI.Controllers {
             // is this user an owner for a certain Unit
             var pu = 0;
             if (await _repo.IsOwnerOfAnyUnit (m.UserId)) {
-                pu = await _repo.getUnitIdForThisUser (m.UserId);
                 // Yes, he or she is owner of Unit, so get all the appointments for this unit
+                pu = await _repo.getUnitIdForThisUser (m.UserId);
+               
                 var a = await _repo.getAppointmentsForAdministrator (pu, m);
                 var b = _mapper.Map<IEnumerable<AppointmentForReturnDto>> (a);
                 Response.AddPagination (a.Currentpage,
@@ -71,7 +72,10 @@ namespace myPicoAPI.Controllers {
             var currentUserId = int.Parse (User.FindFirst (ClaimTypes.NameIdentifier).Value);
             if (currentUserId != userId) return Unauthorized ();
             var cr = new CalculateRent (_repo, _mapper);
-            var ap = _mapper.Map<Appointment> (app);
+
+
+            var ap = new Appointment();
+            ap = _mapper.Map<Appointment> (app);
             var calcRent = cr.getRentPHP (ap.RequestedDays, ap.StartDate.Year, ap.UnitId);
             ap.Rent = Convert.ToSingle (calcRent);
             ap.Year = ap.StartDate.Year;
@@ -87,7 +91,7 @@ namespace myPicoAPI.Controllers {
             if (currentUserId != userId) return Unauthorized ();
             var apptFromRepo = await _repo.GetAppointment (id); 
             
-            string[] dna = apptFromRepo.RequestedDays.Split (',');
+            string[] dna = apptFromRepo.RequestedDays;
             var year = apptFromRepo.Year;
             for (int i = 0; i < dna.Length; i++) {saveOccupancy (Convert.ToInt32 (dna[i]), year, 0);} //saving a zero here, so making the appartment vacant
              
@@ -126,7 +130,7 @@ namespace myPicoAPI.Controllers {
             await _repo.SaveAll ();
             //and now write the selecteddays to the occupancy table
             //first make array from appt.RequestedDays
-            string[] dna = appt.RequestedDays.Split (',');
+            string[] dna = appt.RequestedDays;
             var year = appt.Year;
             for (int i = 0; i < dna.Length; i++) {
                 saveOccupancy (Convert.ToInt32 (dna[i]), year, 1);
