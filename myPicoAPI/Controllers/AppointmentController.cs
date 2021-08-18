@@ -73,7 +73,6 @@ namespace myPicoAPI.Controllers {
             if (currentUserId != userId) return Unauthorized ();
             var cr = new CalculateRent (_repo, _mapper);
 
-
             var ap = new Appointment();
             ap = _mapper.Map<Appointment> (app);
             var calcRent = cr.getRentPHP (ap.RequestedDays, ap.StartDate.Year, ap.UnitId);
