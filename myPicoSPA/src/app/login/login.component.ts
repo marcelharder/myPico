@@ -37,12 +37,8 @@ constructor(
 
   
 
-  loggedIn() {
-   return this.authService.loggedIn();
-  }
+  loggedIn() {return this.authService.loggedIn(); }
 
-  register() {
-    this.router.navigate(['/register']);
-  }
+  register() {this.router.navigate(['/register']); }
 
 }

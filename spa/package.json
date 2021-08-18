@@ -20,8 +20,11 @@
     "@angular/platform-browser-dynamic": "~11.2.10",
     "@angular/router": "~11.2.10",
     "@auth0/angular-jwt": "^5.0.2",
-    "bootstrap": "^5.1.0",
+    "alertify.js": "^1.0.12",
+    "bootstrap": "^5.0.0-beta3",
+    "font-awesome": "^4.7.0",
     "popper": "^1.0.1",
+    "popper.js": "^1.16.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"

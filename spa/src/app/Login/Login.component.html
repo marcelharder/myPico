@@ -1,3 +1,38 @@
-<p>
-  Login works!
-</p>
+<div class="container mt-5">
+  <form>
+    <div class="card">
+      <div class="card-header">
+        <h4><span class="badge bg-secondary">Login</span></h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-sm-2">
+            <h5><span class="badge bg-secondary">Username</span></h5>
+          </div>
+          <div class="col-sm-4"><input type="text" [(ngModel)]="model.username" name="1" class="form-control" required></div>
+          <div class="col-sm-6"></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-2">
+            <h5><span class="badge bg-secondary">Password</span></h5>
+          </div>
+          <div class="col-sm-4"><input type="password" [(ngModel)]="model.password" name="2" class="form-control" required></div>
+          <div class="col-sm-6"></div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4 mt-5">
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" class="btn btn-warning" (click)="cancel()">Cancel</button>
+              <button type="button" class="btn btn-success" (click)="login()">Submit</button>
+            </div>
+          </div>
+          <div class="col-sm-4"></div>
+          <div class="col-sm-4"></div>
+        </div>
+      </div>
+      <div class="card-footer">
+        {{submitResult}}
+      </div>
+    </div>
+  </form>
+</div>

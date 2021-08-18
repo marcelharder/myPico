@@ -10,6 +10,7 @@ import { AboutComponent } from './About/About.component';
 import { LoginComponent } from './Login/Login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AlertifyService } from './_services/Alertify.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [					
@@ -21,6 +22,7 @@ import { AlertifyService } from './_services/Alertify.service';
       LoginComponent
    ],
   imports: [
+    FormsModule,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule

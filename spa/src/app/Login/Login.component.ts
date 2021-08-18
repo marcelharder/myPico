@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertifyService } from '../_services/Alertify.service';
+import { AuthService } from '../_services/Auth.service';
 
 @Component({
   selector: 'app-Login',
@@ -6,10 +8,31 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./Login.component.css']
 })
 export class LoginComponent implements OnInit {
+  submitResult = "";
+  username = "";
+  password = "";
+  model: any = {};
 
-  constructor() { }
+  constructor(
+    private authService: AuthService, 
+    private alertify: AlertifyService) { }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  cancel() { }
+
+  
+
+  login() {
+    this.authService.login(this.model).subscribe(data => {
+      this.alertify.success('logged in succssfully'); }
+    , error => {
+      this.alertify.error('Failed to login'); }
+    , () => {
+      // figure out where to go to
+        
+      //this.router.navigate(['/home']);
+    });
   }
 
 }
