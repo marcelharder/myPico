@@ -29,9 +29,7 @@ export class LoginComponent implements OnInit {
     , error => {
       this.alertify.error('Failed to login'); }
     , () => {
-      // figure out where to go to
-        
-      //this.router.navigate(['/home']);
+     
     });
   }
 

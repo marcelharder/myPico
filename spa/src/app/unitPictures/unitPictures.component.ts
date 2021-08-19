@@ -1,37 +1,33 @@
-import { Component, OnInit } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
-import { AlertifyService } from '../_services/alertify.service';
-import { AuthService } from '../_services/auth.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../_services/Auth.service';
 
 @Component({
-  selector: 'app-pictures',
-  templateUrl: './pictures.component.html',
-  styleUrls: ['./pictures.component.css']
+  selector: 'app-unitPictures',
+  templateUrl: './unitPictures.component.html',
+  styleUrls: ['./unitPictures.component.css']
 })
-export class PicturesComponent implements OnInit {
+export class UnitPicturesComponent implements OnInit {
   picoUnit = 0;
   pictureLocation = "Pico de loro";
 
-  photo_1: string;
-  photo_2: string;
-  photo_3: string;
-  photo_4: string;
-  photo_5: string;
-  photo_6: string;
-  photo_7: string;
-  photo_8: string;
-  photo_9: string;
-  photo_10: string;
+  photo_1: string = "";
+  photo_2: string = "";
+  photo_3: string = "";
+  photo_4: string = "";
+  photo_5: string = "";
+  photo_6: string = "";
+  photo_7: string = "";
+  photo_8: string = "";
+  photo_9: string = "";
+  photo_10: string = "";
 
-  constructor(
-    private auth: AuthService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private alertify: AlertifyService) { }
+  constructor(private route:ActivatedRoute, 
+    private auth:AuthService, 
+    private router:Router) { }
 
   ngOnInit() {
-
-    this.picoUnit = +this.route.snapshot.paramMap.get('id');
+   
 
     
     if (this.picoUnit === 1) {
@@ -58,13 +54,15 @@ export class PicturesComponent implements OnInit {
       this.pictureLocation = "Unit 640-A";
 
     }
-  }
-  showDetails(x)  { if (this.picoUnit === 0) {return false; } else {return true; } }
+   
 
+  }
+  showDetails(x:number)  { if (this.picoUnit === 0) {return false; } else {return true; } }
   availability() {
     if (this.auth.loggedIn()) {
      this.router.navigate(['/schedule']);
     } else {this.router.navigate(['/login']); }
     }
   details() {this.router.navigate(['/unitDetails/' + this.picoUnit]); }
+
 }

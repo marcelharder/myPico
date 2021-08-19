@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { CarouselModule} from 'ngx-bootstrap/carousel';
+
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,17 +13,20 @@ import { LoginComponent } from './Login/Login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AlertifyService } from './_services/Alertify.service';
 import { FormsModule } from '@angular/forms';
+import { UnitPicturesComponent } from './unitPictures/unitPictures.component';
 
 @NgModule({
-  declarations: [					
+  declarations: [						
     AppComponent,
       NavBarComponent,
       HomeComponent,
       ContactComponent,
       AboutComponent,
-      LoginComponent
+      LoginComponent,
+      UnitPicturesComponent
    ],
   imports: [
+    CarouselModule.forRoot(),
     FormsModule,
     BrowserModule,
     HttpClientModule,

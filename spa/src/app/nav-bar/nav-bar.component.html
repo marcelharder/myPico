@@ -7,9 +7,17 @@
   <div class="collapse navbar-collapse" id="main_nav">
     <ul class="navbar-nav me-auto">
       <li class="nav-item active"> <a class="nav-link" href="./home">Home </a> </li>
-      <li class="nav-item"><a class="nav-link" href="./about"> About </a></li>
       <li class="nav-item dropdown" id="myDropdown">
-        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">  Treeview menu  </a>
+        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Unit details</a>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#">Photo's</a></li>
+          <li><a class="dropdown-item" href="#">Bookings</a></li>
+          <li><a class="dropdown-item" href="#">Ratings</a></li>
+          <li><a class="dropdown-item" href="#">House rules</a></li>
+        </ul>
+      </li>
+      <li class="nav-item dropdown" id="myDropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Pico details</a>
         <ul class="dropdown-menu">
           <li> <a class="dropdown-item" href="#"> Dropdown item 1 </a></li>
           <li> <a class="dropdown-item" href="#"> Dropdown item 2 &raquo; </a>
@@ -30,7 +38,7 @@
           <li><a class="dropdown-item" href="#"> Dropdown item 4 </a></li>
         </ul>
       </li>
-       
+      <li class="nav-item"><a class="nav-link" href="./about"> About </a></li> 
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li class="nav-item" *ngIf="!loggedIn()">
