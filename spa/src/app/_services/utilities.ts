@@ -1,9 +1,6 @@
-import { DaysModel } from './../_models/daysModel';
-import { DaysService } from './../_services/days.service';
-import { OccupancyService } from './../_services/occupancy.service';
-import { getDayOfYear } from 'ngx-bootstrap/chronos/units/day-of-year';
 import { SeasonDays } from './../_models/seasonDays';
 import * as _ from 'underscore';
+import { daysModel } from '../_models/daysModel';
 
 export class Utilities {
 
@@ -13,9 +10,9 @@ export class Utilities {
         return (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 24 / 60 / 60 / 1000;
     }
 
-    getListDaysArray( year: number, firstMonth: number): Array<DaysModel> {
+    getListDaysArray( year: number, firstMonth: number): Array<daysModel> {
         let index = 0;
-        const help = new Array<DaysModel>();
+        const help = new Array<daysModel>();
         const secondMonth = firstMonth + 1;
         const occupancyStateThisMonth: string[] = [];
 
@@ -36,7 +33,7 @@ export class Utilities {
         if (firstMonth === 1) { // de maand january en february
             // get the occupancy of year, month en look for 1 which occupied
             for (let i = 0; i < 32; i++) {
-                // occupiedDays(year, firstMonth);
+              // occupiedDays(year, firstMonth);
               //  help.push({ index: index, date: new Date(year, firstMonth - 1, i), value: +occupancyStateThisMonth[i] });
               help.push({ index: index, date: new Date(year, firstMonth - 1, i), value: 0 });   index++;
                 }
@@ -109,7 +106,10 @@ export class Utilities {
     isLeap(year) {  return new Date(year, 1, 29).getDate() === 29; }
 
     getMonths(): Array<string> {
-        return ['January', 'February', 'March', 'April', 'May',
+        return [
+            'January', 
+            'February', 
+            'March', 'April', 'May',
             'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     }
     getYears(): Array<string> { return ['2018', '2019', '2020', '2021', '2022']; }

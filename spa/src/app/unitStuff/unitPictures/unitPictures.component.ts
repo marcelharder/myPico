@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../_services/Auth.service';
+import { AuthService } from '../../_services/Auth.service';
 
 @Component({
   selector: 'app-unitPictures',

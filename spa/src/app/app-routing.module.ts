@@ -8,7 +8,10 @@ import { PicoGeneralComponent } from './picodeloroStuff/pico-general/pico-genera
 import { PicoImagesComponent } from './picodeloroStuff/pico-images/pico-images.component';
 import { PicoRulesComponent } from './picodeloroStuff/pico-rules/pico-rules.component';
 import { PicoMapComponent } from './picodeloroStuff/picoMap/picoMap.component';
-import { UnitPicturesComponent } from './unitPictures/unitPictures.component';
+import { BookingsComponent } from './unitStuff/bookings/bookings.component';
+import { HouseRulesComponent } from './unitStuff/houseRules/houseRules.component';
+import { RatingsComponent } from './unitStuff/ratings/ratings.component';
+import { UnitPicturesComponent } from './unitStuff/unitPictures/unitPictures.component';
 import { ProfileComponent } from './user/Profile/Profile.component';
 
 const routes: Routes = [{ path: '', component: HomeComponent },
@@ -19,6 +22,9 @@ const routes: Routes = [{ path: '', component: HomeComponent },
 { path: 'picoGeneral', component: PicoGeneralComponent },
 { path: 'picoPictures', component: PicoImagesComponent },
 { path: 'picoRules', component: PicoRulesComponent },
+{ path: 'unitRules/:id', component: HouseRulesComponent },
+{ path: 'unitRatings/:id', component: RatingsComponent },
+{ path: 'unitBookings/:id', component: BookingsComponent },
 { path: 'unitPictures/:id', component: UnitPicturesComponent },
 { path: 'login', component: LoginComponent },
 { path: 'profile', component: ProfileComponent },];

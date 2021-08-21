@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { CarouselModule} from 'ngx-bootstrap/carousel';
 import { AccordionModule} from 'ngx-bootstrap/accordion';
-
+import { BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,11 +15,14 @@ import { LoginComponent } from './Login/Login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { AlertifyService } from './_services/Alertify.service';
 import { FormsModule } from '@angular/forms';
-import { UnitPicturesComponent } from './unitPictures/unitPictures.component';
+import { UnitPicturesComponent } from './unitStuff/unitPictures/unitPictures.component';
 import { PicoGeneralComponent } from './picodeloroStuff/pico-general/pico-general.component';
 import { PicoMapComponent } from './picodeloroStuff/picoMap/picoMap.component';
 import { PicoImagesComponent } from './picodeloroStuff/pico-images/pico-images.component';
 import { PicoRulesComponent } from './picodeloroStuff/pico-rules/pico-rules.component';
+import { HouseRulesComponent } from './unitStuff/houseRules/houseRules.component';
+import { RatingsComponent } from './unitStuff/ratings/ratings.component';
+import { BookingsComponent } from './unitStuff/bookings/bookings.component';
 
 @NgModule({
   declarations: [						
@@ -33,10 +36,15 @@ import { PicoRulesComponent } from './picodeloroStuff/pico-rules/pico-rules.comp
       PicoGeneralComponent,
       PicoMapComponent,
       PicoImagesComponent,
-      PicoRulesComponent
+      PicoRulesComponent,
+      HouseRulesComponent,
+      RatingsComponent,
+      BookingsComponent
+
    ],
   imports: [
     BrowserAnimationsModule,
+    BsDatepickerModule.forRoot(),
     CarouselModule.forRoot(),
     AccordionModule.forRoot(),
     FormsModule,
