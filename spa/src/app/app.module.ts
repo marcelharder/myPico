@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { CarouselModule} from 'ngx-bootstrap/carousel';
+import { AccordionModule} from 'ngx-bootstrap/accordion';
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -14,6 +16,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { AlertifyService } from './_services/Alertify.service';
 import { FormsModule } from '@angular/forms';
 import { UnitPicturesComponent } from './unitPictures/unitPictures.component';
+import { PicoGeneralComponent } from './picodeloroStuff/pico-general/pico-general.component';
+import { PicoMapComponent } from './picodeloroStuff/picoMap/picoMap.component';
+import { PicoImagesComponent } from './picodeloroStuff/pico-images/pico-images.component';
+import { PicoRulesComponent } from './picodeloroStuff/pico-rules/pico-rules.component';
 
 @NgModule({
   declarations: [						
@@ -23,10 +29,16 @@ import { UnitPicturesComponent } from './unitPictures/unitPictures.component';
       ContactComponent,
       AboutComponent,
       LoginComponent,
-      UnitPicturesComponent
+      UnitPicturesComponent,
+      PicoGeneralComponent,
+      PicoMapComponent,
+      PicoImagesComponent,
+      PicoRulesComponent
    ],
   imports: [
+    BrowserAnimationsModule,
     CarouselModule.forRoot(),
+    AccordionModule.forRoot(),
     FormsModule,
     BrowserModule,
     HttpClientModule,

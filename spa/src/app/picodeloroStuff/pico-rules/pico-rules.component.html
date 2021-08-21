@@ -1,0 +1,221 @@
+<div class=container>
+  <div class="row">
+    <div class="col-sm-4">
+      <img src="{{photo_1}}" alt="First slide" style="display: block; width: 100%;">
+    </div>
+    <div class="col-sm-4">
+      <img src="{{photo_1}}" alt="First slide" style="display: block; width: 100%;">
+    </div>
+    <div class="col-sm-4">
+      <img src="{{photo_1}}" alt="First slide" style="display: block; width: 100%;">
+    </div>
+  </div>
+  <div class="jumbotron">
+    <strong>
+      <h2>Pico de Loro Rules</h2>
+    </strong>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <h4>Please be advised that besides the room rental, there is an one-time entrance fee charged by the resort.</h4>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+  <accordion>
+    <accordion-group>
+      <div accordion-heading>
+        <div class=row>
+          <div class="col-sm-6">Guest fees</div>
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-3"></div>
+              <div class="col-sm-3"></div>
+              <div class="col-sm-3"><button type=button class="btn btn-info btn-xxs; pull-right" (click)="showUSD()">USD</button></div>
+              <div class="col-sm-3"><button type=button class="btn btn-info btn-xxs; pull-right; padding-right: 10px" (click)="showPHP()">PHP</button></div></div>
+            </div>
+       </div>
+      </div>
+      <div *ngIf="currency === 'PHP'">
+      <div class="row">
+        <div class="col-sm-3">
+
+        </div>
+        <div class="col-sm-3">
+          Lean season
+        </div>
+        <div class="col-sm-3">
+          Peak season
+        </div>
+        <div class="col-sm-3">
+          High season
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          Adult
+        </div>
+        <div class="col-sm-3">
+          <strong>PHP 800</strong>
+        </div>
+        <div class="col-sm-3">
+            <strong>PHP 1200</strong>
+        </div>
+        <div class="col-sm-3">
+            <strong>PHP 1300</strong>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          Child (4-12)
+        </div>
+        <div class="col-sm-3">
+          PHP 300
+        </div>
+        <div class="col-sm-3">
+          PHP 400
+        </div>
+        <div class="col-sm-3">
+          PHP 500
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3">
+          Infant (0-3)
+        </div>
+        <div class="col-sm-3">
+          Free
+        </div>
+        <div class="col-sm-3">
+          Free
+        </div>
+        <div class="col-sm-3">
+          Free
+        </div>
+      </div>
+    </div>
+    <div  *ngIf="currency === 'USD'">
+        <div class="row">
+            <div class="col-sm-3">
+    
+            </div>
+            <div class="col-sm-3">
+              Lean season
+            </div>
+            <div class="col-sm-3">
+              Peak season
+            </div>
+            <div class="col-sm-3">
+              High season
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              Adult
+            </div>
+            <div class="col-sm-3">
+              $ 10.00
+            </div>
+            <div class="col-sm-3">
+                $ 12.00
+            </div>
+            <div class="col-sm-3">
+              PHP 1300
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              Child (4-12)
+            </div>
+            <div class="col-sm-3">
+              PHP 300
+            </div>
+            <div class="col-sm-3">
+              PHP 400
+            </div>
+            <div class="col-sm-3">
+              PHP 500
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-3">
+              Infant (0-3)
+            </div>
+            <div class="col-sm-3">
+              Free
+            </div>
+            <div class="col-sm-3">
+              Free
+            </div>
+            <div class="col-sm-3">
+              Free
+            </div>
+          </div>
+    </div>
+    </accordion-group>
+    <accordion-group heading="Season definitions">
+      <div class="row">
+        <div class="col-sm-3"> Lean season:  </div>
+        <div class="col-sm-9"> All weekdays (Mon-Thu) except in March, April, May and December </div>
+      </div>  
+      
+        <div class="row">
+          <div class="col-sm-3">  Peak season:   </div>
+          <div class="col-sm-9"> All weekends (Fri-Sun) except in March, April, May and December  </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3"> </div>
+          <div class="col-sm-9">  All weekdays in March, April, May and December   </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">   </div>
+          <div class="col-sm-9">  All holidays of the year   </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-3">  High Season: </div>
+          <div class="col-sm-9"> All weekends in March, April, May and December  </div>
+        </div>
+      
+    </accordion-group>
+    <accordion-group heading="Restricted entry for guests">
+        <div class="row">
+          <div class="col-sm-6"> Lean season:  </div>
+          <div class="col-sm-6"> All weekdays (Mon-Thu) except in March, April, May and December </div>
+        </div>  
+        
+          <div class="row">
+            <div class="col-sm-3">  Peak season:   </div>
+            <div class="col-sm-9"> All weekends (Fri-Sun) except in March, April, May and December  </div>
+          </div>
+  
+          <div class="row">
+            <div class="col-sm-3"> </div>
+            <div class="col-sm-9">  All weekdays in March, April, May and December   </div>
+          </div>
+  
+          <div class="row">
+            <div class="col-sm-3">   </div>
+            <div class="col-sm-9">  All holidays of the year   </div>
+          </div>
+  
+          <div class="row">
+            <div class="col-sm-3">  High Season: </div>
+            <div class="col-sm-9"> All weekends in March, April, May and December  </div>
+          </div>
+        
+      </accordion-group>
+  </accordion>
+
+
+ 
+</div>
