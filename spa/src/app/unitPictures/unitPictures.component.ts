@@ -40,8 +40,9 @@ export class UnitPicturesComponent implements OnInit {
       this.photo_5 = "../assets/images/unit-pictures/610-A/DSC_6773.JPG";
       this.photo_6 = "../assets/images/unit-pictures/610-A/DSC_6774.JPG";
       this.photo_7 = "../assets/images/unit-pictures/610-A/DSC_6775.JPG";
-      this.photo_8 = "../assets/images/unit-pictures/610-A/DSC_6777.JPG";
-      this.photo_9 = "../assets/images/unit-pictures/610-A/DSC_6778.JPG";
+      this.photo_8 = "../assets/images/unit-pictures/610-A/DSC_6776.JPG";
+      this.photo_9 = "../assets/images/unit-pictures/610-A/DSC_6777.JPG";
+      this.photo_10 = "../assets/images/unit-pictures/610-A/DSC_6778.JPG";
 
     }
     if (this.picoUnit === 2) {
