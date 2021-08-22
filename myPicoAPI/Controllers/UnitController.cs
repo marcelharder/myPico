@@ -37,6 +37,14 @@ namespace myPicoAPI.Controllers {
             return Ok (picoUnit);
         }
 
+
+        [Route ("api/getUnitID/{picoNumber}")]
+
+        public async Task<IActionResult> getUnitId(string picoNumber){
+            var help = await _repo.GetPicoUnitId(picoNumber);
+            return Ok(help);
+        }
+
         [HttpPost]
         [Route ("api/unitDetails/{userId}")]
         public async Task<IActionResult> savePicoUnitDetails (int userId, [FromBody] picoUnit pic) {
@@ -49,6 +57,8 @@ namespace myPicoAPI.Controllers {
             if (await _repo.SaveAll ()) { return Ok (picoUnit); }
             return BadRequest ();
         }
+
+
 
         [Route ("api/appartmentUsers/{appartmentId}/{userId}")]
         public async Task<IActionResult> getAppartmentUsers (int appartmentId, int userId) {

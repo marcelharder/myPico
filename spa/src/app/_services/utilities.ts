@@ -1,18 +1,18 @@
 import { SeasonDays } from './../_models/seasonDays';
 import * as _ from 'underscore';
-import { daysModel } from '../_models/daysModel';
+import { DaysModel } from '../_models/daysModel';
 
 export class Utilities {
 
     constructor() { }
 
-    daysIntoYear(date) {
+    daysIntoYear(date: any) {
         return (Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) - Date.UTC(date.getFullYear(), 0, 0)) / 24 / 60 / 60 / 1000;
     }
 
-    getListDaysArray( year: number, firstMonth: number): Array<daysModel> {
+    getListDaysArray( year: number, firstMonth: number): Array<DaysModel> {
         let index = 0;
-        const help = new Array<daysModel>();
+        const help = new Array<DaysModel>();
         const secondMonth = firstMonth + 1;
         const occupancyStateThisMonth: string[] = [];
 

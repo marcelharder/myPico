@@ -23,6 +23,9 @@ export class AuthService {
   photoUrl = new BehaviorSubject<string>('0');
   currentphotoUrl = this.photoUrl.asObservable();
 
+  picoUnit = new BehaviorSubject<string>('0');
+  currentPicoUnit = this.photoUrl.asObservable();
+
   /* soortProcedure = new BehaviorSubject<string>('0');
   currentSoortProcedure = this.soortProcedure.asObservable();
 
@@ -34,6 +37,8 @@ export class AuthService {
 
   //changeCurrentHospital(sh: string) { this.Hospital.next(sh); }
   changeCurrentPhotoUrl(sh: string) { this.photoUrl.next(sh); }
+
+  changeCurrentPicoUnitId(sh: string){this.picoUnit.next(sh);}
   
   //changeSoortOperatie(sh: string) { this.soortProcedure.next(sh); }
   //changeDst(sh: string) { this.dst.next(sh); }

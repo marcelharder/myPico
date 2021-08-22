@@ -179,6 +179,10 @@ namespace DatingApp.API.Data {
             return help;
         }
 
-        
+        public async Task<int> GetPicoUnitId(string test)
+        {
+            var u = await _context.PicoUnits.FirstOrDefaultAsync(x => x.picoUnitNumber == test);
+            return u.UnitId;
+        }
     }
 }

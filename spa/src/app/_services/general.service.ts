@@ -5,14 +5,11 @@ import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class OccupancyService {
+export class GeneralService {
   bu: string = environment.apiUrl;
 
 constructor(private http: HttpClient) { }
 
-getOccupancy(Id: number, year: number, month: number){
-  return this.http.get<Array<string>>(this.bu + 'occupancy/' + Id + '/' + year + '/' + month)
-
-}
+getPicoUnitId(test: string){return this.http.get<number>(this.bu + 'getUnitId/' + test)}
 
 }

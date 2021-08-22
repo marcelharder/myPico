@@ -6,7 +6,6 @@ import { RequestedMonth } from 'src/app/_models/RequestedMonth';
 import { User } from 'src/app/_models/user';
 import { Utilities } from 'src/app/_services/utilities';
 import { FirstMonthComponent } from './first-month/first-month.component';
-import { SecondMonthComponent } from './second-month/second-month.component';
 
 @Component({
   selector: 'app-bookings',
@@ -16,7 +15,6 @@ import { SecondMonthComponent } from './second-month/second-month.component';
 export class BookingsComponent implements OnInit {
 
   @ViewChild(FirstMonthComponent) fm!: FirstMonthComponent;
-  @ViewChild(SecondMonthComponent) sm!: SecondMonthComponent;
   firstMonth!: RequestedMonth;
   secondMonth!: RequestedMonth;
   listDaysArray: Array<DaysModel> = [];
@@ -49,9 +47,12 @@ export class BookingsComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+
+    // start with the current Month
+
   }
 
-  removeOccupancy(){}
+  removeOccupancy(t: any){}
   
   addOccupancy(t:any){}
 

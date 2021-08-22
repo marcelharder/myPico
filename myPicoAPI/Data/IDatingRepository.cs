@@ -25,6 +25,7 @@ namespace DatingApp.API.Data
         Task<Photo> GetMainPhotoForUser(int userId);
         Task<Message> GetMessage(int id);
         Task<picoUnit> GetPicoUnit(int picoUnitId);
+        Task<int> GetPicoUnitId(string test);
         Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams);
         Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId);
         Task<dateOccupancy> getDateOccupancy(int id);

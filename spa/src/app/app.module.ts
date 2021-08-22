@@ -23,6 +23,7 @@ import { PicoRulesComponent } from './picodeloroStuff/pico-rules/pico-rules.comp
 import { HouseRulesComponent } from './unitStuff/houseRules/houseRules.component';
 import { RatingsComponent } from './unitStuff/ratings/ratings.component';
 import { BookingsComponent } from './unitStuff/bookings/bookings.component';
+import { FirstMonthComponent } from './unitStuff/bookings/first-month/first-month.component';
 
 @NgModule({
   declarations: [						
@@ -39,7 +40,8 @@ import { BookingsComponent } from './unitStuff/bookings/bookings.component';
       PicoRulesComponent,
       HouseRulesComponent,
       RatingsComponent,
-      BookingsComponent
+      BookingsComponent,
+      FirstMonthComponent,
 
    ],
   imports: [
