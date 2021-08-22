@@ -30,14 +30,18 @@ namespace myPicoAPI.Data {
             _repo.PicoUnits.Add(unit);
             _repo.SaveChanges();
         }
-        public void SeedDates () {
-            _repo.Months.RemoveRange (_repo.Months);
+        public async Task SeedDatesAsync () {
+
+            if(await _repo.Months.AnyAsync()) return;
+            if(await _repo.DateNumbers.AnyAsync()) return;
+            if(await _repo.DateOccupancy.AnyAsync()) return;
+
+           /*  _repo.Months.RemoveRange (_repo.Months);
             //_repo.Appointments.RemoveRange (_repo.Appointments);
             _repo.DateNumbers.RemoveRange (_repo.DateNumbers);
             _repo.DateOccupancy.RemoveRange (_repo.DateOccupancy);
-            _repo.SaveChanges ();
-          
-
+            _repo.SaveChanges (); */
+       
             var help = new Model_Year ();
             help = Newtonsoft.Json.JsonConvert.DeserializeObject<Model_Year>
                 (System.IO.File.ReadAllText ("Data/dayNumbers/2018/dates-2018.json"));
@@ -45,19 +49,45 @@ namespace myPicoAPI.Data {
             help_occ = Newtonsoft.Json.JsonConvert.DeserializeObject<Model_YearOccupancy>
                 (System.IO.File.ReadAllText ("Data/occupancy/2018/occupancy-2018.json"));
 
-            updateTheMonths (2018, 1, "610-A", 1, help.January, help_occ.January);
-            updateTheMonths (2018, 2, "610-A", 1, help.February, help_occ.February);
-            updateTheMonths (2018, 3, "610-A", 1, help.March, help_occ.March);
-            updateTheMonths (2018, 4, "610-A", 1, help.April, help_occ.April);
-            updateTheMonths (2018, 5, "610-A", 1, help.May, help_occ.May);
-            updateTheMonths (2018, 6, "610-A", 1, help.June, help_occ.June);
-            updateTheMonths (2018, 7, "610-A", 1, help.July, help_occ.July);
-            updateTheMonths (2018, 8, "610-A", 1, help.August, help_occ.August);
-            updateTheMonths (2018, 9, "610-A", 1, help.September, help_occ.September);
-            updateTheMonths (2018, 10, "610-A", 1, help.October, help_occ.October);
-            updateTheMonths (2018, 11, "610-A", 1, help.November, help_occ.November);
-            updateTheMonths (2018, 12, "610-A", 1, help.December, help_occ.December);
+            updateYear(2018,help,help_occ);
 
+            help = Newtonsoft.Json.JsonConvert.DeserializeObject<Model_Year>
+                (System.IO.File.ReadAllText ("Data/dayNumbers/2019/dates-2019.json"));
+            help_occ = Newtonsoft.Json.JsonConvert.DeserializeObject<Model_YearOccupancy>
+                (System.IO.File.ReadAllText ("Data/occupancy/2019/occupancy-2019.json"));
+            
+            updateYear(2019,help,help_occ);
+
+            help = Newtonsoft.Json.JsonConvert.DeserializeObject<Model_Year>
+                (System.IO.File.ReadAllText ("Data/dayNumbers/2020/dates-2020.json"));
+            help_occ = Newtonsoft.Json.JsonConvert.DeserializeObject<Model_YearOccupancy>
+                (System.IO.File.ReadAllText ("Data/occupancy/2020/occupancy-2020.json"));
+
+            updateYear(2020,help,help_occ);
+
+            help = Newtonsoft.Json.JsonConvert.DeserializeObject<Model_Year>
+                (System.IO.File.ReadAllText ("Data/dayNumbers/2021/dates-2021.json"));
+            help_occ = Newtonsoft.Json.JsonConvert.DeserializeObject<Model_YearOccupancy>
+                (System.IO.File.ReadAllText ("Data/occupancy/2021/occupancy-2021.json"));
+            
+            updateYear(2021,help,help_occ);
+            
+
+        }
+
+        public void updateYear(int year , Model_Year help, Model_YearOccupancy help_occ){
+            updateTheMonths (year, 1, "610-A", 1, help.January, help_occ.January);
+            updateTheMonths (year, 2, "610-A", 1, help.February, help_occ.February);
+            updateTheMonths (year, 3, "610-A", 1, help.March, help_occ.March);
+            updateTheMonths (year, 4, "610-A", 1, help.April, help_occ.April);
+            updateTheMonths (year, 5, "610-A", 1, help.May, help_occ.May);
+            updateTheMonths (year, 6, "610-A", 1, help.June, help_occ.June);
+            updateTheMonths (year, 7, "610-A", 1, help.July, help_occ.July);
+            updateTheMonths (year, 8, "610-A", 1, help.August, help_occ.August);
+            updateTheMonths (year, 9, "610-A", 1, help.September, help_occ.September);
+            updateTheMonths (year, 10, "610-A", 1, help.October, help_occ.October);
+            updateTheMonths (year, 11, "610-A", 1, help.November, help_occ.November);
+            updateTheMonths (year, 12, "610-A", 1, help.December, help_occ.December);
         }
 
          public async Task seedUsers()
@@ -94,18 +124,18 @@ namespace myPicoAPI.Data {
             int month, string unit,int userId,
             string[] help, string[] help_occ) {
 
-            var m = new Month_Model ();m.Year = year;m.Month = month;m.PicoUnit = unit;m.UserId = userId;_repo.Months.Add (m);
+            var dn = new dateNumber ();dn = AddDateNumber (help, year, month);_repo.DateNumbers.Add (dn);
             
-            var dn = new dateNumber ();dn = AddDateNumber (m.MonthId, help);_repo.DateNumbers.Add (dn);
-            
-            var occ = new dateOccupancy ();occ = AddDateOccupancy (m.MonthId, help_occ);_repo.DateOccupancy.Add (occ);
+            var occ = new dateOccupancy ();occ = AddDateOccupancy (help_occ, year, month);_repo.DateOccupancy.Add (occ);
+         
             _repo.SaveChanges ();
         }
 
-        private dateNumber AddDateNumber (int Id, string[] help) {
+        private dateNumber AddDateNumber (string[] help, int year, int month) {
             var d = new dateNumber ();
             try {
-                d.MonthId = Id;
+                d.Year = year;
+                d.MonthId = month;
                 d.day_1 = Convert.ToInt32 (help[0]);
                 d.day_2 = Convert.ToInt32 (help[1]);
                 d.day_3 = Convert.ToInt32 (help[2]);
@@ -151,10 +181,13 @@ namespace myPicoAPI.Data {
             } catch (FormatException e) { Console.WriteLine (e.InnerException); }
             return d;
         }
-        private dateOccupancy AddDateOccupancy (int Id, string[] help) {
+        private dateOccupancy AddDateOccupancy (string[] help, int year, int month) {
             var d = new dateOccupancy ();
             try {
-                d.MonthId = Id;
+                d.picoUnit = 1;
+                d.Year = year;
+                d.MonthId = month;
+
                 d.day_1 = Convert.ToInt32 (help[0]);
                 d.day_2 = Convert.ToInt32 (help[1]);
                 d.day_3 = Convert.ToInt32 (help[2]);

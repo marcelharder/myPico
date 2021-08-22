@@ -22,13 +22,12 @@ namespace myPicoAPI.Controllers {
         [HttpGet]
         public async Task<IActionResult> GetDateNumbers (int year, int month) {
             var helpMonth = await _repo.GetMonth (year, month);
-            var d = _mapper.Map<dateNumbersForReturnDto> (helpMonth);
-            return Ok (d);
+            return Ok (helpMonth);
         }
 
         [Route ("api/occupancy/{picoUnit}/{year}/{month}")]
         [HttpGet]
-        public async Task<IActionResult> GetDateOccupancy (string picoUnit, int year, int month) {
+        public async Task<IActionResult> GetDateOccupancy (int picoUnit, int year, int month) {
 
             // make the dates prior to the current date unchangeable, which is code 3
             DateTime utcDate = DateTime.UtcNow;
@@ -62,17 +61,16 @@ namespace myPicoAPI.Controllers {
             }
 
             var helpMonth = await _repo.GetMonthPerUnit (picoUnit, year, month);
-            var d = _mapper.Map<dateOccupancyForReturnDto> (helpMonth);
-            return Ok (d);
+            return Ok (helpMonth);
         }
 
         private async void saveOccupancy (int day, int year, int type) {
             DateTime theDate = new DateTime (year, 1, 1).AddDays (day - 1);
             var selectedMonth = await _repo.GetMonth (year, theDate.Month); // so this gives the month number of 3 for example
             // get the day from theDate.day, so we can focus on the needed day in the occupancy table
-            var selectedMonthDateNumber = await _repo.getDateNumber (selectedMonth.UserId);
-            var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.UserId);
-            var loc = findLocation (selectedMonthDateNumber, selectedMonthOccupancy, theDate.Day, type);
+         //   var selectedMonthDateNumber = await _repo.getDateNumber (selectedMonth.UserId);
+          //  var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.UserId);
+          //  var loc = findLocation (selectedMonthDateNumber, selectedMonthOccupancy, theDate.Day, type);
 
         }
         private int findLocation (dateNumber sel, dateOccupancy docc, int day, int type) {
@@ -114,8 +112,8 @@ namespace myPicoAPI.Controllers {
 
         private async void MakeMonthUnchangeable (int year, int month) {
             var selectedMonth = await _repo.GetMonth (year, month); // so this gives the month number of 3 for example
-            var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.UserId);
-            if (selectedMonthOccupancy.day_1 != 3 || selectedMonthOccupancy.day_10 != 3 || selectedMonthOccupancy.day_20 != 3) { // check to see if this month is already blocked out
+          //  var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.UserId);
+           /*  if (selectedMonthOccupancy.day_1 != 3 || selectedMonthOccupancy.day_10 != 3 || selectedMonthOccupancy.day_20 != 3) { // check to see if this month is already blocked out
                 selectedMonthOccupancy.day_1 = changeToUnchangeable(selectedMonthOccupancy.day_1);
                 selectedMonthOccupancy.day_2 = changeToUnchangeable(selectedMonthOccupancy.day_2);
                 selectedMonthOccupancy.day_3 = changeToUnchangeable(selectedMonthOccupancy.day_3);
@@ -159,15 +157,14 @@ namespace myPicoAPI.Controllers {
                 selectedMonthOccupancy.day_41 = changeToUnchangeable(selectedMonthOccupancy.day_41);
                 selectedMonthOccupancy.day_42 = changeToUnchangeable(selectedMonthOccupancy.day_42);
                 await _repo.SaveAll ();
-            }
+            */ }
 
         }
 
-        private int changeToUnchangeable(int test)
+        /* private int changeToUnchangeable(int test)
         {
             // do not erase all the passed appointments, only the vacant ones
             if(test == 0){ return 3;}
             return test;
-        }
+        } */
     }
-}

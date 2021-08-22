@@ -103,7 +103,7 @@ export class Utilities {
     }
 
 
-    isLeap(year) {  return new Date(year, 1, 29).getDate() === 29; }
+    isLeap(year: any) {  return new Date(year, 1, 29).getDate() === 29; }
 
     getMonths(): Array<string> {
         return [
@@ -128,7 +128,7 @@ export class Utilities {
         return help;
     }
 
-    translateMonth(n) {
+    translateMonth(n:number) {
         let help = '';
         switch (n) {
             case 0: help = 'January'; break;
@@ -146,7 +146,7 @@ export class Utilities {
         }
         return help;
     }
-    getNumberOfMonth(m) {
+    getNumberOfMonth(m:string) {
         let help = 0;
         switch (m) {
             case 'January': help = 1; break;
@@ -166,13 +166,13 @@ export class Utilities {
         return help;
     }
 
-    translateOccupancy(test) {
+    translateOccupancy(test:string) {
         if (test === '0') { return 'vacant'; } else {
             if (test === '3') { return 'out_of_calendar'; } else { return 'occupied'; }
         }
     }
 
-    cleanUp(input) {
+    cleanUp(input: any) {
         const newArr = [];
         for (let i = 0; i < input.length; i++) {
             if (input[i] != null) { newArr.push(input[i]); }

@@ -29,7 +29,7 @@ namespace Dating.API
             var seeder = new seedDates(context);
             await seeder.seedUsers();
             await seeder.seedUnits();
-            seeder.SeedDates();
+            await seeder.SeedDatesAsync();
             await seeder.seedAppointments();
             
             }

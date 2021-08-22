@@ -107,22 +107,27 @@ namespace DatingApp.API.Data {
             return messages;
         }
 
-        public async Task<Month_Model> GetMonth (int year, int month) {
-            return await _context.Months.Include (d => d.DateNumbers)
+        public async Task<dateNumber> GetMonth (int year, int month) {
+           
+            return await _context.DateNumbers
                 .Where (x => x.Year == year)
-                .Where (j => j.Month == month).FirstOrDefaultAsync ();
+                .Where (j => j.MonthId == month).FirstOrDefaultAsync ();
         }
 
         public async Task<Appointment> GetAppointment (int appointmentId) {
             return await _context.Appointments.FirstOrDefaultAsync (u => u.Id == appointmentId);
         }
 
-        public async Task<Month_Model> GetMonthPerUnit (string picoUnit, int year, int month) {
-            return await _context.Months.Include (o => o.DateOccupancy)
+        public async Task<dateOccupancy> GetMonthPerUnit(int picoUnit, int year, int month)
+        {
+            var result = await _context.DateOccupancy
                 .Where (x => x.Year == year)
-                .Where (j => j.Month == month)
-                .Where (j => j.PicoUnit == picoUnit).FirstOrDefaultAsync ();
+                .Where (j => j.MonthId == month)
+                .Where (j => j.picoUnit == picoUnit).FirstOrDefaultAsync ();
+            return result;
         }
+
+       
 
         public async Task<PagedList<Appointment>> getAppointmentsForUser (int userId, MessageParams messageParams) { // gets the appointments for the requested user
             var appts = _context.Appointments.Where (b => b.userId == userId).AsQueryable ();
@@ -173,5 +178,7 @@ namespace DatingApp.API.Data {
             foreach (int i in listOfUserIds) { help.Add (await GetUser (i)); }
             return help;
         }
+
+        
     }
 }

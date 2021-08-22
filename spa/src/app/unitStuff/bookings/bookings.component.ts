@@ -17,8 +17,8 @@ export class BookingsComponent implements OnInit {
 
   @ViewChild(FirstMonthComponent) fm!: FirstMonthComponent;
   @ViewChild(SecondMonthComponent) sm!: SecondMonthComponent;
-  firstMonth: RequestedMonth = new RequestedMonth(1, 0, 2018);
-  secondMonth: RequestedMonth = new RequestedMonth(1, 0, 2018);
+  firstMonth!: RequestedMonth;
+  secondMonth!: RequestedMonth;
   listDaysArray: Array<DaysModel> = [];
   bsConfig!: Partial<BsDatepickerConfig>;
 
