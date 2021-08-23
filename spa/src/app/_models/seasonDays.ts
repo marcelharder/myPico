@@ -1,7 +1,7 @@
 export class SeasonDays {
 
     Id: number = 0;
-    month_ModelId: number = 0;
+    monthId: number = 0;
     day_1: string;
     day_2: string;
     day_3: string;
