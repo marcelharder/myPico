@@ -13,10 +13,11 @@ import { GeneralService } from 'src/app/_services/general.service';
   templateUrl: './first-month.component.html',
   styleUrls: ['./first-month.component.css']
 })
-export class FirstMonthComponent implements AfterContentInit {
-  @Input() rm!: RequestedMonth;
+export class FirstMonthComponent implements OnInit {
+  @Input() rm: RequestedMonth | undefined
   currentMonth = 0;
   monthName:String = "";
+  currentPicoUnitId = 0;
 
 
  /*  @Input() obs = false; // one beyond sequence, makes sure that we add requested days as a continuous block
@@ -25,7 +26,7 @@ export class FirstMonthComponent implements AfterContentInit {
   @Output() addOccupancy = new EventEmitter();
   @Output() removeOccupancy = new EventEmitter();
   currentMonth = 0;
-  currentPicoUnitId = 0;
+  
 
   status = "";
 
@@ -59,10 +60,17 @@ export class FirstMonthComponent implements AfterContentInit {
     private occupancyService: OccupancyService, 
     private alert: AlertifyService) { }
 
-  ngAfterContentInit() {
-    this.currentMonth = this.rm.month;
-    this.monthName = this.gen.getMonthFromNo(this.currentMonth);
-
+   ngOnInit() {
+     if(this.rm !== undefined){
+      this.currentMonth = this.rm.month;
+      this.monthName = this.gen.getMonthFromNo(this.currentMonth);
+      this.getOccDates(this.rm.year, this.rm.month);
+      this.getOccupancy(this.rm.picoUnit, this.rm.year, this.rm.month);
+     }
+    
+    
+   
+ 
   //  this.bordersequence = false;
   //  this.obs = false;
   }
@@ -78,8 +86,10 @@ export class FirstMonthComponent implements AfterContentInit {
   getOccDates(year: number, month: number) {
 
       this.dayService.getDays(year, month).subscribe((res) => {
-      this.element_1 = res[0]; this.element_2 = res[1]; this.element_3 = res[2]; 
+     
+      this.element_1 = res.day_1; this.element_2 = res[1]; this.element_3 = res[2]; 
       this.element_4 = res[3]; this.element_5 = res[4];
+      debugger;
       this.element_6 = res[5]; this.element_7 = res[6]; this.element_8 = res[7]; 
       this.element_9 = res[8]; this.element_10 = res[9];
       this.element_11 = res[10]; this.element_12 = res[11]; this.element_13 = res[12]; 
@@ -98,8 +108,8 @@ export class FirstMonthComponent implements AfterContentInit {
     }); 
 
   }
-  getOccupancy(year: number, month: number) {
-     this.occupancyService.getOccupancy(this.rm.picoUnit, year, month).subscribe((res) => {
+  getOccupancy(unit: number,year: number, month: number) {
+     this.occupancyService.getOccupancy(unit, year, month).subscribe((res) => {
       this.element_1_class = res[0]; this.element_2_class = res[1]; 
       this.element_3_class = res[2]; this.element_4_class = res[3]; 
       this.element_5_class = res[4];

@@ -11,29 +11,20 @@ import { AuthService } from '../_services/Auth.service';
 export class NavBarComponent implements OnInit {
 
   photoUrl: string | undefined;
-
-  constructor(public authService: AuthService,
+ 
+  constructor(public auth: AuthService,
   private alertify: AlertifyService,
   private router: Router
 ) { }
 
   ngOnInit() {
-     this.authService.currentphotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
-  }
+     this.auth.currentphotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
+   }
 
-  loggedIn() { return this.authService.loggedIn(); }
+  loggedIn() {
+    return this.auth.loggedIn(); }
 
-  loggedAdmin() { return this.authService.adminLoggedIn(); }
-
-  getUsername() {
-   if (this.authService.decodedToken === undefined) {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.router.navigate(['/home']);
-    } else {
-   return  this.authService.decodedToken.unique_name; }
-  }
-
+  loggedAdmin() { return this.auth.adminLoggedIn(); }
 
   logout() {
     localStorage.removeItem('token');

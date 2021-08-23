@@ -12,7 +12,7 @@ bu: string = environment.apiUrl;
 constructor(private http: HttpClient) { }
 
 getDays(year: number, month: number){
-  return this.http.get<Array<string>>(this.bu + 'dates/' + year + '/' + month)
+  return this.http.get<string>(this.bu + 'dates/' + year + '/' + month)
 }
 
 }

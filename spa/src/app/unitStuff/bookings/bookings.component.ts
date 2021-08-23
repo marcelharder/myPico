@@ -13,8 +13,8 @@ import { GeneralService } from 'src/app/_services/general.service';
 export class BookingsComponent implements OnInit {
 
   currentPicoUnitId = 0;
-  firstMonth!: RequestedMonth;
-  secondMonth!: RequestedMonth;
+  firstMonth: RequestedMonth = {picoUnit: 0, year: 0, month: 0};
+  secondMonth: RequestedMonth = {picoUnit: 0, year: 0, month: 0};
 
   //@ViewChild(FirstMonthComponent) fm!: FirstMonthComponent;
 
@@ -54,23 +54,21 @@ export class BookingsComponent implements OnInit {
   ngOnInit() {
 
     if (!this.auth.loggedIn()) {
-      debugger;
       this.alertify.error("Please log in ...");
       this.router.navigate(['/login']);
-
     } else {
-      debugger;
       // start with the current Month
       this.auth.currentPicoUnit.subscribe((next) => {
         let help = next;
-        this.gen.getPicoUnitId(help).subscribe((next) => {
-          this.firstMonth.picoUnit = next;
+      //  this.gen.getPicoUnitId(help).subscribe((next) => {
+          this.firstMonth.picoUnit = +next;
           this.firstMonth.year = 2018;
           this.firstMonth.month = 8;
-          this.secondMonth.picoUnit = next;
+      
+          this.secondMonth.picoUnit = +next;
           this.secondMonth.year = 2018;
           this.secondMonth.month = 9;
-        })
+       // })
       });
     }
 
