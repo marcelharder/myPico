@@ -16,23 +16,23 @@ import { GeneralService } from 'src/app/_services/general.service';
 export class FirstMonthComponent implements OnInit {
   @Input() rm: RequestedMonth | undefined
   currentMonth = 0;
-  monthName:String = "";
+  monthName: String = "";
   currentPicoUnitId = 0;
 
 
- /*  @Input() obs = false; // one beyond sequence, makes sure that we add requested days as a continuous block
-  @Input() bordersequence = false; // border sequence, makes sure that we can only delete the 'eindstandige' days
-
-  @Output() addOccupancy = new EventEmitter();
-  @Output() removeOccupancy = new EventEmitter();
-  currentMonth = 0;
-  
-
-  status = "";
-
-  monthName = "";
-  listOccupancy: Array<string> = [];
-  listSelectedIds: Array<number> = []; */
+  /*  @Input() obs = false; // one beyond sequence, makes sure that we add requested days as a continuous block
+   @Input() bordersequence = false; // border sequence, makes sure that we can only delete the 'eindstandige' days
+ 
+   @Output() addOccupancy = new EventEmitter();
+   @Output() removeOccupancy = new EventEmitter();
+   currentMonth = 0;
+   
+ 
+   status = "";
+ 
+   monthName = "";
+   listOccupancy: Array<string> = [];
+   listSelectedIds: Array<number> = []; */
 
   element_1_class = 'vacant'; element_2_class = 'vacant'; element_3_class = 'vacant'; element_4_class = 'vacant'; element_5_class = 'vacant';
   element_6_class = 'vacant'; element_7_class = 'vacant'; element_8_class = 'vacant'; element_9_class = 'vacant'; element_10_class = 'vacant';
@@ -53,98 +53,163 @@ export class FirstMonthComponent implements OnInit {
   element_31 = ''; element_32 = ''; element_33 = ''; element_34 = ''; element_35 = '';
   element_36 = ''; element_37 = ''; element_38 = ''; element_39 = ''; element_40 = '';
   element_41 = ''; element_42 = '';
-  
+
   constructor(
     private dayService: DaysService,
-    private gen:GeneralService,
-    private occupancyService: OccupancyService, 
+    private gen: GeneralService,
+    private occupancyService: OccupancyService,
     private alert: AlertifyService) { }
 
-   ngOnInit() {
-     if(this.rm !== undefined){
+  ngOnInit() {
+    if (this.rm !== undefined) {
       this.currentMonth = this.rm.month;
       this.monthName = this.gen.getMonthFromNo(this.currentMonth);
       this.getOccDates(this.rm.year, this.rm.month);
       this.getOccupancy(this.rm.picoUnit, this.rm.year, this.rm.month);
-     }
-    
-    
-   
- 
-  //  this.bordersequence = false;
-  //  this.obs = false;
+    }
   }
 
- /*  callFromAbove() {
-    this.currentMonth = this.rm.month;
-    const util = new Utilities();
-    this.monthName = util.translateMonth(this.currentMonth - 1);
-    this.getOccDates(this.rm.year, this.currentMonth);
-  //  this.getOccupancy(this.rm.year, this.currentMonth);
-   }
- */
   getOccDates(year: number, month: number) {
 
-      this.dayService.getDays(year, month).subscribe((res) => {
-     
-        this.element_1 = res.day_1; this.element_2 = res.day_2; this.element_3 = res.day_3; this.element_4 = res.day_4; this.element_5 = res.day_5;
-        this.element_6 = res.day_6; this.element_7 = res.day_7; this.element_8 = res.day_8; this.element_9 = res.day_9; this.element_10 = res.day_10;
-        this.element_11 = res.day_11; this.element_12 = res.day_12; this.element_13 = res.day_13; this.element_14 = res.day_14; this.element_15 = res.day_15;
-        this.element_16 = res.day_16; this.element_17 = res.day_17; this.element_18 = res.day_18; this.element_19 = res.day_19; this.element_20 = res.day_20;
-        this.element_21 = res.day_21; this.element_22 = res.day_22; this.element_23 = res.day_23; this.element_24 = res.day_24; this.element_25 = res.day_25;
-        this.element_26 = res.day_26; this.element_27 = res.day_27; this.element_28 = res.day_28; this.element_29 = res.day_29; this.element_30 = res.day_30;
-        this.element_31 = res.day_31; this.element_32 = res.day_32; this.element_33 = res.day_33; this.element_34 = res.day_34; this.element_35 = res.day_35;
-        this.element_36 = res.day_36; this.element_37 = res.day_37; this.element_38 = res.day_38; this.element_39 = res.day_39; this.element_40 = res.day_40;
-        this.element_41 = res.day_41; this.element_42 = res.day_42;
-     
-    }); 
+    this.dayService.getDays(year, month).subscribe((res) => {
+
+      this.element_1 = this.decodeDateNumbers(res.day_1);
+      this.element_2 = this.decodeDateNumbers(res.day_2);
+      this.element_3 = this.decodeDateNumbers(res.day_3);
+      this.element_4 = this.decodeDateNumbers(res.day_4);
+      this.element_5 = this.decodeDateNumbers(res.day_5);
+      this.element_6 = this.decodeDateNumbers(res.day_6);
+      this.element_7 = this.decodeDateNumbers(res.day_7);
+      this.element_8 = this.decodeDateNumbers(res.day_8);
+      this.element_9 = this.decodeDateNumbers(res.day_9);
+      this.element_10 = this.decodeDateNumbers(res.day_10);
+      this.element_11 = this.decodeDateNumbers(res.day_11);
+      this.element_12 = this.decodeDateNumbers(res.day_12);
+      this.element_13 = this.decodeDateNumbers(res.day_13);
+      this.element_14 = this.decodeDateNumbers(res.day_14);
+      this.element_15 = this.decodeDateNumbers(res.day_15);
+      this.element_16 = this.decodeDateNumbers(res.day_16);
+      this.element_17 = this.decodeDateNumbers(res.day_17);
+      this.element_18 = this.decodeDateNumbers(res.day_18);
+      this.element_19 = this.decodeDateNumbers(res.day_19);
+      this.element_20 = this.decodeDateNumbers(res.day_20);
+      this.element_21 = this.decodeDateNumbers(res.day_21);
+      this.element_22 = this.decodeDateNumbers(res.day_22);
+      this.element_23 = this.decodeDateNumbers(res.day_23);
+      this.element_24 = this.decodeDateNumbers(res.day_24);
+      this.element_25 = this.decodeDateNumbers(res.day_25);
+      this.element_26 = this.decodeDateNumbers(res.day_26);
+      this.element_27 = this.decodeDateNumbers(res.day_27);
+      this.element_28 = this.decodeDateNumbers(res.day_28);
+      this.element_29 = this.decodeDateNumbers(res.day_29);
+      this.element_30 = this.decodeDateNumbers(res.day_30);
+      this.element_31 = this.decodeDateNumbers(res.day_31);
+      this.element_32 = this.decodeDateNumbers(res.day_32);
+      this.element_33 = this.decodeDateNumbers(res.day_33);
+      this.element_34 = this.decodeDateNumbers(res.day_34);
+      this.element_35 = this.decodeDateNumbers(res.day_35);
+      this.element_36 = this.decodeDateNumbers(res.day_36);
+      this.element_37 = this.decodeDateNumbers(res.day_37);
+      this.element_38 = this.decodeDateNumbers(res.day_38);
+      this.element_39 = this.decodeDateNumbers(res.day_39);
+      this.element_40 = this.decodeDateNumbers(res.day_40);
+      this.element_41 = this.decodeDateNumbers(res.day_41);
+      this.element_42 = this.decodeDateNumbers(res.day_42);
+
+    });
 
   }
-  getOccupancy(unit: number,year: number, month: number) {
-      this.occupancyService.getOccupancy(unit, year, month).subscribe((res) => {
-      this.element_1_class = res.day_1; this.element_2_class = res.day_2; this.element_3_class = res.day_3; this.element_4_class = res.day_4; this.element_5_class = res.day_5;
-      this.element_6_class = res.day_6; this.element_7_class = res.day_7; this.element_8_class = res.day_8; this.element_9_class = res.day_9; this.element_10_class = res.day_10;
-      this.element_11_class = res.day_11; this.element_12_class = res.day_12; this.element_13_class = res.day_13; this.element_14_class = res.day_14; this.element_15_class = res.day_15;
-      this.element_16_class = res.day_16; this.element_17_class = res.day_17; this.element_18_class = res.day_18; this.element_19_class = res.day_19; this.element_20_class = res.day_20;
-      this.element_21_class = res.day_21; this.element_22_class = res.day_22; this.element_23_class = res.day_23; this.element_24_class = res.day_24; this.element_25_class = res.day_25;
-      this.element_26_class = res.day_26; this.element_27_class = res.day_27; this.element_28_class = res.day_28; this.element_29_class = res.day_29; this.element_30_class = res.day_30;
-      this.element_31_class = res.day_31; this.element_32_class = res.day_32; this.element_33_class = res.day_33; this.element_34_class = res.day_34; this.element_35_class = res.day_35;
-      this.element_36_class = res.day_36; this.element_37_class = res.day_37; this.element_38_class = res.day_38; this.element_39_class = res.day_39; this.element_40_class = res.day_40;
-      this.element_41_class = res.day_41; this.element_42_class = res.day_42;
-    }); 
+  getOccupancy(unit: number, year: number, month: number) {
+    this.occupancyService.getOccupancy(unit, year, month).subscribe((res) => {
+      this.element_1_class = this.decodeColor(res.day_1);
+      this.element_2_class = this.decodeColor(res.day_2);
+      this.element_3_class = this.decodeColor(res.day_3);
+      this.element_4_class = this.decodeColor(res.day_4);
+      this.element_5_class = this.decodeColor(res.day_5);
+      this.element_6_class = this.decodeColor(res.day_6);
+      this.element_7_class = this.decodeColor(res.day_7);
+      this.element_8_class = this.decodeColor(res.day_8);
+      this.element_9_class = this.decodeColor(res.day_9);
+      this.element_10_class = this.decodeColor(res.day_10);
+      this.element_11_class = this.decodeColor(res.day_11);
+      this.element_12_class = this.decodeColor(res.day_12);
+      this.element_13_class = this.decodeColor(res.day_13);
+      this.element_14_class = this.decodeColor(res.day_14);
+      this.element_15_class = this.decodeColor(res.day_15);
+      this.element_16_class = this.decodeColor(res.day_16);
+      this.element_17_class = this.decodeColor(res.day_17);
+      this.element_18_class = this.decodeColor(res.day_18);
+      this.element_19_class = this.decodeColor(res.day_19);
+      this.element_20_class = this.decodeColor(res.day_20);
+      this.element_21_class = this.decodeColor(res.day_21);
+      this.element_22_class = this.decodeColor(res.day_22);
+      this.element_23_class = this.decodeColor(res.day_23);
+      this.element_24_class = this.decodeColor(res.day_24);
+      this.element_25_class = this.decodeColor(res.day_25);
+      this.element_26_class = this.decodeColor(res.day_26);
+      this.element_27_class = this.decodeColor(res.day_27);
+      this.element_28_class = this.decodeColor(res.day_28);
+      this.element_29_class = this.decodeColor(res.day_29);
+      this.element_30_class = this.decodeColor(res.day_30);
+      this.element_31_class = this.decodeColor(res.day_31);
+      this.element_32_class = this.decodeColor(res.day_32);
+      this.element_33_class = this.decodeColor(res.day_33);
+      this.element_34_class = this.decodeColor(res.day_34);
+      this.element_35_class = this.decodeColor(res.day_35);
+      this.element_36_class = this.decodeColor(res.day_36);
+      this.element_37_class = this.decodeColor(res.day_37);
+      this.element_38_class = this.decodeColor(res.day_38);
+      this.element_39_class = this.decodeColor(res.day_39);
+      this.element_40_class = this.decodeColor(res.day_40);
+      this.element_41_class = this.decodeColor(res.day_41);
+      this.element_42_class = this.decodeColor(res.day_42);
+    });
   }
 
-   getDataForTable($event: any) {
+  getDataForTable($event: any) {
     let id = 0;
     let value = "";
     id = $event.target.id;
     value = $event.target.value;
     if (value !== "") {
       if ($event.target.classList.contains('requested')) {
-      //  this.removeOccupancy.emit((this.currentMonth) + '/' + $event.target.value + '/' + this.rm.year);
-       
-          $event.target.classList.remove('requested');
-          $event.target.classList.add('vacant');
-        
+        //  this.removeOccupancy.emit((this.currentMonth) + '/' + $event.target.value + '/' + this.rm.year);
+
+        $event.target.classList.remove('requested');
+        $event.target.classList.add('vacant');
+
       } else {
         if ($event.target.classList.contains('vacant')) {
-        //  this.addOccupancy.emit((this.currentMonth) + '/' + $event.target.value + '/' + this.rm.year);
-         
-            $event.target.classList.remove('vacant');
-            $event.target.classList.add('requested');
-          
+          //  this.addOccupancy.emit((this.currentMonth) + '/' + $event.target.value + '/' + this.rm.year);
+
+          $event.target.classList.remove('vacant');
+          $event.target.classList.add('requested');
+
         }
       }
     }
-  } 
-
-
-/* makeVacant() {
-  const el = document.getElementsByClassName('requested');
-  for (const x = 0; x < el.length; x) {
-    el[x].className = 'vacant';
   }
-  this.listSelectedIds = [];
-} */
+
+  decodeColor(test: number): string {
+    let help = "";
+    switch (test) {
+      case 3: return 'out_of_calendar'; break;
+      case 1: return 'occupied'; break;
+      case 0: return 'vacant'; break;
+      case 2: return 'requested'; break;
+    }
+    return help;
+  }
+
+  decodeDateNumbers(test: number): string{
+    let help = "";
+    switch (test) {
+      case 0: return ''; break;
+      default: help = test.toString();break;
+    }
+    return help;
+
+  }
+
 
 }

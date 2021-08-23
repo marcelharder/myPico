@@ -14,6 +14,7 @@ getPicoUnitId(test: string){return this.http.get<number>(this.bu + 'getUnitId/' 
 
 getMonthFromNo(no: number): String{
   let test:Array<String> = [];
+  test.push("");
   test.push("January"); test.push("February");  test.push("March");  test.push("April");
   test.push("May");  test.push("June");  test.push("July");  test.push("August");
   test.push("September");  test.push("October");  test.push("November");  test.push("December");
