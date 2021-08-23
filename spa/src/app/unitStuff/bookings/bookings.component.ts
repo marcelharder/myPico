@@ -71,20 +71,22 @@ export class BookingsComponent implements OnInit {
        // })
       });
     }
-
-
-
-
-
-
-
-
-
   }
 
   removeOccupancy(t: any) { }
 
   addOccupancy(t: any) { }
+
+  prevMonth(){
+    this.alertify.error("getting previous month");
+    this.firstMonth.month = this.firstMonth.month - 1;
+    this.secondMonth.month = this.secondMonth.month - 1;
+  }
+  nextMonth(){
+    this.alertify.error("getting next month");
+    this.secondMonth.month = this.secondMonth.month + 1;
+    this.firstMonth.month = this.firstMonth.month + 1
+  }
 
 
 

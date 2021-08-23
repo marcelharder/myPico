@@ -24,7 +24,7 @@ export class AuthService {
   photoUrl = new BehaviorSubject<string>('0');
   currentphotoUrl = this.photoUrl.asObservable();
 
-  picoUnit = new BehaviorSubject<string>('1');
+  picoUnit = new BehaviorSubject<string>('0');
   currentPicoUnit = this.picoUnit.asObservable();
 
 

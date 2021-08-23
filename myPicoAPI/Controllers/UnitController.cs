@@ -4,14 +4,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
-using DatingApp.API.Helpers;
 using DatingApp.API.Models;
 using myPicoAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace myPicoAPI.Controllers {
 
-    [ServiceFilter (typeof (LogUserActivity))]
     public class UnitController : Controller {
         private readonly IMapper _mapper;
         private readonly IDatingRepository _repo;

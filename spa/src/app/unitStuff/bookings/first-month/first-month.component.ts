@@ -56,14 +56,14 @@ export class FirstMonthComponent implements OnInit {
 
   constructor(
     private dayService: DaysService,
+    private alertify: AlertifyService,
     private gen: GeneralService,
-    private occupancyService: OccupancyService,
-    private alert: AlertifyService) { }
+    private occupancyService: OccupancyService) { }
 
   ngOnInit() {
     if (this.rm !== undefined) {
       this.currentMonth = this.rm.month;
-      this.monthName = this.gen.getMonthFromNo(this.currentMonth);
+      this.monthName = this.gen.getMonthFromNo(this.currentMonth) + "  -" + this.rm.year + "  -";
       this.getOccDates(this.rm.year, this.rm.month);
       this.getOccupancy(this.rm.picoUnit, this.rm.year, this.rm.month);
     }
@@ -165,7 +165,6 @@ export class FirstMonthComponent implements OnInit {
       this.element_42_class = this.decodeColor(res.day_42);
     });
   }
-
   getDataForTable($event: any) {
     let id = 0;
     let value = "";
@@ -189,7 +188,6 @@ export class FirstMonthComponent implements OnInit {
       }
     }
   }
-
   decodeColor(test: number): string {
     let help = "";
     switch (test) {
@@ -200,7 +198,6 @@ export class FirstMonthComponent implements OnInit {
     }
     return help;
   }
-
   decodeDateNumbers(test: number): string{
     let help = "";
     switch (test) {
@@ -210,6 +207,6 @@ export class FirstMonthComponent implements OnInit {
     return help;
 
   }
-
+  
 
 }
