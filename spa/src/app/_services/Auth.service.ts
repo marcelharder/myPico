@@ -48,11 +48,12 @@ export class AuthService {
   login(model: any) {
     return this.http.post(this.baseUrl + 'auth/login', model).pipe(
       map((response: any) => {
-        const user = response;
+        const user = response.user;
         if (user) {
-          localStorage.setItem('token', user.token);
-            this.decodedToken = this.jwtHelper.decodeToken(user.token);
-            console.log(this.decodedToken);
+          localStorage.setItem('token', response.tokenString);
+
+          this.decodedToken = this.jwtHelper.decodeToken(response.tokenString);
+          console.log(this.decodedToken);
         }
       })
     );
@@ -61,9 +62,8 @@ export class AuthService {
 register(model: any) {return this.http.post(this.baseUrl + 'auth/register', model); }
 
 loggedIn() {
-  const token = this.jwtHelper.tokenGetter();
-  if (!token) { return false; }
-  return !this.jwtHelper.isTokenExpired(token);
+  const token = localStorage.getItem('token');
+  return !this.jwtHelper.isTokenExpired(token!);
 }
 
 adminLoggedIn() {

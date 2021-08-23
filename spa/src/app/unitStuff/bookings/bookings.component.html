@@ -4,21 +4,12 @@
     <div class="row">
       <div class="col-sm-5"> 
         
-          <app-first-month  
-            [rm]="firstMonth" 
-            (addOccupancy)="addOccupancy($event)" 
-            (removeOccupancy)="removeOccupancy($event)" 
-            [obs]="allowAddingOccupancy" 
-            [bordersequence]="allowDeletingOccupancy"></app-first-month>
+          <app-first-month  [rm]="firstMonth" ></app-first-month>
         
       </div>
       <div class="col-sm-5"> 
-        <app-first-month  
-          [rm]="secondMonth" 
-          (addOccupancy)="addOccupancy($event)" 
-          (removeOccupancy)="removeOccupancy($event)" 
-          [obs]="allowAddingOccupancy" 
-          [bordersequence]="allowDeletingOccupancy"></app-first-month>
+        <app-first-month  [rm]="secondMonth" ></app-first-month>
+    
       </div>
       <div class="col-sm-2">
         <div class="card">

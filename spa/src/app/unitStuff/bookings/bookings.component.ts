@@ -1,11 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
-import { Appointment } from 'src/app/_models/appointment';
-import { DaysModel } from 'src/app/_models/daysModel';
+import { Router } from '@angular/router';
 import { RequestedMonth } from 'src/app/_models/RequestedMonth';
-import { User } from 'src/app/_models/user';
-import { Utilities } from 'src/app/_services/utilities';
-import { FirstMonthComponent } from './first-month/first-month.component';
+import { AlertifyService } from 'src/app/_services/Alertify.service';
+import { AuthService } from 'src/app/_services/Auth.service';
+import { GeneralService } from 'src/app/_services/general.service';
 
 @Component({
   selector: 'app-bookings',
@@ -14,10 +12,14 @@ import { FirstMonthComponent } from './first-month/first-month.component';
 })
 export class BookingsComponent implements OnInit {
 
-  @ViewChild(FirstMonthComponent) fm!: FirstMonthComponent;
+  currentPicoUnitId = 0;
   firstMonth!: RequestedMonth;
   secondMonth!: RequestedMonth;
-  listDaysArray: Array<DaysModel> = [];
+
+  //@ViewChild(FirstMonthComponent) fm!: FirstMonthComponent;
+
+  //secondMonth!: RequestedMonth;
+  /* listDaysArray: Array<DaysModel> = [];
   bsConfig!: Partial<BsDatepickerConfig>;
 
   currentMonth = 0;
@@ -42,19 +44,49 @@ export class BookingsComponent implements OnInit {
   selectedMonth!: string;
   selectedYear!: string;
   allowAddingOccupancy = false;
-  allowDeletingOccupancy = false;
+  allowDeletingOccupancy = false; */
 
-  constructor() { }
+  constructor(private auth: AuthService,
+    private gen: GeneralService,
+    private router: Router,
+    private alertify: AlertifyService) { }
 
   ngOnInit() {
 
-    // start with the current Month
+    if (!this.auth.loggedIn()) {
+      debugger;
+      this.alertify.error("Please log in ...");
+      this.router.navigate(['/login']);
+
+    } else {
+      debugger;
+      // start with the current Month
+      this.auth.currentPicoUnit.subscribe((next) => {
+        let help = next;
+        this.gen.getPicoUnitId(help).subscribe((next) => {
+          this.firstMonth.picoUnit = next;
+          this.firstMonth.year = 2018;
+          this.firstMonth.month = 8;
+          this.secondMonth.picoUnit = next;
+          this.secondMonth.year = 2018;
+          this.secondMonth.month = 9;
+        })
+      });
+    }
+
+
+
+
+
+
+
+
 
   }
 
-  removeOccupancy(t: any){}
-  
-  addOccupancy(t:any){}
+  removeOccupancy(t: any) { }
+
+  addOccupancy(t: any) { }
 
 
 

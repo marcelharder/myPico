@@ -15,7 +15,11 @@ import { GeneralService } from 'src/app/_services/general.service';
 })
 export class FirstMonthComponent implements AfterContentInit {
   @Input() rm!: RequestedMonth;
-  @Input() obs = false; // one beyond sequence, makes sure that we add requested days as a continuous block
+  currentMonth = 0;
+  monthName:String = "";
+
+
+ /*  @Input() obs = false; // one beyond sequence, makes sure that we add requested days as a continuous block
   @Input() bordersequence = false; // border sequence, makes sure that we can only delete the 'eindstandige' days
 
   @Output() addOccupancy = new EventEmitter();
@@ -27,7 +31,7 @@ export class FirstMonthComponent implements AfterContentInit {
 
   monthName = "";
   listOccupancy: Array<string> = [];
-  listSelectedIds: Array<number> = [];
+  listSelectedIds: Array<number> = []; */
 
   element_1_class = 'vacant'; element_2_class = 'vacant'; element_3_class = 'vacant'; element_4_class = 'vacant'; element_5_class = 'vacant';
   element_6_class = 'vacant'; element_7_class = 'vacant'; element_8_class = 'vacant'; element_9_class = 'vacant'; element_10_class = 'vacant';
@@ -51,33 +55,26 @@ export class FirstMonthComponent implements AfterContentInit {
   
   constructor(
     private dayService: DaysService,
-    private auth: AuthService,
-    private gen: GeneralService,
+    private gen:GeneralService,
     private occupancyService: OccupancyService, 
     private alert: AlertifyService) { }
 
   ngAfterContentInit() {
-   // this.currentMonth = this.rm.month;
-    this.bordersequence = false;
-    this.obs = false;
-    this.auth.currentPicoUnit.subscribe((next)=>{
-      let help = next;
-      this.gen.getPicoUnitId(help).subscribe((next)=>{
-        this.currentPicoUnitId = next;
-      })
+    this.currentMonth = this.rm.month;
+    this.monthName = this.gen.getMonthFromNo(this.currentMonth);
 
-    });
+  //  this.bordersequence = false;
+  //  this.obs = false;
+  }
 
-    }
-
-  callFromAbove() {
+ /*  callFromAbove() {
     this.currentMonth = this.rm.month;
     const util = new Utilities();
     this.monthName = util.translateMonth(this.currentMonth - 1);
     this.getOccDates(this.rm.year, this.currentMonth);
   //  this.getOccupancy(this.rm.year, this.currentMonth);
    }
-
+ */
   getOccDates(year: number, month: number) {
 
       this.dayService.getDays(year, month).subscribe((res) => {
@@ -102,7 +99,7 @@ export class FirstMonthComponent implements AfterContentInit {
 
   }
   getOccupancy(year: number, month: number) {
-     this.occupancyService.getOccupancy(this.currentPicoUnitId, year, month).subscribe((res) => {
+     this.occupancyService.getOccupancy(this.rm.picoUnit, year, month).subscribe((res) => {
       this.element_1_class = res[0]; this.element_2_class = res[1]; 
       this.element_3_class = res[2]; this.element_4_class = res[3]; 
       this.element_5_class = res[4];
@@ -131,37 +128,37 @@ export class FirstMonthComponent implements AfterContentInit {
     }); 
   }
 
-  getDataForTable($event: any) {
+   getDataForTable($event: any) {
     let id = 0;
     let value = "";
     id = $event.target.id;
     value = $event.target.value;
     if (value !== "") {
       if ($event.target.classList.contains('requested')) {
-        this.removeOccupancy.emit((this.currentMonth) + '/' + $event.target.value + '/' + this.rm.year);
-        if (this.bordersequence) {
+      //  this.removeOccupancy.emit((this.currentMonth) + '/' + $event.target.value + '/' + this.rm.year);
+       
           $event.target.classList.remove('requested');
           $event.target.classList.add('vacant');
-        }
+        
       } else {
         if ($event.target.classList.contains('vacant')) {
-          this.addOccupancy.emit((this.currentMonth) + '/' + $event.target.value + '/' + this.rm.year);
-          if (this.obs) {
+        //  this.addOccupancy.emit((this.currentMonth) + '/' + $event.target.value + '/' + this.rm.year);
+         
             $event.target.classList.remove('vacant');
             $event.target.classList.add('requested');
-          }
+          
         }
       }
     }
-  }
+  } 
 
 
-makeVacant() {
+/* makeVacant() {
   const el = document.getElementsByClassName('requested');
   for (const x = 0; x < el.length; x) {
     el[x].className = 'vacant';
   }
   this.listSelectedIds = [];
-}
+} */
 
 }
