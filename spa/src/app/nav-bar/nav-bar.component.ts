@@ -12,41 +12,47 @@ import { GeneralService } from '../_services/general.service';
 export class NavBarComponent implements OnInit {
 
   photoUrl: string | undefined;
- 
+
+  picoUnitId = 0;
+
   constructor(public auth: AuthService,
     private gen: GeneralService,
-  private alertify: AlertifyService,
-  private router: Router
-) { }
+    private alertify: AlertifyService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-     this.auth.currentphotoUrl.subscribe(photoUrl => this.photoUrl = photoUrl);
-   }
+  }
 
   loggedIn() { return this.auth.loggedIn(); }
 
   loggedAdmin() { return this.auth.adminLoggedIn(); }
 
-  unitChosen(): boolean{
-    let help = false;
-      this.auth.currentPicoUnit.subscribe((next)=>{
-        let test = next;
-        if(test !== '0'){help = true;};
-      })
-      return help;
+
+
+  unitChosen(): boolean {
+  if (localStorage.getItem('chosen') === '1') return true;
+  else return false;
+  } 
+
+  selectUnit(picoUnitNumber: string) {
+    this.picoUnitId = +picoUnitNumber;
+    this.gen.changeUnitName(this.picoUnitId);
+    this.gen.changeChosen(true);
+    
   }
 
-  selectUnit(picoUnitNumber: string){
-    this.gen.getPicoUnitId(picoUnitNumber).subscribe((next)=>{
-      this.auth.changeCurrentPicoUnitId(next.toString());
-    })
+  showDetails(url: string){
+    this.router.navigate([url + this.picoUnitId]);
   }
+
+
 
   logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.alertify.message('logged out');
+    this.auth.logOut();
     this.router.navigate(['/home']);
+    this.alertify.message('logged out');
+}
   }
 
-}
+

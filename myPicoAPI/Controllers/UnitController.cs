@@ -37,9 +37,14 @@ namespace myPicoAPI.Controllers {
 
 
         [Route ("api/getUnitID/{picoNumber}")]
-
         public async Task<IActionResult> getUnitId(string picoNumber){
             var help = await _repo.GetPicoUnitId(picoNumber);
+            return Ok(help);
+        }
+
+        [Route ("api/getUnitName/{picoNumber}")]
+        public async Task<IActionResult> getUnitName(int picoNumber){
+            var help = await _repo.GetPicoUnitName(picoNumber);
             return Ok(help);
         }
 

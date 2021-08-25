@@ -8,7 +8,7 @@ import { AuthService } from '../../_services/Auth.service';
   styleUrls: ['./unitPictures.component.css']
 })
 export class UnitPicturesComponent implements OnInit {
-  picoUnit = 1;
+  currentPicoUnitId = 0;;
   pictureLocation = "Pico de loro";
 
   photo_1: string = "";
@@ -27,10 +27,10 @@ export class UnitPicturesComponent implements OnInit {
     private router:Router) { }
 
   ngOnInit() {
+    this.currentPicoUnitId = +this.route.snapshot.params.id;
     
-    debugger;
        
-    if (this.picoUnit === 1) {
+    if (this.currentPicoUnitId === 1) {
       this.showDetails(1);
       this.pictureLocation = "Unit 610-A";
       this.photo_1 = "../assets/images/unit-pictures/610-A/DSC_6765.JPG";
@@ -45,12 +45,12 @@ export class UnitPicturesComponent implements OnInit {
       this.photo_10 = "../assets/images/unit-pictures/610-A/DSC_6778.JPG";
 
     }
-    if (this.picoUnit === 2) {
+    if (this.currentPicoUnitId === 2) {
       this.showDetails(1);
       this.pictureLocation = "Unit 620-A";
 
     }
-    if (this.picoUnit === 3) {
+    if (this.currentPicoUnitId === 3) {
       this.showDetails(1);
       this.pictureLocation = "Unit 640-A";
 
@@ -58,12 +58,10 @@ export class UnitPicturesComponent implements OnInit {
    
 
   }
-  showDetails(x:number)  { if (this.picoUnit === 0) {return false; } else {return true; } }
-  availability() {
-    if (this.auth.loggedIn()) {
-     this.router.navigate(['/schedule']);
-    } else {this.router.navigate(['/login']); }
-    }
-  details() {this.router.navigate(['/unitDetails/' + this.picoUnit]); }
+  showDetails(x:number)  { if (this.currentPicoUnitId === 0) {return false; } else {return true; } }
+
+  availability() {this.router.navigate(['/unitBookings/' + this.currentPicoUnitId]); }
+
+  details() {this.router.navigate(['/unitRules/' + this.currentPicoUnitId]); }
 
 }
