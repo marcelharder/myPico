@@ -21,6 +21,8 @@ export class BookingsComponent implements OnInit {
   secondMonth: RequestedMonth = { picoUnit: 0, year: 0, month: 0 };
   currentYear = 0;
   currentMonth = 0;
+  selectedMonth = 0;
+  selectedYear = 0;
 
   @ViewChild(FirstMonthComponent) fm!: FirstMonthComponent;
   @ViewChild(SecondMonthComponent) sm!: SecondMonthComponent;
@@ -71,10 +73,6 @@ export class BookingsComponent implements OnInit {
     this.currentYear = dateTime.getFullYear();
     // zet de maand op de huidige maand
     this.currentMonth = dateTime.getMonth();
-
-    // testing
-    this.currentYear = 2018;
-    this.currentMonth = 7;
 
     this.firstMonth.year = this.currentYear;
     this.firstMonth.picoUnit = this.currentPicoUnitId;

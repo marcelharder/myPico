@@ -36,11 +36,11 @@ namespace myPicoAPI.Data {
             if(await _repo.DateNumbers.AnyAsync()) return;
             if(await _repo.DateOccupancy.AnyAsync()) return;
 
-           /*  _repo.Months.RemoveRange (_repo.Months);
+            // _repo.Months.RemoveRange (_repo.Months);
             //_repo.Appointments.RemoveRange (_repo.Appointments);
-            _repo.DateNumbers.RemoveRange (_repo.DateNumbers);
-            _repo.DateOccupancy.RemoveRange (_repo.DateOccupancy);
-            _repo.SaveChanges (); */
+            //_repo.DateNumbers.RemoveRange (_repo.DateNumbers);
+            //_repo.DateOccupancy.RemoveRange (_repo.DateOccupancy);
+            _repo.SaveChanges (); 
        
             var help = new Model_Year ();
             help = Newtonsoft.Json.JsonConvert.DeserializeObject<Model_Year>
