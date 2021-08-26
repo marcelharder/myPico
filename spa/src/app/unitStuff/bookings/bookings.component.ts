@@ -75,23 +75,26 @@ export class BookingsComponent implements OnInit {
     this.currentYear = dateTime.getFullYear();
     // zet de maand op de huidige maand
     this.currentMonth = dateTime.getMonth();
-
     // get the current month number from the backend
     this.days.getMonthId(this.currentMonth, this.currentYear).subscribe((next) => {
-      debugger;
       this.currentMonthId = next;
+     
+      this.firstMonth.Id = this.currentMonthId;
+      this.firstMonth.year = 0;
+      this.firstMonth.picoUnit = this.currentPicoUnitId;
+      this.firstMonth.month = this.currentMonth;
+  
+      this.secondMonth.Id = this.currentMonthId + 1;
+      this.secondMonth.year = 0;
+      this.secondMonth.picoUnit = this.currentPicoUnitId;
+      this.secondMonth.month = this.currentMonth + 1;
+
+
+
     })
 
 
-    this.firstMonth.Id = this.currentMonthId;
-    this.firstMonth.year = 0;
-    this.firstMonth.picoUnit = this.currentPicoUnitId;
-    this.firstMonth.month = this.currentMonth;
-
-    this.secondMonth.Id = this.currentMonthId + 1;
-    this.secondMonth.year = 0;
-    this.secondMonth.picoUnit = this.currentPicoUnitId;
-    this.secondMonth.month = this.currentMonth + 1;
+    
 
   }
 

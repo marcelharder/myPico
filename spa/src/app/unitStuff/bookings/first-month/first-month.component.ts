@@ -56,7 +56,6 @@ export class FirstMonthComponent implements OnInit {
   }
 
   getOccDates(id: number) {
-
     this.dayService.getDays(id).subscribe((res) => {
 
       this.element_1 = this.decodeDateNumbers(res.day_1);

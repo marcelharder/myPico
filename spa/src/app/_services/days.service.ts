@@ -14,7 +14,6 @@ constructor(private http: HttpClient) { }
 
 getDays(id: number){ return this.http.get<dateNumber>(this.bu + 'dates/' + id)}
 
-getMonthId(year: number, month: number){
-  return this.http.get<number>(this.bu + 'getMonthId/' + month + '/' + year)}
+getMonthId(month: number, year:number){return this.http.get<number>(this.bu + 'getMonthId/' + month + '/' + year)}
 
 }
