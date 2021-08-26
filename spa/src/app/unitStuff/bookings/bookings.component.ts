@@ -1,9 +1,12 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RequestedMonth } from 'src/app/_models/RequestedMonth';
 import { AlertifyService } from 'src/app/_services/Alertify.service';
 import { AuthService } from 'src/app/_services/Auth.service';
 import { GeneralService } from 'src/app/_services/general.service';
+import { FirstMonthComponent } from './first-month/first-month.component';
+import { SecondMonthComponent } from './second-month/second-month.component';
 
 @Component({
   selector: 'app-bookings',
@@ -13,11 +16,14 @@ import { GeneralService } from 'src/app/_services/general.service';
 export class BookingsComponent implements OnInit {
 
   currentPicoUnitId = 0;
-  location="";
+  location = "";
   firstMonth: RequestedMonth = { picoUnit: 0, year: 0, month: 0 };
   secondMonth: RequestedMonth = { picoUnit: 0, year: 0, month: 0 };
+  currentYear = 0;
+  currentMonth = 0;
 
-  //@ViewChild(FirstMonthComponent) fm!: FirstMonthComponent;
+  @ViewChild(FirstMonthComponent) fm!: FirstMonthComponent;
+  @ViewChild(SecondMonthComponent) sm!: SecondMonthComponent;
 
   //secondMonth!: RequestedMonth;
   /* listDaysArray: Array<DaysModel> = [];
@@ -53,22 +59,30 @@ export class BookingsComponent implements OnInit {
     private alertify: AlertifyService) { }
 
   ngOnInit() {
-    // start with the current Month
+
     this.currentPicoUnitId = +this.route.snapshot.params.id;
 
-    if(this.currentPicoUnitId === 1){this.location = "Myna 610-A"}
-    if(this.currentPicoUnitId === 2){this.location = "Myna 611-A"}
-    if(this.currentPicoUnitId === 3){this.location = "Myna 612-A"}
-        
-      
-      this.firstMonth.picoUnit = this.currentPicoUnitId;
-      this.firstMonth.year = 2018;
-      this.firstMonth.month = 8;
+    if (this.currentPicoUnitId === 1) { this.location = "Myna 610-A" }
+    if (this.currentPicoUnitId === 2) { this.location = "Myna 611-A" }
+    if (this.currentPicoUnitId === 3) { this.location = "Myna 612-A" }
 
-      this.secondMonth.picoUnit = this.currentPicoUnitId;
-      this.secondMonth.year = 2018;
-      this.secondMonth.month = 9;
-    
+    let dateTime = new Date();
+    // zet het jaar op het huidige jaar
+    this.currentYear = dateTime.getFullYear();
+    // zet de maand op de huidige maand
+    this.currentMonth = dateTime.getMonth();
+
+    // testing
+    this.currentYear = 2018;
+    this.currentMonth = 7;
+
+    this.firstMonth.year = this.currentYear;
+    this.firstMonth.picoUnit = this.currentPicoUnitId;
+    this.firstMonth.month = this.currentMonth;
+
+    this.secondMonth.year = this.currentYear;
+    this.secondMonth.picoUnit = this.currentPicoUnitId;
+    this.secondMonth.month = this.currentMonth + 1;
 
   }
 
@@ -77,14 +91,30 @@ export class BookingsComponent implements OnInit {
   addOccupancy(t: any) { }
 
   prevMonth() {
-    this.alertify.error("getting previous month");
-    this.firstMonth.month = this.firstMonth.month - 1;
-    this.secondMonth.month = this.secondMonth.month - 1;
+    this.alertify.error("getting next month");
+    let year = 0;
+    let month = 0;
+    let help = this.currentMonth;
+
+
+    month = help - 1;
+    this.currentMonth = this.currentMonth -1;
+     
+
+    this.sm.nextMonth(this.currentPicoUnitId, year, help);
+    this.fm.nextMonth(this.currentPicoUnitId, year, month);
   }
   nextMonth() {
     this.alertify.error("getting next month");
-    this.secondMonth.month = this.secondMonth.month + 1;
-    this.firstMonth.month = this.firstMonth.month + 1
+    let year = 0;
+    let month = 0;
+    let help = this.currentMonth;
+
+    month = help + 1;
+    this.currentMonth = this.currentMonth + 1;
+
+    this.sm.nextMonth(this.currentPicoUnitId, year, help);
+    this.fm.nextMonth(this.currentPicoUnitId, year, month);
   }
 
 

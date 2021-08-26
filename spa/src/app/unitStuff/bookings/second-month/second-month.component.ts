@@ -9,11 +9,11 @@ import { AuthService } from 'src/app/_services/Auth.service';
 import { GeneralService } from 'src/app/_services/general.service';
 
 @Component({
-  selector: 'app-first-month',
-  templateUrl: './first-month.component.html',
-  styleUrls: ['./first-month.component.css']
+  selector: 'app-second-month',
+  templateUrl: './second-month.component.html',
+  styleUrls: ['./second-month.component.css']
 })
-export class FirstMonthComponent implements OnInit {
+export class SecondMonthComponent implements OnInit {
   @Input() rm: RequestedMonth | undefined
   currentMonth = 0;
   monthName: String = "";

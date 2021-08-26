@@ -24,6 +24,7 @@ import { HouseRulesComponent } from './unitStuff/houseRules/houseRules.component
 import { RatingsComponent } from './unitStuff/ratings/ratings.component';
 import { BookingsComponent } from './unitStuff/bookings/bookings.component';
 import { FirstMonthComponent } from './unitStuff/bookings/first-month/first-month.component';
+import { SecondMonthComponent } from './unitStuff/bookings/second-month/second-month.component';
 
 @NgModule({
   declarations: [						
@@ -42,6 +43,7 @@ import { FirstMonthComponent } from './unitStuff/bookings/first-month/first-mont
       RatingsComponent,
       BookingsComponent,
       FirstMonthComponent,
+      SecondMonthComponent
 
    ],
   imports: [
