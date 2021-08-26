@@ -12,11 +12,12 @@ namespace DatingApp.API.Data
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveAll();
         Task<PagedList<User>> GetUsers(UserParams userParams);
-        Task<dateNumber> GetMonth(int year, int month);
+        Task<dateNumber> GetMonth(int id);
         Task<picoUnit> GetPicoUnitForThisUser(int userId);
-        Task<dateOccupancy> GetMonthPerUnit(int picoUnit, int year, int month);
+        Task<dateOccupancy> GetOccupancy(int picoUnit, int id);
         Task<User> GetUser(int id);
         Task<PagedList<Appointment>> getAppointmentsForAdministrator(int picoUnitId, MessageParams messageParams);
+        Task<int> GetMonthId(int month, int year);
         Task<Appointment> GetAppointment(int appointmentId);
         Task<bool> IsOwnerOfAnyUnit(int userId);
         Task<int> getUnitIdForThisUser(int userId);

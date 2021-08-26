@@ -83,7 +83,7 @@ namespace myPicoAPI.Controllers {
             throw new Exception ("Appointment was not saved");
         }
 
-        [HttpDelete]
+        /* [HttpDelete]
         [Route ("api/appt/delete/{userId}/{id}")]
         public async Task<IActionResult> DeleteAppointment (int id, int userId) {
             var currentUserId = int.Parse (User.FindFirst (ClaimTypes.NameIdentifier).Value);
@@ -100,7 +100,7 @@ namespace myPicoAPI.Controllers {
 
             if (await _repo.SaveAll ()) return NoContent ();
             throw new Exception ("Appointment was not deleted");
-        }
+        } */
         //api/appointment/1 PUT
         [HttpPut]
         [Route ("api/appt/update")]
@@ -118,7 +118,7 @@ namespace myPicoAPI.Controllers {
 
         }
 
-        [HttpPost]
+        /* [HttpPost]
         [Route ("api/appt/finalize/{userId}/{id}")]
         public async Task<IActionResult> MarkStatusAsFinal (int userId, int id) {
             var currentUserId = int.Parse (User.FindFirst (ClaimTypes.NameIdentifier).Value);
@@ -136,10 +136,10 @@ namespace myPicoAPI.Controllers {
                 await _repo.SaveAll ();
             }
             return NoContent ();
-        }
-        private async void saveOccupancy (int day, int year, int type) {
-            DateTime theDate = new DateTime (year, 1, 1).AddDays (day - 1);
-            var selectedMonth = await _repo.GetMonth (year, theDate.Month); // so this gives the month number of 3 for example
+        } */
+        private async void saveOccupancy (int id, int type) {
+           
+            var selectedMonth = await _repo.GetMonth (id); // so this gives the month number of 3 for example
             // get the day from theDate.day, so we can focus on the needed day in the occupancy table
         //    var selectedMonthDateNumber = await _repo.getDateNumber (selectedMonth.UserId);
          //   var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.UserId);

@@ -18,55 +18,29 @@ namespace myPicoAPI.Controllers {
             _repo = repo;
         }
 
-        [Route ("api/dates/{year}/{month}")]
+        [Route ("api/getMonthId/{month}/{year}")]
         [HttpGet]
-        public async Task<IActionResult> GetDateNumbers (int year, int month) {
-            var helpMonth = await _repo.GetMonth (year, month);
+        public async Task<IActionResult> GetDateNumbers (int month, int year) {
+            var helpMonth = await _repo.GetMonthId (month, year);
             return Ok (helpMonth);
         }
 
-        [Route ("api/occupancy/{picoUnit}/{year}/{month}")]
+        [Route ("api/dates/{id}")]
         [HttpGet]
-        public async Task<IActionResult> GetDateOccupancy (int picoUnit, int year, int month) {
-
-            // make the dates prior to the current date unchangeable, which is code 3
-            DateTime utcDate = DateTime.UtcNow;
-            var currentYear = utcDate.Year;
-            var currentMonth = utcDate.Month;
-            var currentDay = utcDate.Day;
-            var PassedDays = "";
-            DateTime help;
-
-            if (currentYear == year) {
-                if (currentMonth > month) {
-                    // make all the dates unchangeable
-                    MakeMonthUnchangeable (year, month);
-                }
-                if (currentMonth == month) {
-                    // make a comma seperated list of this months dates that are passed.
-                    for (int i = 1; i < currentDay; i++) {
-                        help = new DateTime (currentYear, currentMonth, i);
-                        if (i == currentDay - 1) { // makes sure there is no last comma
-                            PassedDays = PassedDays + help.DayOfYear;
-                        } else {
-                            PassedDays = PassedDays + help.DayOfYear + ",";
-                        }
-                    }
-                    string[] dna = PassedDays.Split (',');
-                    for (int i = 0; i < dna.Length; i++) {
-                        saveOccupancy (Convert.ToInt32 (dna[i]), year, 3);
-                        await _repo.SaveAll ();
-                    }
-                }
-            }
-
-            var helpMonth = await _repo.GetMonthPerUnit (picoUnit, year, month);
+        public async Task<IActionResult> GetDateNumbers (int id) {
+            var helpMonth = await _repo.GetMonth (id);
             return Ok (helpMonth);
         }
 
-        private async void saveOccupancy (int day, int year, int type) {
-            DateTime theDate = new DateTime (year, 1, 1).AddDays (day - 1);
-            var selectedMonth = await _repo.GetMonth (year, theDate.Month); // so this gives the month number of 3 for example
+        [Route ("api/occupancy/{picoUnit}/{id}")]
+        [HttpGet]
+        public async Task<IActionResult> GetDateOccupancy (int picoUnit, int id) {
+            var helpMonth = await _repo.GetOccupancy (picoUnit, id);
+            return Ok (helpMonth);
+        }
+
+        private async void saveOccupancy (int id) {
+            var selectedMonth = await _repo.GetMonth (id); // so this gives the month number of 3 for example
             // get the day from theDate.day, so we can focus on the needed day in the occupancy table
          //   var selectedMonthDateNumber = await _repo.getDateNumber (selectedMonth.UserId);
           //  var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.UserId);
@@ -110,8 +84,8 @@ namespace myPicoAPI.Controllers {
             return help;
         }
 
-        private async void MakeMonthUnchangeable (int year, int month) {
-            var selectedMonth = await _repo.GetMonth (year, month); // so this gives the month number of 3 for example
+        private async void MakeMonthUnchangeable (int id) {
+            var selectedMonth = await _repo.GetMonth (id); // so this gives the month number of 3 for example
           //  var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.UserId);
            /*  if (selectedMonthOccupancy.day_1 != 3 || selectedMonthOccupancy.day_10 != 3 || selectedMonthOccupancy.day_20 != 3) { // check to see if this month is already blocked out
                 selectedMonthOccupancy.day_1 = changeToUnchangeable(selectedMonthOccupancy.day_1);

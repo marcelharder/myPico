@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RequestedMonth } from 'src/app/_models/RequestedMonth';
 import { AlertifyService } from 'src/app/_services/Alertify.service';
 import { AuthService } from 'src/app/_services/Auth.service';
+import { DaysService } from 'src/app/_services/days.service';
 import { GeneralService } from 'src/app/_services/general.service';
 import { FirstMonthComponent } from './first-month/first-month.component';
 import { SecondMonthComponent } from './second-month/second-month.component';
@@ -17,12 +18,12 @@ export class BookingsComponent implements OnInit {
 
   currentPicoUnitId = 0;
   location = "";
-  firstMonth: RequestedMonth = { picoUnit: 0, year: 0, month: 0 };
-  secondMonth: RequestedMonth = { picoUnit: 0, year: 0, month: 0 };
+  firstMonth: RequestedMonth = { Id: 0, picoUnit: 0, year: 0, month: 0 };
+  secondMonth: RequestedMonth = { Id: 0, picoUnit: 0, year: 0, month: 0 };
   currentYear = 0;
   currentMonth = 0;
-  selectedMonth = 0;
-  selectedYear = 0;
+  currentMonthId = 0;
+  counter = 0;
 
   @ViewChild(FirstMonthComponent) fm!: FirstMonthComponent;
   @ViewChild(SecondMonthComponent) sm!: SecondMonthComponent;
@@ -57,6 +58,7 @@ export class BookingsComponent implements OnInit {
 
   constructor(private auth: AuthService,
     private gen: GeneralService,
+    private days: DaysService,
     private route: ActivatedRoute,
     private alertify: AlertifyService) { }
 
@@ -74,11 +76,20 @@ export class BookingsComponent implements OnInit {
     // zet de maand op de huidige maand
     this.currentMonth = dateTime.getMonth();
 
-    this.firstMonth.year = this.currentYear;
+    // get the current month number from the backend
+    this.days.getMonthId(this.currentMonth, this.currentYear).subscribe((next) => {
+      debugger;
+      this.currentMonthId = next;
+    })
+
+
+    this.firstMonth.Id = this.currentMonthId;
+    this.firstMonth.year = 0;
     this.firstMonth.picoUnit = this.currentPicoUnitId;
     this.firstMonth.month = this.currentMonth;
 
-    this.secondMonth.year = this.currentYear;
+    this.secondMonth.Id = this.currentMonthId + 1;
+    this.secondMonth.year = 0;
     this.secondMonth.picoUnit = this.currentPicoUnitId;
     this.secondMonth.month = this.currentMonth + 1;
 
@@ -89,30 +100,21 @@ export class BookingsComponent implements OnInit {
   addOccupancy(t: any) { }
 
   prevMonth() {
-    this.alertify.error("getting next month");
-    let year = 0;
-    let month = 0;
-    let help = this.currentMonth;
+    this.alertify.error("getting previous month");
+    this.firstMonth.Id = this.firstMonth.Id - 1;
+    this.secondMonth.Id = this.secondMonth.Id - 1;
 
 
-    month = help - 1;
-    this.currentMonth = this.currentMonth -1;
-     
-
-    this.sm.nextMonth(this.currentPicoUnitId, year, help);
-    this.fm.nextMonth(this.currentPicoUnitId, year, month);
+    this.fm.nextMonth(this.firstMonth);
+    this.sm.nextMonth(this.secondMonth);
   }
   nextMonth() {
     this.alertify.error("getting next month");
-    let year = 0;
-    let month = 0;
-    let help = this.currentMonth;
+    this.firstMonth.Id = this.firstMonth.Id + 1;
+    this.secondMonth.Id = this.secondMonth.Id + 1;
 
-    month = help + 1;
-    this.currentMonth = this.currentMonth + 1;
-
-    this.sm.nextMonth(this.currentPicoUnitId, year, help);
-    this.fm.nextMonth(this.currentPicoUnitId, year, month);
+    this.fm.nextMonth(this.firstMonth);
+    this.sm.nextMonth(this.secondMonth);
   }
 
 

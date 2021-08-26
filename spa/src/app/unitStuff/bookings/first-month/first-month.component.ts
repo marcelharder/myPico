@@ -1,11 +1,9 @@
-import { Component, OnInit, Input, Output, EventEmitter, AfterContentInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
-import { Utilities } from 'src/app/_services/utilities';
 import { DaysService } from 'src/app/_services/days.service';
 import { RequestedMonth } from 'src/app/_models/RequestedMonth';
 import { OccupancyService } from 'src/app/_services/occupancy.service';
 import { AlertifyService } from 'src/app/_services/Alertify.service';
-import { AuthService } from 'src/app/_services/Auth.service';
 import { GeneralService } from 'src/app/_services/general.service';
 
 @Component({
@@ -16,6 +14,7 @@ import { GeneralService } from 'src/app/_services/general.service';
 export class FirstMonthComponent implements OnInit {
   @Input() rm: RequestedMonth | undefined
   currentMonth = 0;
+  currentYear = 0;
   monthName: String = "";
   currentPicoUnitId = 0;
   element_1_class = 'vacant'; element_2_class = 'vacant'; element_3_class = 'vacant'; element_4_class = 'vacant'; element_5_class = 'vacant';
@@ -46,22 +45,19 @@ export class FirstMonthComponent implements OnInit {
 
   ngOnInit() {
     if (this.rm !== undefined) {
-      this.currentMonth = this.rm.month;
-      this.monthName = this.gen.getMonthFromNo(this.currentMonth) + "  -" + this.rm.year + "  -";
-      this.getOccDates(this.rm.year, this.rm.month);
-      this.getOccupancy(this.rm.picoUnit, this.rm.year, this.rm.month);
-    }
+      this.getOccDates(this.rm.Id);
+      this.getOccupancy(this.rm.picoUnit,this.rm.Id);
+      }
   }
 
-  nextMonth(unitNo: number,year: number, month: number){
-    this.monthName = this.gen.getMonthFromNo(month);
-    this.getOccDates(year,month);
-    this.getOccupancy(unitNo,year,month);
+  nextMonth(m: RequestedMonth){
+    this.getOccDates(m.Id);
+    this.getOccupancy(m.picoUnit,m.Id);
   }
 
-  getOccDates(year: number, month: number) {
+  getOccDates(id: number) {
 
-    this.dayService.getDays(year, month).subscribe((res) => {
+    this.dayService.getDays(id).subscribe((res) => {
 
       this.element_1 = this.decodeDateNumbers(res.day_1);
       this.element_2 = this.decodeDateNumbers(res.day_2);
@@ -105,12 +101,14 @@ export class FirstMonthComponent implements OnInit {
       this.element_40 = this.decodeDateNumbers(res.day_40);
       this.element_41 = this.decodeDateNumbers(res.day_41);
       this.element_42 = this.decodeDateNumbers(res.day_42);
+      this.monthName = this.gen.getMonthFromNo(res.MonthId);
+      this.currentYear = res.Year;
 
     });
 
   }
-  getOccupancy(unit: number, year: number, month: number) {
-    this.occupancyService.getOccupancy(unit, year, month).subscribe((res) => {
+  getOccupancy(unit: number, id: number) {
+    this.occupancyService.getOccupancy(unit, id).subscribe((res) => {
       this.element_1_class = this.decodeColor(res.day_1);
       this.element_2_class = this.decodeColor(res.day_2);
       this.element_3_class = this.decodeColor(res.day_3);

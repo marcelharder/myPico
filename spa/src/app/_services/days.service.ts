@@ -12,8 +12,9 @@ bu: string = environment.apiUrl;
 
 constructor(private http: HttpClient) { }
 
-getDays(year: number, month: number){
-  return this.http.get<dateNumber>(this.bu + 'dates/' + year + '/' + month)
-}
+getDays(id: number){ return this.http.get<dateNumber>(this.bu + 'dates/' + id)}
+
+getMonthId(year: number, month: number){
+  return this.http.get<number>(this.bu + 'getMonthId/' + month + '/' + year)}
 
 }
