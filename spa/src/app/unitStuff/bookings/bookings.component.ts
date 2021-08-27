@@ -24,7 +24,7 @@ export class BookingsComponent implements OnInit {
   firstMonth: RequestedMonth = { Id: 0, picoUnit: 0, year: 0, month: 0 };
   secondMonth: RequestedMonth = { Id: 0, picoUnit: 0, year: 0, month: 0 };
   currentMonthId = 0;
-  requestDay: requestDays = {daynumber: 0, month: '', price: 0};
+  requestDay: requestDays = {daynumber: 0, month: '', price: 0, year: 0};
   firstMonthRequest:Array<string>=[];
   secondMonthRequest:Array<string>=[];
   firstMonthRequestedDays:Array<requestDays>=[];
@@ -96,7 +96,7 @@ export class BookingsComponent implements OnInit {
   }
 
   prevMonth() {
-    this.alertify.error("getting previous month");
+   
     this.firstMonth.Id = this.firstMonth.Id - 1;
     this.secondMonth.Id = this.secondMonth.Id - 1;
 
@@ -105,7 +105,7 @@ export class BookingsComponent implements OnInit {
     this.sm.nextMonth(this.secondMonth);
   }
   nextMonth() {
-    this.alertify.error("getting next month");
+   
     this.firstMonth.Id = this.firstMonth.Id + 1;
     this.secondMonth.Id = this.secondMonth.Id + 1;
 
@@ -120,6 +120,7 @@ export class BookingsComponent implements OnInit {
    this.requestDay.daynumber = +this.firstMonthRequest[i];
    this.requestDay.month = this.gen.getMonthFromNo(this.currentMonth + 1).toString();
    this.requestDay.price = this.getPrice(this.currentMonth + 1, this.requestDay.daynumber, "PHP");
+   this.requestDay.year = this.currentYear;
    this.firstMonthRequestedDays.push(this.requestDay);
   }
   
@@ -132,6 +133,7 @@ export class BookingsComponent implements OnInit {
    this.requestDay.daynumber = +this.secondMonthRequest[i];
    this.requestDay.month = this.gen.getMonthFromNo(this.currentMonth + 2).toString();
    this.requestDay.price = this.getPrice(this.currentMonth + 2, this.requestDay.daynumber, "PHP");
+   this.requestDay.year = this.currentYear;
    this.secondMonthRequestedDays.push(this.requestDay);
   }
 }

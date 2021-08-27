@@ -10,15 +10,23 @@
         
         <div class="row" *ngIf="firstMonthRequest.length > 0">
           <div class="col-sm-6"><h4><span class="badge bg-secondary">Requested days in {{getMonthText(currentMonth + 1)}}</span></h4></div>
-          <div class="col-sm-6">
-
-          </div>
+          <div class="col-sm-6"> </div>
+          
         </div>
+        <!--show the array here-->
+        <div *ngFor="let item of firstMonthRequestedDays">
+          <app-requestedDays [rd]=item></app-requestedDays>
+      </div>
+
        <div class="row" *ngIf="secondMonthRequest.length > 0">
           <div class="col-sm-6"><h4><span class="badge bg-secondary">Requested days in {{getMonthText(currentMonth + 2)}}</span></h4></div>
-          <div class="col-sm-6">
-            
-          </div>
+          <div class="col-sm-6"> </div>
+       <!--show the array here-->
+           <div *ngFor="let item of secondMonthRequestedDays">
+               <app-requestedDays [rd]=item></app-requestedDays>
+           </div>
+
+
         </div>
       
       

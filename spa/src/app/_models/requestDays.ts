@@ -1,5 +1,6 @@
 export interface requestDays{
     daynumber: number;
-    month:string;
+    month: string;
     price: number;
+    year: number;
 }
