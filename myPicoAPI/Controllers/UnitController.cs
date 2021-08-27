@@ -27,10 +27,10 @@ namespace myPicoAPI.Controllers {
             return Ok (picoUnit);
         }
 
-        [Route ("api/unitDetails/{userId}/{unitId}")]
+        [Route ("api/unitDetails/{unitId}")]
         public async Task<IActionResult> getPicoUnitDetails (int userId, int unitId) {
-            var currentUserId = int.Parse (User.FindFirst (ClaimTypes.NameIdentifier).Value);
-            if (currentUserId != userId) return Unauthorized ();
+          //  var currentUserId = int.Parse (User.FindFirst (ClaimTypes.NameIdentifier).Value);
+          //  if (currentUserId != userId) return Unauthorized ();
             var picoUnit = await _repo.GetPicoUnit (unitId);
             return Ok (picoUnit);
         }
@@ -39,6 +39,11 @@ namespace myPicoAPI.Controllers {
         [Route ("api/getUnitID/{picoNumber}")]
         public async Task<IActionResult> getUnitId(string picoNumber){
             var help = await _repo.GetPicoUnitId(picoNumber);
+            return Ok(help);
+        }
+        [Route ("api/getUnitPrice/{picoNumber}/{currency}/{day}/{month}")]
+        public async Task<IActionResult> getUnitId(int picoNumber, string currency, int day, int month){
+            var help = await _repo.GetPicoUnitPrice(picoNumber,currency,day,month);
             return Ok(help);
         }
 

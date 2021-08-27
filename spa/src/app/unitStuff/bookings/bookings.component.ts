@@ -114,17 +114,32 @@ export class BookingsComponent implements OnInit {
   }
 
  receiveUpdatesFirstMonth(dates: Array<string>){
+   this.firstMonthRequestedDays = [];
    this.firstMonthRequest = dates;
    for (let i = 0; i < this.firstMonthRequest.length; i++) {
-   
+   this.requestDay.daynumber = +this.firstMonthRequest[i];
+   this.requestDay.month = this.gen.getMonthFromNo(this.currentMonth + 1).toString();
+   this.requestDay.price = this.getPrice(this.currentMonth + 1, this.requestDay.daynumber, "PHP");
+   this.firstMonthRequestedDays.push(this.requestDay);
   }
-   
+  
  }
+
  receiveUpdatesSecondMonth(dates: Array<string>){
+   this.secondMonthRequestedDays = [];
    this.secondMonthRequest = dates;
    for (let i = 0; i < this.secondMonthRequest.length; i++) {
-   
+   this.requestDay.daynumber = +this.secondMonthRequest[i];
+   this.requestDay.month = this.gen.getMonthFromNo(this.currentMonth + 2).toString();
+   this.requestDay.price = this.getPrice(this.currentMonth + 2, this.requestDay.daynumber, "PHP");
+   this.secondMonthRequestedDays.push(this.requestDay);
   }
+}
+
+getPrice(m: number, d: number, c: string): number{
+  let help = 0;
+   this.gen.getUnitPrice(this.currentPicoUnitId,c,d,m).subscribe((next)=>{help = next})
+  return help;
 }
 
 getMonthText(test: number){ return this.gen.getMonthFromNo(test); }

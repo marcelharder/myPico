@@ -8,15 +8,20 @@ using DatingApp.API.Models;
 using myPicoAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace DatingApp.API.Data
 {
     public class DatingRepository : IDatingRepository
     {
         private readonly DataContext _context;
-        public DatingRepository(DataContext context)
+
+        private IConfiguration _config;
+        
+        public DatingRepository(DataContext context, IConfiguration config)
         {
             _context = context;
+            _config = config;
 
         }
         public void Add<T>(T entity) where T : class
@@ -224,5 +229,42 @@ namespace DatingApp.API.Data
             return help.Id;
 
         }
+
+        public async Task<int> GetPicoUnitPrice(int picoNumber, string currency, int day, int month)
+        {
+            var price = 0.00;
+            var php_usd_conversion = _config.GetSection("php_usd_conversion").Value;
+            var selectedUnit = await _context.PicoUnits.FirstOrDefaultAsync(a => a.UnitId == picoNumber);
+             // find out which season it is
+            var season = getSeason(day, month);
+            switch(season){
+                case 0: price = selectedUnit.LowSeasonRent;break;
+                case 1: price = selectedUnit.MidSeasonRent;break;
+                case 2: price = selectedUnit.HighSeasonRent;break;
+            }
+            if (currency == "USD"){ 
+                var conv = 0.00;
+                try{conv = Convert.ToDouble(php_usd_conversion);}
+                catch(Exception e){ Console.Write(e); }
+                            
+                price = price / conv;}
+
+            
+
+            return (int)Math.Round(price);
+        }
+        private int getSeason(int d, int m)
+        {
+            var help = 0;
+
+            if (m == 11) { if (d > 23 && d < 31) { help = 1; } } // Xmas
+            if (m == 6) { if (d > 2 && d < 27) { help = 1; } }   // summer holiday
+            if (m == 4) { if (d > 2 && d < 27) { help = 2; } }   // test holiday
+
+            return help;
+        }
+
+
     }
+
 }

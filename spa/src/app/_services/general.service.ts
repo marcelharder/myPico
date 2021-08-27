@@ -29,7 +29,6 @@ getMonthFromNo(no: number): String{
 changeUnitName(no: number){
   let help = "";
   this.getPicoUnitName(no).subscribe((data)=>{help = data; });
-  debugger;
   this.picoName.next(help);
 }
 
@@ -37,4 +36,6 @@ changeChosen(sh: boolean){
   if(sh){localStorage.setItem("chosen", '1');} else {localStorage.setItem("chosen", '0')};
 }
 
+getUnitPrice(picoUnit: number, currency: string, day: number, month: number){
+  return this.http.get<number>(this.bu + 'getUnitPrice/' + picoUnit + "/" + currency + "/" + day + "/" + month )};
 }

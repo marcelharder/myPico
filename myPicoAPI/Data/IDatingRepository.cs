@@ -33,7 +33,6 @@ namespace DatingApp.API.Data
         Task<dateOccupancy> getDateOccupancy(int id);
         Task<List<User>> getAppartmentUsers(int appartmentId);
         Task<dateNumber> getDateNumber(int id);
-
-
+        Task<int> GetPicoUnitPrice(int picoNumber, string currency, int day, int month);
     }
 }
