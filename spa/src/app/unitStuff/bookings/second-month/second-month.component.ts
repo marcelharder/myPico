@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterContentInit } from '@angular/core';
+import { Component, OnInit, Input, AfterContentInit, Output, EventEmitter } from '@angular/core';
 
 import { DaysService } from 'src/app/_services/days.service';
 import { RequestedMonth } from 'src/app/_models/RequestedMonth';
@@ -13,6 +13,8 @@ import { GeneralService } from 'src/app/_services/general.service';
 })
 export class SecondMonthComponent implements AfterContentInit {
   @Input() rm: RequestedMonth | undefined
+  @Output() updateDates = new EventEmitter<string[]>();
+  requestedDates:Array<string> = [];
   currentMonth = 0;
   currentYear = 0;
   monthName: String = "";
@@ -160,18 +162,19 @@ export class SecondMonthComponent implements AfterContentInit {
     value = $event.target.value;
     if (value !== "") {
       if ($event.target.classList.contains('requested')) {
-        //  this.removeOccupancy.emit((this.currentMonth) + '/' + $event.target.value + '/' + this.rm.year);
-
+       
         $event.target.classList.remove('requested');
         $event.target.classList.add('vacant');
+        let t = this.requestedDates.filter(e => e !==value); //remove the value in the array
+        this.updateDates.emit(t);
 
       } else {
         if ($event.target.classList.contains('vacant')) {
-          //  this.addOccupancy.emit((this.currentMonth) + '/' + $event.target.value + '/' + this.rm.year);
-
+         
           $event.target.classList.remove('vacant');
           $event.target.classList.add('requested');
-
+          this.requestedDates.push(value); // add the value to the list
+          this.updateDates.emit(this.requestedDates);
         }
       }
     }
@@ -180,9 +183,9 @@ export class SecondMonthComponent implements AfterContentInit {
     let help = "";
     switch (test) {
       case 3: return 'out_of_calendar'; break;
-      case 1: return 'occupied'; break;
+      case 2: return 'occupied'; break;
       case 0: return 'vacant'; break;
-      case 2: return 'requested'; break;
+      case 1: return 'requested'; break;
     }
     return help;
   }

@@ -1,6 +1,7 @@
 import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { requestDays } from 'src/app/_models/requestDays';
 import { RequestedMonth } from 'src/app/_models/RequestedMonth';
 import { AlertifyService } from 'src/app/_services/Alertify.service';
 import { AuthService } from 'src/app/_services/Auth.service';
@@ -17,13 +18,18 @@ import { SecondMonthComponent } from './second-month/second-month.component';
 export class BookingsComponent implements OnInit {
 
   currentPicoUnitId = 0;
+  currentYear = 0;
+  currentMonth = 0;
   location = "";
   firstMonth: RequestedMonth = { Id: 0, picoUnit: 0, year: 0, month: 0 };
   secondMonth: RequestedMonth = { Id: 0, picoUnit: 0, year: 0, month: 0 };
-  currentYear = 0;
-  currentMonth = 0;
   currentMonthId = 0;
-  counter = 0;
+  requestDay: requestDays = {daynumber: 0, month: '', price: 0};
+  firstMonthRequest:Array<string>=[];
+  secondMonthRequest:Array<string>=[];
+  firstMonthRequestedDays:Array<requestDays>=[];
+  secondMonthRequestedDays:Array<requestDays>=[];
+  
 
   @ViewChild(FirstMonthComponent) fm!: FirstMonthComponent;
   @ViewChild(SecondMonthComponent) sm!: SecondMonthComponent;
@@ -86,7 +92,6 @@ export class BookingsComponent implements OnInit {
       this.secondMonth.Id = this.currentMonthId + 2;
       this.secondMonth.picoUnit = this.currentPicoUnitId;
       this.sm.nextMonth(this.secondMonth);
-
     })
   }
 
@@ -108,6 +113,21 @@ export class BookingsComponent implements OnInit {
     this.sm.nextMonth(this.secondMonth);
   }
 
+ receiveUpdatesFirstMonth(dates: Array<string>){
+   this.firstMonthRequest = dates;
+   for (let i = 0; i < this.firstMonthRequest.length; i++) {
+   
+  }
+   
+ }
+ receiveUpdatesSecondMonth(dates: Array<string>){
+   this.secondMonthRequest = dates;
+   for (let i = 0; i < this.secondMonthRequest.length; i++) {
+   
+  }
+}
+
+getMonthText(test: number){ return this.gen.getMonthFromNo(test); }
 
 
 }
