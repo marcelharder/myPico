@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, AfterContentInit } from '@angular/core';
 
 import { DaysService } from 'src/app/_services/days.service';
 import { RequestedMonth } from 'src/app/_models/RequestedMonth';
@@ -11,7 +11,7 @@ import { GeneralService } from 'src/app/_services/general.service';
   templateUrl: './first-month.component.html',
   styleUrls: ['./first-month.component.css']
 })
-export class FirstMonthComponent implements OnInit {
+export class FirstMonthComponent implements AfterContentInit {
   @Input() rm: RequestedMonth | undefined
   currentMonth = 0;
   currentYear = 0;
@@ -43,7 +43,7 @@ export class FirstMonthComponent implements OnInit {
     private gen: GeneralService,
     private occupancyService: OccupancyService) { }
 
-  ngOnInit() {
+    ngAfterContentInit() {
     if (this.rm !== undefined) {
       this.getOccDates(this.rm.Id);
       this.getOccupancy(this.rm.picoUnit,this.rm.Id);
@@ -100,6 +100,7 @@ export class FirstMonthComponent implements OnInit {
       this.element_40 = this.decodeDateNumbers(res.day_40);
       this.element_41 = this.decodeDateNumbers(res.day_41);
       this.element_42 = this.decodeDateNumbers(res.day_42);
+      debugger;
       this.monthName = this.gen.getMonthFromNo(res.MonthId);
       this.currentYear = res.Year;
 

@@ -78,29 +78,17 @@ export class BookingsComponent implements OnInit {
     // get the current month number from the backend
     this.days.getMonthId(this.currentMonth, this.currentYear).subscribe((next) => {
       this.currentMonthId = next;
-     
-      this.firstMonth.Id = this.currentMonthId;
-      this.firstMonth.year = 0;
+      // push it to the calendar # 1, Nb the month from typescript is zerobased and my stuff not :-)
+      this.firstMonth.Id = this.currentMonthId + 1;
       this.firstMonth.picoUnit = this.currentPicoUnitId;
-      this.firstMonth.month = this.currentMonth;
-  
-      this.secondMonth.Id = this.currentMonthId + 1;
-      this.secondMonth.year = 0;
+      this.fm.nextMonth(this.firstMonth);
+      // push it to the calendar # 2
+      this.secondMonth.Id = this.currentMonthId + 2;
       this.secondMonth.picoUnit = this.currentPicoUnitId;
-      this.secondMonth.month = this.currentMonth + 1;
-
-
+      this.sm.nextMonth(this.secondMonth);
 
     })
-
-
-    
-
   }
-
-  removeOccupancy(t: any) { }
-
-  addOccupancy(t: any) { }
 
   prevMonth() {
     this.alertify.error("getting previous month");
