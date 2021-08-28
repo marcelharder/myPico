@@ -114,21 +114,20 @@ export class BookingsComponent implements OnInit {
   }
 
  receiveUpdatesFirstMonth(dates: Array<string>){
-   this.firstMonthRequestedDays = [];
-   this.firstMonthRequest = dates;
+   this.firstMonthRequestedDays = [];this.firstMonthRequest = dates;
    for (let i = 0; i < this.firstMonthRequest.length; i++) {
-   this.requestDay.daynumber = +this.firstMonthRequest[i];
-   this.requestDay.month = this.gen.getMonthFromNo(this.currentMonth + 1).toString();
-   this.requestDay.price = this.getPrice(this.currentMonth + 1, this.requestDay.daynumber, "PHP");
-   this.requestDay.year = this.currentYear;
-   this.firstMonthRequestedDays.push(this.requestDay);
+   var help: requestDays = {daynumber: 0, month: '', year: 0, price: 0};
+   help.daynumber = +this.firstMonthRequest[i];
+   help.month = this.gen.getMonthFromNo(this.currentMonth + 1).toString();
+   help.price = this.getPrice(this.currentMonth + 1, help.daynumber, "PHP");
+   help.year = this.currentYear;
+   this.firstMonthRequestedDays.push(help);
   }
   
  }
 
  receiveUpdatesSecondMonth(dates: Array<string>){
-   this.secondMonthRequestedDays = [];
-   this.secondMonthRequest = dates;
+   this.secondMonthRequestedDays = [];this.secondMonthRequest = dates;
    for (let i = 0; i < this.secondMonthRequest.length; i++) {
    this.requestDay.daynumber = +this.secondMonthRequest[i];
    this.requestDay.month = this.gen.getMonthFromNo(this.currentMonth + 2).toString();

@@ -167,8 +167,13 @@ export class FirstMonthComponent implements AfterContentInit {
        
         $event.target.classList.remove('requested');
         $event.target.classList.add('vacant');
-        let t = this.requestedDates.filter(e => e !==value); //remove the value in the array
-        this.updateDates.emit(t);
+
+        var index: number = this.requestedDates.indexOf(value, 0);
+        if (index > -1) { this.requestedDates.splice(index, 1); }
+       
+
+        //let t = this.requestedDates.filter(e => e !==value); //remove the value in the array
+        this.updateDates.emit(this.requestedDates);
 
       } else {
         if ($event.target.classList.contains('vacant')) {
