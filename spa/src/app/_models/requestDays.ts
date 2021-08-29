@@ -3,4 +3,6 @@ export interface requestDays{
     month: string;
     price: number;
     year: number;
+    date: Date;
+    dayOfYear: number;
 }

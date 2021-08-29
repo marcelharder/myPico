@@ -2,8 +2,9 @@ import { ThrowStmt } from '@angular/compiler';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import * as moment from 'moment';
+import { Observable, of, Subject } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { requestDays } from 'src/app/_models/requestDays';
 import { RequestedMonth } from 'src/app/_models/RequestedMonth';
 import { AlertifyService } from 'src/app/_services/Alertify.service';
@@ -20,22 +21,23 @@ import { SecondMonthComponent } from './second-month/second-month.component';
 })
 export class BookingsComponent implements OnInit {
 
-  
-  
+
+ 
   currentPicoUnitId = 0;
   unitPrice = 0;
+  
   currentYear = 0;
   currentMonth = 0;
   location = "";
   firstMonth: RequestedMonth = { Id: 0, picoUnit: 0, year: 0, month: 0 };
   secondMonth: RequestedMonth = { Id: 0, picoUnit: 0, year: 0, month: 0 };
   currentMonthId = 0;
-  requestDay: requestDays = {daynumber: 0, month: '', price: 0, year: 0};
-  firstMonthRequest:Array<string>=[];
-  secondMonthRequest:Array<string>=[];
-  firstMonthRequestedDays:Array<requestDays>=[];
-  secondMonthRequestedDays:Array<requestDays>=[];
-  
+  requestDay: requestDays = { daynumber: 0, month: '', price: 0, year: 0, date: new Date, dayOfYear: 0 };
+  firstMonthRequest: Array<string> = [];
+  secondMonthRequest: Array<string> = [];
+  firstMonthRequestedDays: Array<requestDays> = [];
+  secondMonthRequestedDays: Array<requestDays> = [];
+
 
   @ViewChild(FirstMonthComponent) fm!: FirstMonthComponent;
   @ViewChild(SecondMonthComponent) sm!: SecondMonthComponent;
@@ -69,10 +71,13 @@ export class BookingsComponent implements OnInit {
   allowDeletingOccupancy = false; */
 
   constructor(private auth: AuthService,
-    private gen: GeneralService,
+    public gen: GeneralService,
     private days: DaysService,
     private route: ActivatedRoute,
-    private alertify: AlertifyService) { }
+    
+    private alertify: AlertifyService) { 
+  
+    }
 
   ngOnInit() {
 
@@ -102,82 +107,54 @@ export class BookingsComponent implements OnInit {
   }
 
   prevMonth() {
-      this.alertify.confirm("This will erase your request... continue?", ()=>{
-        this.fm.makeVacant();this.firstMonthRequestedDays = [];
-        this.sm.makeVacant();this.secondMonthRequestedDays = []
+    this.firstMonth.Id = this.firstMonth.Id - 1;
+    this.secondMonth.Id = this.secondMonth.Id - 1;
 
-      this.firstMonth.Id = this.firstMonth.Id - 1;
-      this.secondMonth.Id = this.secondMonth.Id - 1;
-  
-  
-      this.fm.nextMonth(this.firstMonth);
-      this.sm.nextMonth(this.secondMonth);
-  
+    this.fm.nextMonth(this.firstMonth);
+    this.sm.nextMonth(this.secondMonth);
 
-    });
+
   }
   nextMonth() {
-    this.alertify.confirm("This will erase your request... continue?", ()=>{
-     this.fm.makeVacant();this.firstMonthRequestedDays = [];
-     this.sm.makeVacant();this.secondMonthRequestedDays = []
-
-
     this.firstMonth.Id = this.firstMonth.Id + 1;
     this.secondMonth.Id = this.secondMonth.Id + 1;
 
     this.fm.nextMonth(this.firstMonth);
     this.sm.nextMonth(this.secondMonth);
 
-  });
   }
 
- receiveUpdatesFirstMonth(dates: Array<string>){
-   this.firstMonthRequestedDays = [];
-   this.firstMonthRequest = dates;
-
-   for (let i = 0; i < this.firstMonthRequest.length; i++) {
-   var help: requestDays = {daynumber: 0, month: '', year: 0, price: 0};
-   help.daynumber = +this.firstMonthRequest[i];
-   help.month = this.gen.getMonthFromNo(this.currentMonth + 1).toString();
-   // get the unitPrice in PHP
-   this.getPrice(this.currentMonth + 1, help.daynumber, "PHP");
-   this.requestDay.price = this.unitPrice;
-   help.year = this.currentYear;
-   this.firstMonthRequestedDays.push(help);
-  }
-  
- }
-
- receiveUpdatesSecondMonth(dates: Array<string>){
-   this.secondMonthRequestedDays = [];
-   this.secondMonthRequest = dates;
-
-   for (let i = 0; i < this.secondMonthRequest.length; i++) {
-    var help: requestDays = {daynumber: 0, month: '', year: 0, price: 0};
-    help.daynumber = +this.firstMonthRequest[i];
-    help.month = this.gen.getMonthFromNo(this.currentMonth + 1).toString();
-    // get the unitPrice in PHP
-    this.getPrice(this.currentMonth + 1, help.daynumber, "PHP");
-    this.requestDay.price = this.unitPrice;
+  receiveUpdatesFirstMonth(dates: Array<string>) {
+    let daylist:Array<requestDays> = [];
+    let price = 0;
+    for(let i=0;i<dates.length;i++){
+    let help:requestDays = {daynumber: 0, month: '', price: 0, year: 0, date: new Date, dayOfYear: 0 }
+    help.daynumber = +dates[i];
+    help.month = this.currentMonth.toString();
     help.year = this.currentYear;
-    this.secondMonthRequestedDays.push(help);
-  }
-}
+    help.date.setUTCFullYear(help.year);
+    help.date.setUTCMonth(+help.month);
+    help.date.setDate(help.daynumber);
+   /*  this.gen.getUnitPrice(this.currentPicoUnitId,"PHP", help.date.getUTCDate(), help.date.getUTCMonth())
+      .subscribe((next)=>{this.unitPrice = next});
 
-getPrice(m: number, d: number, c: string): number{
-  let help = 0;
-this.gen.getUnitPrice(this.currentPicoUnitId,c,d,m).pipe(
-  map((response: any) => {
-    help = response;
+    help.price = this.unitPrice;
     debugger;
+     */
+     daylist.push(help);
     
-  })
-);
-debugger;
-return help;
-  }
 
-getMonthText(test: number){ return this.gen.getMonthFromNo(test); }
+    }
+    
+   }
+
+  receiveUpdatesSecondMonth(dates: Array<string>) { }
+
+     
+
+  getMonthText(test: number) { return this.gen.getMonthFromNo(test); }
 
 
 }
+
+

@@ -19,7 +19,7 @@
             </tr>
             <tr *ngFor="let item of firstMonthRequestedDays">
               <th>{{item.daynumber}}-{{item.month}}-{{item.year}}</th>
-              <th>{{item.price}}</th>
+              <th>{{gen.getUnitPrice(currentPicoUnitId,"PHP",+item.daynumber,+item.month) | async}}</th>
             </tr>
           </table>
 
