@@ -198,6 +198,14 @@ export class SecondMonthComponent implements AfterContentInit {
     return help;
 
   }
+
+  makeVacant() {
+    const el = document.getElementsByClassName('requested');
+    for (const x = 0; x < el.length; x) {
+      el[x].className = 'vacant';
+    }
+    
+  }
   
 
 }

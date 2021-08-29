@@ -15,7 +15,7 @@ currentPicoName = this.picoName.asObservable();
 constructor(private http: HttpClient) { }
 
 getPicoUnitId(test: string){return this.http.get<number>(this.bu + 'getUnitId/' + test)}
-getPicoUnitName(test: number){return this.http.get<string>(this.bu + 'getUnitName/' + test)}
+getPicoUnitName(test: number){return this.http.get<string>(this.bu + 'getUnitName/' + test,{responseType: 'text' as 'json'})}
 
 getMonthFromNo(no: number): String{
   let test:Array<String> = [];

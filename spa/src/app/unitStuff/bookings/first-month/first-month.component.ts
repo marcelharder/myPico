@@ -154,7 +154,6 @@ export class FirstMonthComponent implements AfterContentInit {
       this.element_40_class = this.decodeColor(res.day_40);
       this.element_41_class = this.decodeColor(res.day_41);
       this.element_42_class = this.decodeColor(res.day_42);
-      debugger;
     });
   }
   getDataForTable($event: any) {
@@ -204,6 +203,13 @@ export class FirstMonthComponent implements AfterContentInit {
     }
     return help;
 
+  }
+  makeVacant() {
+    const el = document.getElementsByClassName('requested');
+    for (const x = 0; x < el.length; x) {
+      el[x].className = 'vacant';
+    }
+    
   }
   
 

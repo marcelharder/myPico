@@ -15,14 +15,11 @@
           <table class="table table-striped">
             <tr>
               <th>Date</th>
-              <th>Price</th>
+              <th>Price (PHP)</th>
             </tr>
             <tr *ngFor="let item of firstMonthRequestedDays">
-              <th>{{item.daynumber}}-{{item.month}}-{{item.year}}
-               
-              </th>
+              <th>{{item.daynumber}}-{{item.month}}-{{item.year}}</th>
               <th>{{item.price}}</th>
-          
             </tr>
           </table>
 
@@ -36,7 +33,16 @@
        <div class="row" *ngIf="secondMonthRequest.length > 0">
           <div class="col-sm-6"><h4><span class="badge bg-secondary">Requested days in {{getMonthText(currentMonth + 2)}}</span></h4></div>
           <div class="col-sm-6"> </div>
-       <!--show the array here-->
+          <table class="table table-striped">
+            <tr>
+              <th>Date</th>
+              <th>Price (PHP)</th>
+            </tr>
+            <tr *ngFor="let item of secondMonthRequestedDays">
+              <th>{{item.daynumber}}-{{item.month}}-{{item.year}}</th>
+              <th>{{item.price}}</th>
+            </tr>
+          </table>
         
 
 
