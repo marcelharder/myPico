@@ -1,57 +1,86 @@
 <div class="card">
-  <div class="card-header"><h4><span>{{location}}</span></h4></div>
+  <div class="card-header">
+    <h4><span>{{location}}</span></h4>
+  </div>
   <div class="card-body">
     <div class="d-flex flex-row bd-highlight mb-3">
-      <div class="p-2 bd-highlight"><button type="button" class="btn btn-primary" (click)="prevMonth()"><</button></div>
-      <div class="p-2 bd-highlight"><div class="card"><div class="card-body" style="background-color: rgb(196, 174, 142);"><app-first-month  [rm]="firstMonth" (updateDates)="receiveUpdatesFirstMonth($event)"></app-first-month></div></div></div>
-      <div class="p-2 bd-highlight"><div class="card"><div class="card-body" style="background-color: rgb(211, 194, 169);" ><app-second-month  [rm]="secondMonth"  (updateDates)="receiveUpdatesSecondMonth($event)"></app-second-month></div></div></div>
+      <div class="p-2 bd-highlight"><button type="button" class="btn btn-primary" (click)="prevMonth()">
+          <</button>
+      </div>
+      <div class="p-2 bd-highlight">
+        <div class="card">
+          <div class="card-body" style="background-color: rgb(196, 174, 142);">
+            <app-first-month [rm]="firstMonth" (updateDates)="receiveUpdatesFirstMonth($event)"></app-first-month>
+          </div>
+        </div>
+      </div>
+      <div class="p-2 bd-highlight">
+        <div class="card">
+          <div class="card-body" style="background-color: rgb(211, 194, 169);">
+            <app-second-month [rm]="secondMonth" (updateDates)="receiveUpdatesSecondMonth($event)"></app-second-month>
+          </div>
+        </div>
+      </div>
       <div class="p-2 bd-highlight"><button type="button" class="btn btn-primary" (click)="nextMonth()">></button></div>
-      <div class="p-2 bd-highlight"><div class="card"><div class="card-body">
-        
-        <div class="row" *ngIf="firstMonthRequestedDays.length > 0">
-          <div class="col-sm-6"><h4><span class="badge bg-secondary">Requested days in {{getMonthText(currentMonth + 1)}}</span></h4></div>
-          <div class="col-sm-6"> </div>
+      <div class="p-2 bd-highlight">
+        <div class="card">
+          <div class="card-body">
 
-          <table class="table table-striped">
-            <tr>
-              <th>Date</th>
-              <th>Price (PHP)</th>
-            </tr>
-            <tr *ngFor="let item of firstMonthRequestedDays">
-              <th>{{item.daynumber}}-{{item.month}}-{{item.year}}</th>
-              <th>{{gen.getUnitPrice(currentPicoUnitId,"PHP",+item.daynumber,+item.month) | async}}</th>
-            </tr>
-          </table>
-
-
+            <div class="row" *ngIf="firstMonthRequestedDays.length > 0">
+              <div class="col-sm-12">
+                <div class="d-flex flex-row bd-highlight mb-3">
+                  <div class="p-2 bd-highlight"> <h4><span class="badge bg-secondary">Requested days in {{getMonthText(currentMonth + 1)}}</span></h4></div>
+                  <div class="p-2 bd-highlight">
+                    <div class="row">
+                      <div class="col-sm-5 mr-2"><h6><span class="badge bg-info">Currency</span></h6></div>
+                      <div class="col-sm-7"><select 
+                        class="form-select form-select-sm" 
+                        [(ngModel)]="desiredCurrency"
+                        (change)="currencyChanged()"
+                        >
+                        <option selected value="PHP">PHP</option>
+                        <option value="USD">USD</option>
+                        <option value="Euro">Euro</option>
+                        <option value="Yen">Yen</option>
+                      </select></div>
+                    </div>
+                    
+                  </div>
+                </div>
          
-          
+              </div>
+            
+              <table class="table table-striped">
+                <tr>
+                  <th>Date</th>
+                  <th>Price (PHP)</th>
+                </tr>
+                <tr *ngFor="let item of firstMonthRequestedDays">
+                  <th>{{item.daynumber}}-{{item.month}}-{{item.year}}</th>
+                  <th>{{item.price}}</th>
+                </tr>
+              </table>
+            </div>
+            <!--show the array here-->
+            <div class="row" *ngIf="secondMonthRequestedDays.length > 0">
+              <div class="col-sm-6">
+                <h4><span class="badge bg-secondary">Requested days in {{getMonthText(currentMonth + 2)}}</span></h4>
+              </div>
+              <div class="col-sm-6"> </div>
+              <table class="table table-striped">
+                <tr>
+                  <th>Date</th>
+                  <th>Price (PHP)</th>
+                </tr>
+                <tr *ngFor="let item of secondMonthRequestedDays">
+                  <th>{{item.daynumber}}-{{item.month}}-{{item.year}}</th>
+                  <th>{{item.price}}</th>
+                </tr>
+              </table>
+            </div>
+          </div>
         </div>
-        <!--show the array here-->
-        
-
-       <div class="row" *ngIf="secondMonthRequest.length > 0">
-          <div class="col-sm-6"><h4><span class="badge bg-secondary">Requested days in {{getMonthText(currentMonth + 2)}}</span></h4></div>
-          <div class="col-sm-6"> </div>
-          <table class="table table-striped">
-            <tr>
-              <th>Date</th>
-              <th>Price (PHP)</th>
-            </tr>
-            <tr *ngFor="let item of secondMonthRequestedDays">
-              <th>{{item.daynumber}}-{{item.month}}-{{item.year}}</th>
-              <th>{{item.price}}</th>
-            </tr>
-          </table>
-        
-
-
-        </div>
-      
-      
-      
-      
-      </div></div></div>
+      </div>
     </div>
   </div>
   <div class="card-footer"></div>
