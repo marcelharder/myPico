@@ -162,15 +162,14 @@ export class SecondMonthComponent implements AfterContentInit {
     value = $event.target.value;
     if (value !== "") {
       if ($event.target.classList.contains('requested')) {
-       
         $event.target.classList.remove('requested');
         $event.target.classList.add('vacant');
-        let t = this.requestedDates.filter(e => e !==value); //remove the value in the array
-        this.updateDates.emit(t);
+        var index: number = this.requestedDates.indexOf(value, 0);
+        if (index > -1) { this.requestedDates.splice(index, 1); }
+        this.updateDates.emit(this.requestedDates);
 
       } else {
         if ($event.target.classList.contains('vacant')) {
-         
           $event.target.classList.remove('vacant');
           $event.target.classList.add('requested');
           this.requestedDates.push(value); // add the value to the list
