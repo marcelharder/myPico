@@ -13,6 +13,8 @@ namespace DatingApp.API.Data
         Task<bool> SaveAll();
         Task<PagedList<User>> GetUsers(UserParams userParams);
         Task<dateNumber> GetMonth(int id);
+
+        Task<dateNumber> GetMonthYear(int m, int y);
         Task<picoUnit> GetPicoUnitForThisUser(int userId);
         Task<dateOccupancy> GetOccupancy(int picoUnit, int id);
         Task<User> GetUser(int id);

@@ -17,7 +17,7 @@ namespace DatingApp.API.Data
         private readonly DataContext _context;
 
         private IConfiguration _config;
-        
+
         public DatingRepository(DataContext context, IConfiguration config)
         {
             _context = context;
@@ -135,6 +135,43 @@ namespace DatingApp.API.Data
                 .Where(x => x.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<dateNumber> GetMonthYear(int month, int year)
+        {
+            var dn = new dateNumber();
+            int daysInMonth = DateTime.DaysInMonth(year, month);
+            await Task.Run(() =>
+            {
+                var firstDay = new DateTime(year, month, 1);
+                var help = firstDay.DayOfWeek;
+                switch (firstDay.DayOfWeek)
+                {
+                    case DayOfWeek.Sunday: dn = fillMonth(dn, 0, daysInMonth); break;
+                    case DayOfWeek.Monday: dn = fillMonth(dn, 1, daysInMonth); break;
+                    case DayOfWeek.Tuesday: dn = fillMonth(dn, 2, daysInMonth); break;
+                    case DayOfWeek.Wednesday: dn = fillMonth(dn, 3, daysInMonth); break;
+                    case DayOfWeek.Thursday: dn = fillMonth(dn, 4, daysInMonth); break;
+                    case DayOfWeek.Friday: dn = fillMonth(dn, 5, daysInMonth); break;
+                    case DayOfWeek.Saturday: dn = fillMonth(dn, 6, daysInMonth); break;
+                }
+
+
+
+            });
+            // get first day of the month in year
+
+
+            return dn;
+
+        }
+
+
+
+
+
+
+
+
+
         public async Task<Appointment> GetAppointment(int appointmentId)
         {
             return await _context.Appointments.FirstOrDefaultAsync(u => u.Id == appointmentId);
@@ -235,21 +272,24 @@ namespace DatingApp.API.Data
             var price = 0.00;
             var php_usd_conversion = _config.GetSection("php_usd_conversion").Value;
             var selectedUnit = await _context.PicoUnits.FirstOrDefaultAsync(a => a.UnitId == picoNumber);
-             // find out which season it is
+            // find out which season it is
             var season = getSeason(day, month);
-            switch(season){
-                case 0: price = selectedUnit.LowSeasonRent;break;
-                case 1: price = selectedUnit.MidSeasonRent;break;
-                case 2: price = selectedUnit.HighSeasonRent;break;
+            switch (season)
+            {
+                case 0: price = selectedUnit.LowSeasonRent; break;
+                case 1: price = selectedUnit.MidSeasonRent; break;
+                case 2: price = selectedUnit.HighSeasonRent; break;
             }
-            if (currency == "USD"){ 
+            if (currency == "USD")
+            {
                 var conv = 0.00;
-                try{conv = Convert.ToDouble(php_usd_conversion);}
-                catch(Exception e){ Console.Write(e); }
-                            
-                price = price / conv;}
+                try { conv = Convert.ToDouble(php_usd_conversion); }
+                catch (Exception e) { Console.Write(e); }
 
-            
+                price = price / conv;
+            }
+
+
 
             return (int)Math.Round(price);
         }
@@ -262,6 +302,63 @@ namespace DatingApp.API.Data
             if (m == 4) { if (d > 2 && d < 27) { help = 2; } }   // test holiday
 
             return help;
+        }
+
+        private dateNumber fillMonth(dateNumber dn, int help, int noDays)
+        {
+            var helpList = new List<int>();
+            for (int a = 0; a < 43; a++) { helpList.Add(0); } // set up with all zero's
+            for (int a = 1; a < noDays; a++) { helpList[a] = a; } // start at help with writing
+            
+            dn.day_1 = helpList[0];
+            dn.day_2 = helpList[1];
+            dn.day_3 = helpList[2];
+            dn.day_4 = helpList[3];
+            dn.day_5 = helpList[4];
+            dn.day_6 = helpList[5];
+            dn.day_7 = helpList[6];
+            dn.day_8 = helpList[7];
+            dn.day_9 = helpList[8];
+            dn.day_10 = helpList[9];
+
+            dn.day_11 = helpList[10];
+            dn.day_12 = helpList[11];
+            dn.day_13 = helpList[12];
+            dn.day_14 = helpList[13];
+            dn.day_15 = helpList[14];
+            dn.day_16 = helpList[15];
+            dn.day_17 = helpList[16];
+            dn.day_18 = helpList[17];
+            dn.day_19 = helpList[18];
+            dn.day_20 = helpList[19];
+
+            dn.day_21 = helpList[20];
+            dn.day_22 = helpList[21];
+            dn.day_23 = helpList[22];
+            dn.day_24 = helpList[23];
+            dn.day_25 = helpList[24];
+            dn.day_26 = helpList[25];
+            dn.day_27 = helpList[26];
+            dn.day_28 = helpList[27];
+            dn.day_29 = helpList[28];
+            dn.day_30 = helpList[29];
+
+            dn.day_31 = helpList[30];
+            dn.day_32 = helpList[31];
+            dn.day_33 = helpList[32];
+            dn.day_34 = helpList[33];
+            dn.day_35 = helpList[34];
+            dn.day_36 = helpList[35];
+            dn.day_37 = helpList[36];
+            dn.day_38 = helpList[37];
+            dn.day_39 = helpList[38];
+            dn.day_40 = helpList[39];
+
+            dn.day_41 = helpList[40];
+            dn.day_42 = helpList[41];
+
+
+            return dn;
         }
 
 
