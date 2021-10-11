@@ -29,7 +29,7 @@
             <div class="row" *ngIf="firstMonthRequestedDays.length > 0">
               <div class="col-sm-12">
                 <div class="d-flex flex-row bd-highlight mb-3">
-                  <div class="p-2 bd-highlight"> <h4><span class="badge bg-secondary">Requested days in {{getMonthText(currentMonth + 1)}}</span></h4></div>
+                  <div class="p-2 bd-highlight"> <h4><span class="badge bg-secondary">Requested days in {{getMonthText(firstMonth.month)}}</span></h4></div>
                   <div class="p-2 bd-highlight">
                     <div class="row">
                       <div class="col-sm-5 mr-2"><h6><span class="badge bg-info">Currency</span></h6></div>
@@ -40,8 +40,8 @@
                         >
                         <option selected value="PHP">PHP</option>
                         <option value="USD">USD</option>
-                        <option value="Euro">Euro</option>
-                        <option value="Yen">Yen</option>
+                        <option value="EURO">Euro</option>
+                        <option value="YEN">Yen</option>
                       </select></div>
                     </div>
                     
@@ -53,7 +53,7 @@
               <table class="table table-striped">
                 <tr>
                   <th>Date</th>
-                  <th>Price (PHP)</th>
+                  <th>Price {{desiredCurrency}}</th>
                 </tr>
                 <tr *ngFor="let item of firstMonthRequestedDays">
                   <th>{{item.daynumber}}-{{item.month}}-{{item.year}}</th>
@@ -64,7 +64,7 @@
             <!--show the array here-->
             <div class="row" *ngIf="secondMonthRequestedDays.length > 0">
               <div class="col-sm-6">
-                <h4><span class="badge bg-secondary">Requested days in {{getMonthText(currentMonth + 2)}}</span></h4>
+                <h4><span class="badge bg-secondary">Requested days in {{getMonthText(secondMonth.month)}}</span></h4>
               </div>
               <div class="col-sm-6"> </div>
               <table class="table table-striped">

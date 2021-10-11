@@ -39,14 +39,7 @@ namespace myPicoAPI.Controllers {
             return Ok (helpMonth);
         }
 
-        private async void saveOccupancy (int id) {
-            var selectedMonth = await _repo.GetMonth (id); // so this gives the month number of 3 for example
-            // get the day from theDate.day, so we can focus on the needed day in the occupancy table
-         //   var selectedMonthDateNumber = await _repo.getDateNumber (selectedMonth.UserId);
-          //  var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.UserId);
-          //  var loc = findLocation (selectedMonthDateNumber, selectedMonthOccupancy, theDate.Day, type);
-
-        }
+        
         private int findLocation (dateNumber sel, dateOccupancy docc, int day, int type) {
             var help = 0;
             if (sel.day_1 == day) docc.day_1 = type;

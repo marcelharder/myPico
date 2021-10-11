@@ -274,6 +274,8 @@ namespace DatingApp.API.Data
         {
             var price = 0.00;
             var php_usd_conversion = _config.GetSection("php_usd_conversion").Value;
+            var php_eur_conversion = _config.GetSection("php_eur_conversion").Value;
+            var php_yen_conversion = _config.GetSection("php_yen_conversion").Value;
             var selectedUnit = await _context.PicoUnits.FirstOrDefaultAsync(a => a.UnitId == picoNumber);
             // find out which season it is
             var season = getSeason(day, month);
@@ -285,10 +287,19 @@ namespace DatingApp.API.Data
             }
             if (currency == "USD")
             {
+                var conv = 0.00;try { conv = Convert.ToDouble(php_usd_conversion); } catch (Exception e) { Console.Write(e); }
+                price = price / conv;
+            }
+            if (currency == "EURO")
+            {
                 var conv = 0.00;
-                try { conv = Convert.ToDouble(php_usd_conversion); }
-                catch (Exception e) { Console.Write(e); }
-
+                try { conv = Convert.ToDouble(php_eur_conversion); } catch (Exception e) { Console.Write(e); }
+                price = price / conv;
+            }
+             if (currency == "YEN")
+            {
+                var conv = 0.00;
+                try { conv = Convert.ToDouble(php_yen_conversion); } catch (Exception e) { Console.Write(e); }
                 price = price / conv;
             }
 
@@ -311,7 +322,7 @@ namespace DatingApp.API.Data
         {
             var helpList = new List<int>();
             var offset = 0;
-            for (int a = 0; a < 43; a++) { helpList.Add(0); } // set up with all zero's
+            for (int a = 0; a < 43; a++) { helpList.Add(0); } // set up with all 0
             for (int a = 0; a <= noDays; a++) { helpList[a] = a; } // start at help with writing
 
 

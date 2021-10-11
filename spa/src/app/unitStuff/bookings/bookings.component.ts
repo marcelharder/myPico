@@ -19,7 +19,7 @@ export class BookingsComponent implements OnInit {
 
   currentPicoUnitId = 0;
   selectedCurrency = "PHP";
-  desiredCurrency = "";
+  desiredCurrency = "PHP";
 
 
   currentYear = 0;
@@ -78,8 +78,14 @@ export class BookingsComponent implements OnInit {
 
     this.currentPicoUnitId = +this.route.snapshot.params.id; // ignored for now used behaviossubject instead
 
-    this.auth.firstMonth.subscribe((next) => { this.firstMonth = next; this.currentYear = this.firstMonth.year })
-    this.auth.secondMonth.subscribe((next) => { this.secondMonth = next; })
+    this.auth.firstMonth.subscribe((next) => { 
+      this.firstMonth = next; 
+     
+    })
+    this.auth.secondMonth.subscribe((next) => { 
+      this.secondMonth = next;
+    
+    })
 
     if (this.firstMonth.picoUnit === 1) { this.location = "Myna 610-A" }
     if (this.firstMonth.picoUnit === 2) { this.location = "Myna 611-A" }
@@ -94,7 +100,10 @@ export class BookingsComponent implements OnInit {
   currencyChanged() {
     for (let i = 0; i < this.firstMonthRequestedDays.length; i++) {
       let item: requestDays = this.firstMonthRequestedDays[i];
-      item.price = convertCurrency(item.price, this.selectedCurrency, this.desiredCurrency);
+      // get the price from the backend
+      this.gen.getUnitPrice(this.currentPicoUnitId, this.desiredCurrency, item.daynumber, +item.month).subscribe((next)=>{
+        item.price = next;
+      })
     }
 
     this.alertify.success(this.desiredCurrency);
@@ -106,6 +115,8 @@ export class BookingsComponent implements OnInit {
       this.sm.makeVacant();
       this.firstMonthRequestedDays = [];
       this.secondMonthRequestedDays = [];
+
+      // allow for jumping from january to december
 
       if (this.firstMonth.month === 1) {
         this.firstMonth.month = 12;
@@ -141,25 +152,48 @@ export class BookingsComponent implements OnInit {
       this.sm.makeVacant();
       this.firstMonthRequestedDays = [];
       this.secondMonthRequestedDays = [];
-      this.firstMonth.month = this.firstMonth.month + 1;
-      this.secondMonth.month = this.secondMonth.month + 1;
 
-      this.fm.nextMonth(this.firstMonth);
-      this.sm.nextMonth(this.secondMonth);
+
+      // allow for jumping from december to january
+      if (this.secondMonth.month === 12) {
+        this.secondMonth.month = 1;
+        this.secondMonth.year = this.currentYear + 1;
+        this.sm.nextMonth(this.secondMonth);
+        this.firstMonth.month = this.firstMonth.month + 1;
+        this.fm.nextMonth(this.firstMonth);
+      } else {
+        if (this.firstMonth.month === 12) {
+          this.firstMonth.month = 1;
+          this.firstMonth.year = this.currentYear + 1;
+          this.fm.nextMonth(this.firstMonth);
+          this.secondMonth.month = this.secondMonth.month + 1;
+          this.sm.nextMonth(this.secondMonth);
+        } else {
+          this.firstMonth.month = this.firstMonth.month + 1;
+          this.secondMonth.month = this.secondMonth.month + 1;
+          this.fm.nextMonth(this.firstMonth);
+          this.sm.nextMonth(this.secondMonth);
+        }
+      }
+
+
 
     })
   }
-
   receiveUpdatesFirstMonth(dates: Array<string>) {
     this.firstMonthRequestedDays = [];
-    for (let i = 0; i < dates.length; i++) {
-      let help: requestDays = { daynumber: 0, month: '', price: 0, year: 0, date: new Date, dayOfYear: 0 }
-      this.gen.getUnitPrice(this.currentPicoUnitId, "PHP", help.date.getUTCDate(), help.date.getUTCMonth())
-        .subscribe((next) => { help.price = next }, (error) => { this.alertify.error(error) }, () => {
-          // do the rest when this observable is finished
+
+    for (let i = 0; i < dates.length; i++) { // this is a list of string, like 17,18,19 etc
+      let help: requestDays = { daynumber: 0, month: '', price: 0, year: 0, date: new Date, dayOfYear: 0 };
+      
+      this.gen.getUnitPrice(this.currentPicoUnitId, this.selectedCurrency, +dates[i], this.firstMonth.year)
+        .subscribe(
+        (next) => { help.price = next }, 
+        (error) => { this.alertify.error(error) }, 
+        () => {// do the rest when this observable is finished
           help.daynumber = +dates[i];
-          help.month = this.currentMonth.toString();
-          help.year = this.currentYear;
+          help.month = this.firstMonth.month.toString();
+          help.year = this.firstMonth.year;
           help.date.setUTCFullYear(help.year);
           help.date.setUTCMonth(+help.month);
           help.date.setDate(help.daynumber);
@@ -172,12 +206,12 @@ export class BookingsComponent implements OnInit {
     this.secondMonthRequestedDays = [];
     for (let i = 0; i < dates.length; i++) {
       let help: requestDays = { daynumber: 0, month: '', price: 0, year: 0, date: new Date, dayOfYear: 0 }
-      this.gen.getUnitPrice(this.currentPicoUnitId, "PHP", help.date.getUTCDate(), help.date.getUTCMonth())
+      this.gen.getUnitPrice(this.currentPicoUnitId, this.selectedCurrency,  +dates[i], this.firstMonth.year)
         .subscribe((next) => { help.price = next }, (error) => { this.alertify.error(error) }, () => {
           // do the rest when this observable is finished
           help.daynumber = +dates[i];
-          help.month = this.currentMonth.toString();
-          help.year = this.currentYear;
+          help.month = this.secondMonth.month.toString();
+          help.year = this.secondMonth.year;
           help.date.setUTCFullYear(help.year);
           help.date.setUTCMonth(+help.month);
           help.date.setDate(help.daynumber);
@@ -198,9 +232,5 @@ export class BookingsComponent implements OnInit {
 }
 
 
-function convertCurrency(price: number, selectedCurrency: string, desiredCurrency: string): number {
-  let help = 0;
 
-  return help;
-}
 
