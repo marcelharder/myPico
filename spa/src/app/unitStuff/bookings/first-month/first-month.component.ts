@@ -51,13 +51,14 @@ export class FirstMonthComponent implements AfterContentInit {
     ngAfterContentInit() {
     this.auth.firstMonth.subscribe((next)=>{
       this.requestedMonth = next;
+      this.currentYear = this.requestedMonth.year; // write this to the html
       this.getOccDates(this.requestedMonth.month, this.requestedMonth.year);
     })
   }
 
   nextMonth(m: RequestedMonth){
-    this.monthName = this.gen.getMonthFromNo(m.month);
-    this.currentYear = m.year;
+    //this.monthName = this.gen.getMonthFromNo(m.month);
+    this.currentYear = m.year; // write this to the html
     this.getOccDates(m.month, m.year);
     //this.getOccupancy(m.picoUnit,m.Id);
   }
@@ -109,7 +110,8 @@ export class FirstMonthComponent implements AfterContentInit {
       this.element_42 = this.decodeDateNumbers(res.day_42);
      
       this.monthName = this.gen.getMonthFromNo(res.MonthId);
-      this.currentYear = res.Year;
+      //this.currentYear = res.Year;
+      
 
     });
 

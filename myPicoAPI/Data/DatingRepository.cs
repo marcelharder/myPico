@@ -145,13 +145,14 @@ namespace DatingApp.API.Data
                 var help = firstDay.DayOfWeek;
                 switch (firstDay.DayOfWeek)
                 {
-                    case DayOfWeek.Sunday: dn = fillMonth(dn, 0, daysInMonth); break;
-                    case DayOfWeek.Monday: dn = fillMonth(dn, 1, daysInMonth); break;
-                    case DayOfWeek.Tuesday: dn = fillMonth(dn, 2, daysInMonth); break;
-                    case DayOfWeek.Wednesday: dn = fillMonth(dn, 3, daysInMonth); break;
-                    case DayOfWeek.Thursday: dn = fillMonth(dn, 4, daysInMonth); break;
-                    case DayOfWeek.Friday: dn = fillMonth(dn, 5, daysInMonth); break;
-                    case DayOfWeek.Saturday: dn = fillMonth(dn, 6, daysInMonth); break;
+                   
+                    case DayOfWeek.Monday: dn = fillMonth(dn, 0, daysInMonth); break;
+                    case DayOfWeek.Tuesday: dn = fillMonth(dn, 1, daysInMonth); break;
+                    case DayOfWeek.Wednesday: dn = fillMonth(dn, 2, daysInMonth); break;
+                    case DayOfWeek.Thursday: dn = fillMonth(dn, 3, daysInMonth); break;
+                    case DayOfWeek.Friday: dn = fillMonth(dn, 4, daysInMonth); break;
+                    case DayOfWeek.Saturday: dn = fillMonth(dn, 5, daysInMonth); break;
+                    case DayOfWeek.Sunday: dn = fillMonth(dn, 6, daysInMonth); break;
                 }
             });
             // get first day of the month in year
@@ -309,66 +310,69 @@ namespace DatingApp.API.Data
         private dateNumber fillMonth(dateNumber dn, int help, int noDays)
         {
             var helpList = new List<int>();
+            var offset = 0;
             for (int a = 0; a < 43; a++) { helpList.Add(0); } // set up with all zero's
-            for (int a = 1; a < noDays; a++) { helpList[a] = a; } // start at help with writing
+            for (int a = 0; a <= noDays; a++) { helpList[a] = a; } // start at help with writing
+
 
             switch(help){
-                case 0: break; // sunday
-                case 1: helpList.RemoveAt(42);helpList.Insert(0,0);break; // monday
-                case 2: helpList.RemoveAt(42);helpList.RemoveAt(41);helpList.Insert(0,0);helpList.Insert(1,0);break; // tuesday
-                case 3: helpList.RemoveAt(42);helpList.RemoveAt(41);helpList.RemoveAt(40);helpList.Insert(0,0);helpList.Insert(1,0);helpList.Insert(2,0);break;
-                case 4: helpList.RemoveAt(42);helpList.RemoveAt(41);helpList.RemoveAt(40);helpList.RemoveAt(39);
-                        helpList.Insert(0,0);helpList.Insert(1,0);helpList.Insert(2,0);helpList.Insert(3,0);break;
-                case 5: helpList.RemoveAt(42);helpList.RemoveAt(41);helpList.RemoveAt(40);helpList.RemoveAt(39);helpList.RemoveAt(38);
-                        helpList.Insert(0,0);helpList.Insert(1,0);helpList.Insert(2,0);helpList.Insert(3,0);helpList.Insert(4,0);break;
+                case 0: offset = 0;break; 
+                case 1: offset = 1 + noDays;helpList.Insert(0,0);break; 
+                case 2: offset = 2 + noDays;helpList.Insert(0,0);helpList.Insert(1,0);break; // tuesday
+                case 3: offset = 3 + noDays;helpList.Insert(0,0);helpList.Insert(1,0);helpList.Insert(2,0);break;
+                case 4: offset = 4 + noDays;helpList.Insert(0,0);helpList.Insert(1,0);helpList.Insert(2,0);helpList.Insert(3,0);break;
+                case 5: offset = 5 + noDays;helpList.Insert(0,0);helpList.Insert(1,0);helpList.Insert(2,0);helpList.Insert(3,0);helpList.Insert(4,0);break;
+                case 6: offset = 6 + noDays;helpList.Insert(0,0);helpList.Insert(1,0);helpList.Insert(2,0);helpList.Insert(3,0);helpList.Insert(4,0);helpList.Insert(5,0);break;
             }
+
+            for (int a = offset; a < 43; a++ ){helpList.Add(0);} // remove any data beyound the dates
             
-            dn.day_1 = helpList[0];
-            dn.day_2 = helpList[1];
-            dn.day_3 = helpList[2];
-            dn.day_4 = helpList[3];
-            dn.day_5 = helpList[4];
-            dn.day_6 = helpList[5];
-            dn.day_7 = helpList[6];
-            dn.day_8 = helpList[7];
-            dn.day_9 = helpList[8];
-            dn.day_10 = helpList[9];
+            dn.day_1 = helpList[1];
+            dn.day_2 = helpList[2];
+            dn.day_3 = helpList[3];
+            dn.day_4 = helpList[4];
+            dn.day_5 = helpList[5];
+            dn.day_6 = helpList[6];
+            dn.day_7 = helpList[7];
+            dn.day_8 = helpList[8];
+            dn.day_9 = helpList[9];
+            dn.day_10 = helpList[10];
 
-            dn.day_11 = helpList[10];
-            dn.day_12 = helpList[11];
-            dn.day_13 = helpList[12];
-            dn.day_14 = helpList[13];
-            dn.day_15 = helpList[14];
-            dn.day_16 = helpList[15];
-            dn.day_17 = helpList[16];
-            dn.day_18 = helpList[17];
-            dn.day_19 = helpList[18];
-            dn.day_20 = helpList[19];
+            dn.day_11 = helpList[11];
+            dn.day_12 = helpList[12];
+            dn.day_13 = helpList[13];
+            dn.day_14 = helpList[14];
+            dn.day_15 = helpList[15];
+            dn.day_16 = helpList[16];
+            dn.day_17 = helpList[17];
+            dn.day_18 = helpList[18];
+            dn.day_19 = helpList[19];
+            dn.day_20 = helpList[20];
 
-            dn.day_21 = helpList[20];
-            dn.day_22 = helpList[21];
-            dn.day_23 = helpList[22];
-            dn.day_24 = helpList[23];
-            dn.day_25 = helpList[24];
-            dn.day_26 = helpList[25];
-            dn.day_27 = helpList[26];
-            dn.day_28 = helpList[27];
-            dn.day_29 = helpList[28];
-            dn.day_30 = helpList[29];
+            dn.day_21 = helpList[21];
+            dn.day_22 = helpList[22];
+            dn.day_23 = helpList[23];
+            dn.day_24 = helpList[24];
+            dn.day_25 = helpList[25];
+            dn.day_26 = helpList[26];
+            dn.day_27 = helpList[27];
+            dn.day_28 = helpList[28];
+            dn.day_29 = helpList[29];
+            dn.day_30 = helpList[30];
 
-            dn.day_31 = helpList[30];
-            dn.day_32 = helpList[31];
-            dn.day_33 = helpList[32];
-            dn.day_34 = helpList[33];
-            dn.day_35 = helpList[34];
-            dn.day_36 = helpList[35];
-            dn.day_37 = helpList[36];
-            dn.day_38 = helpList[37];
-            dn.day_39 = helpList[38];
-            dn.day_40 = helpList[39];
+            dn.day_31 = helpList[31];
+            dn.day_32 = helpList[32];
+            dn.day_33 = helpList[33];
+            dn.day_34 = helpList[34];
+            dn.day_35 = helpList[35];
+            dn.day_36 = helpList[36];
+            dn.day_37 = helpList[37];
+            dn.day_38 = helpList[38];
+            dn.day_39 = helpList[39];
+            dn.day_40 = helpList[40];
 
-            dn.day_41 = helpList[40];
-            dn.day_42 = helpList[41];
+            dn.day_41 = helpList[41];
+            dn.day_42 = helpList[42];
 
 
             

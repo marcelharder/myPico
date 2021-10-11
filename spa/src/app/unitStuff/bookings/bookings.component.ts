@@ -16,12 +16,12 @@ import { SecondMonthComponent } from './second-month/second-month.component';
   styleUrls: ['./bookings.component.css']
 })
 export class BookingsComponent implements OnInit {
- 
+
   currentPicoUnitId = 0;
   selectedCurrency = "PHP";
   desiredCurrency = "";
- 
-  
+
+
   currentYear = 0;
   currentMonth = 0;
   location = "";
@@ -70,126 +70,135 @@ export class BookingsComponent implements OnInit {
     public gen: GeneralService,
     private days: DaysService,
     private route: ActivatedRoute,
-    private alertify: AlertifyService) { 
-  
-    }
+    private alertify: AlertifyService) {
+
+  }
 
   ngOnInit() {
 
     this.currentPicoUnitId = +this.route.snapshot.params.id; // ignored for now used behaviossubject instead
 
-    this.auth.firstMonth.subscribe((next)=>{this.firstMonth = next; })
-    this.auth.secondMonth.subscribe((next)=>{this.secondMonth = next; })
+    this.auth.firstMonth.subscribe((next) => { this.firstMonth = next; this.currentYear = this.firstMonth.year })
+    this.auth.secondMonth.subscribe((next) => { this.secondMonth = next; })
 
     if (this.firstMonth.picoUnit === 1) { this.location = "Myna 610-A" }
     if (this.firstMonth.picoUnit === 2) { this.location = "Myna 611-A" }
     if (this.firstMonth.picoUnit === 3) { this.location = "Myna 612-A" }
 
-          
+
   }
 
-  showPhp(){this.alertify.message("PHP");}
-  showUsd(){this.alertify.message("USD");}
+  showPhp() { this.alertify.message("PHP"); }
+  showUsd() { this.alertify.message("USD"); }
 
-  currencyChanged(){
-    for(let i = 0; i < this.firstMonthRequestedDays.length; i++){
-       let item:requestDays = this.firstMonthRequestedDays[i];
-       item.price = convertCurrency(item.price, this.selectedCurrency, this.desiredCurrency);
+  currencyChanged() {
+    for (let i = 0; i < this.firstMonthRequestedDays.length; i++) {
+      let item: requestDays = this.firstMonthRequestedDays[i];
+      item.price = convertCurrency(item.price, this.selectedCurrency, this.desiredCurrency);
     }
-    
-    this.alertify.success(this.desiredCurrency);}
+
+    this.alertify.success(this.desiredCurrency);
+  }
 
   prevMonth() {
-    this.alertify.confirm("This will erase your current request ...",()=>{
+    this.alertify.confirm("This will erase your current request ...", () => {
       this.fm.makeVacant();
       this.sm.makeVacant();
       this.firstMonthRequestedDays = [];
       this.secondMonthRequestedDays = [];
-      // allow for december 
-      if(this.secondMonth.month === 2){
-        debugger;
+
+      if (this.firstMonth.month === 1) {
         this.firstMonth.month = 12;
         this.firstMonth.year = this.firstMonth.year - 1;
         this.fm.nextMonth(this.firstMonth);
         this.secondMonth.month = this.secondMonth.month - 1;
         this.sm.nextMonth(this.secondMonth);
-      }else {
-        this.firstMonth.month = this.firstMonth.month - 1;
-        this.secondMonth.month = this.secondMonth.month - 1;
-        this.fm.nextMonth(this.firstMonth);
-        this.sm.nextMonth(this.secondMonth);
+      } else {
+        if (this.secondMonth.month === 1) {
+          this.secondMonth.month = 12;
+          this.secondMonth.year = this.currentYear - 1;
+          this.sm.nextMonth(this.secondMonth);
+          this.firstMonth.month = this.firstMonth.month - 1;
+          this.fm.nextMonth(this.firstMonth);
+        } else {
+          this.firstMonth.month = this.firstMonth.month - 1;
+          this.secondMonth.month = this.secondMonth.month - 1;
+          this.fm.nextMonth(this.firstMonth);
+          this.sm.nextMonth(this.secondMonth);
+        }
       }
-       
 
-     
-    
+
+
+
+
+
     })
   }
   nextMonth() {
-    this.alertify.confirm("This will erase your current request ...",()=>{
+    this.alertify.confirm("This will erase your current request ...", () => {
       this.fm.makeVacant();
       this.sm.makeVacant();
       this.firstMonthRequestedDays = [];
       this.secondMonthRequestedDays = [];
       this.firstMonth.month = this.firstMonth.month + 1;
       this.secondMonth.month = this.secondMonth.month + 1;
-  
+
       this.fm.nextMonth(this.firstMonth);
       this.sm.nextMonth(this.secondMonth);
-    
+
     })
   }
 
   receiveUpdatesFirstMonth(dates: Array<string>) {
     this.firstMonthRequestedDays = [];
-    for(let i=0;i<dates.length;i++){
-    let help:requestDays = {daynumber: 0, month: '', price: 0, year: 0, date: new Date, dayOfYear: 0 }
-    this.gen.getUnitPrice(this.currentPicoUnitId,"PHP", help.date.getUTCDate(), help.date.getUTCMonth())
-    .subscribe((next)=>{help.price = next}, (error)=>{this.alertify.error(error)}, ()=>{
-      // do the rest when this observable is finished
-      help.daynumber = +dates[i];
-      help.month = this.currentMonth.toString();
-      help.year = this.currentYear;
-      help.date.setUTCFullYear(help.year);
-      help.date.setUTCMonth(+help.month);
-      help.date.setDate(help.daynumber);
-      this.firstMonthRequestedDays.push(help);
-     });
+    for (let i = 0; i < dates.length; i++) {
+      let help: requestDays = { daynumber: 0, month: '', price: 0, year: 0, date: new Date, dayOfYear: 0 }
+      this.gen.getUnitPrice(this.currentPicoUnitId, "PHP", help.date.getUTCDate(), help.date.getUTCMonth())
+        .subscribe((next) => { help.price = next }, (error) => { this.alertify.error(error) }, () => {
+          // do the rest when this observable is finished
+          help.daynumber = +dates[i];
+          help.month = this.currentMonth.toString();
+          help.year = this.currentYear;
+          help.date.setUTCFullYear(help.year);
+          help.date.setUTCMonth(+help.month);
+          help.date.setDate(help.daynumber);
+          this.firstMonthRequestedDays.push(help);
+        });
     }
   }
 
   receiveUpdatesSecondMonth(dates: Array<string>) {
     this.secondMonthRequestedDays = [];
-    for(let i=0;i<dates.length;i++){
-    let help:requestDays = {daynumber: 0, month: '', price: 0, year: 0, date: new Date, dayOfYear: 0 }
-    this.gen.getUnitPrice(this.currentPicoUnitId,"PHP", help.date.getUTCDate(), help.date.getUTCMonth())
-    .subscribe((next)=>{help.price = next}, (error)=>{this.alertify.error(error)}, ()=>{
-      // do the rest when this observable is finished
-      help.daynumber = +dates[i];
-      help.month = this.currentMonth.toString();
-      help.year = this.currentYear;
-      help.date.setUTCFullYear(help.year);
-      help.date.setUTCMonth(+help.month);
-      help.date.setDate(help.daynumber);
-      this.secondMonthRequestedDays.push(help);
-     });
+    for (let i = 0; i < dates.length; i++) {
+      let help: requestDays = { daynumber: 0, month: '', price: 0, year: 0, date: new Date, dayOfYear: 0 }
+      this.gen.getUnitPrice(this.currentPicoUnitId, "PHP", help.date.getUTCDate(), help.date.getUTCMonth())
+        .subscribe((next) => { help.price = next }, (error) => { this.alertify.error(error) }, () => {
+          // do the rest when this observable is finished
+          help.daynumber = +dates[i];
+          help.month = this.currentMonth.toString();
+          help.year = this.currentYear;
+          help.date.setUTCFullYear(help.year);
+          help.date.setUTCMonth(+help.month);
+          help.date.setDate(help.daynumber);
+          this.secondMonthRequestedDays.push(help);
+        });
     }
 
 
-   }
+  }
 
-     
+
 
   getMonthText(test: number) { return this.gen.getMonthFromNo(test); }
 
- 
+
 
 
 }
 
 
-function convertCurrency(price: number, selectedCurrency: string, desiredCurrency: string): number 
-{
+function convertCurrency(price: number, selectedCurrency: string, desiredCurrency: string): number {
   let help = 0;
 
   return help;
