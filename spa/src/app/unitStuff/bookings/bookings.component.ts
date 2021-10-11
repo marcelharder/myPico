@@ -16,8 +16,6 @@ import { SecondMonthComponent } from './second-month/second-month.component';
   styleUrls: ['./bookings.component.css']
 })
 export class BookingsComponent implements OnInit {
-
-
  
   currentPicoUnitId = 0;
   selectedCurrency = "PHP";
@@ -27,9 +25,9 @@ export class BookingsComponent implements OnInit {
   currentYear = 0;
   currentMonth = 0;
   location = "";
-  firstMonth: RequestedMonth = { Id: 0, picoUnit: 0, year: 0, month: 0 };
-  secondMonth: RequestedMonth = { Id: 0, picoUnit: 0, year: 0, month: 0 };
-  currentMonthId = 0;
+  firstMonth: RequestedMonth = { appointmentId: 0, picoUnit: 0, year: 0, month: 0 };
+  secondMonth: RequestedMonth = { appointmentId: 0, picoUnit: 0, year: 0, month: 0 };
+  appointmentId = 0;
   requestDay: requestDays = { daynumber: 0, month: '', price: 0, year: 0, date: new Date, dayOfYear: 0 };
   firstMonthRequest: Array<string> = [];
   secondMonthRequest: Array<string> = [];
@@ -78,29 +76,16 @@ export class BookingsComponent implements OnInit {
 
   ngOnInit() {
 
-    this.currentPicoUnitId = +this.route.snapshot.params.id;
+    this.currentPicoUnitId = +this.route.snapshot.params.id; // ignored for now used behaviossubject instead
 
-    if (this.currentPicoUnitId === 1) { this.location = "Myna 610-A" }
-    if (this.currentPicoUnitId === 2) { this.location = "Myna 611-A" }
-    if (this.currentPicoUnitId === 3) { this.location = "Myna 612-A" }
+    this.auth.firstMonth.subscribe((next)=>{this.firstMonth = next; })
+    this.auth.secondMonth.subscribe((next)=>{this.secondMonth = next; })
 
-    let dateTime = new Date();
-    // zet het jaar op het huidige jaar
-    this.currentYear = dateTime.getFullYear();
-    // zet de maand op de huidige maand
-    this.currentMonth = dateTime.getMonth();
-    // get the current month number from the backend
-    this.days.getMonthId(this.currentMonth, this.currentYear).subscribe((next) => {
-      this.currentMonthId = next;
-      // push it to the calendar # 1, Nb the month from typescript is zerobased and my stuff not :-)
-      this.firstMonth.Id = this.currentMonthId + 1;
-      this.firstMonth.picoUnit = this.currentPicoUnitId;
-      this.fm.nextMonth(this.firstMonth);
-      // push it to the calendar # 2
-      this.secondMonth.Id = this.currentMonthId + 2;
-      this.secondMonth.picoUnit = this.currentPicoUnitId;
-      this.sm.nextMonth(this.secondMonth);
-    })
+    if (this.firstMonth.picoUnit === 1) { this.location = "Myna 610-A" }
+    if (this.firstMonth.picoUnit === 2) { this.location = "Myna 611-A" }
+    if (this.firstMonth.picoUnit === 3) { this.location = "Myna 612-A" }
+
+          
   }
 
   showPhp(){this.alertify.message("PHP");}
@@ -120,11 +105,23 @@ export class BookingsComponent implements OnInit {
       this.sm.makeVacant();
       this.firstMonthRequestedDays = [];
       this.secondMonthRequestedDays = [];
-      this.firstMonth.Id = this.firstMonth.Id - 1;
-      this.secondMonth.Id = this.secondMonth.Id - 1;
-  
-      this.fm.nextMonth(this.firstMonth);
-      this.sm.nextMonth(this.secondMonth);
+      // allow for december 
+      if(this.secondMonth.month === 2){
+        debugger;
+        this.firstMonth.month = 12;
+        this.firstMonth.year = this.firstMonth.year - 1;
+        this.fm.nextMonth(this.firstMonth);
+        this.secondMonth.month = this.secondMonth.month - 1;
+        this.sm.nextMonth(this.secondMonth);
+      }else {
+        this.firstMonth.month = this.firstMonth.month - 1;
+        this.secondMonth.month = this.secondMonth.month - 1;
+        this.fm.nextMonth(this.firstMonth);
+        this.sm.nextMonth(this.secondMonth);
+      }
+       
+
+     
     
     })
   }
@@ -134,8 +131,8 @@ export class BookingsComponent implements OnInit {
       this.sm.makeVacant();
       this.firstMonthRequestedDays = [];
       this.secondMonthRequestedDays = [];
-      this.firstMonth.Id = this.firstMonth.Id + 1;
-      this.secondMonth.Id = this.secondMonth.Id + 1;
+      this.firstMonth.month = this.firstMonth.month + 1;
+      this.secondMonth.month = this.secondMonth.month + 1;
   
       this.fm.nextMonth(this.firstMonth);
       this.sm.nextMonth(this.secondMonth);

@@ -10,14 +10,14 @@
       <div class="p-2 bd-highlight">
         <div class="card">
           <div class="card-body" style="background-color: rgb(196, 174, 142);">
-            <app-first-month [rm]="firstMonth" (updateDates)="receiveUpdatesFirstMonth($event)"></app-first-month>
+            <app-first-month (updateDates)="receiveUpdatesFirstMonth($event)"></app-first-month>
           </div>
         </div>
       </div>
       <div class="p-2 bd-highlight">
         <div class="card">
           <div class="card-body" style="background-color: rgb(211, 194, 169);">
-            <app-second-month [rm]="secondMonth" (updateDates)="receiveUpdatesSecondMonth($event)"></app-second-month>
+            <app-second-month (updateDates)="receiveUpdatesSecondMonth($event)"></app-second-month>
           </div>
         </div>
       </div>

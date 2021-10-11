@@ -6,6 +6,7 @@ import { environment } from '../../environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { User } from '../_models/user';
 import { Router } from '@angular/router';
+import { RequestedMonth } from '../_models/RequestedMonth';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,10 @@ export class AuthService {
   decodedToken: any | undefined;
   currentUser: User | undefined;
 
+  firstMonth = new BehaviorSubject<RequestedMonth>( { appointmentId: 0, picoUnit: 0, year: 0, month: 0 });
+  fmo = this.firstMonth.asObservable();
+  secondMonth = new BehaviorSubject<RequestedMonth>( { appointmentId: 0, picoUnit: 0, year: 0, month: 0 });
+  smo = this.secondMonth.asObservable();
   picoUnit = new BehaviorSubject<string>('0');
   currentPicoUnit = this.picoUnit.asObservable();
  
@@ -24,6 +29,8 @@ export class AuthService {
 
   
   changePicoUnitId(sh: string){this.picoUnit.next(sh);}
+  setFirstMonth(sh: RequestedMonth){this.firstMonth.next(sh);}
+  setSecondMonth(sh: RequestedMonth){this.secondMonth.next(sh);}
 
   
   

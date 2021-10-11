@@ -1,5 +1,5 @@
 export interface RequestedMonth {
-    Id: number;
+    appointmentId: number;
     month: number;
     year: number;
     picoUnit: number;

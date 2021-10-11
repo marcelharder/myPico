@@ -25,10 +25,10 @@ namespace myPicoAPI.Controllers {
             return Ok (helpMonth);
         }
 
-        [Route ("api/dates/{id}")]
+        [Route ("api/dates/{month}/{year}")]
         [HttpGet]
-        public async Task<IActionResult> GetDateNumbers (int id) {
-            var helpMonth = await _repo.GetMonthYear (id, 2021);
+        public async Task<IActionResult> GDN (int month, int year) {
+            var helpMonth = await _repo.GetMonthYear (month, year);
             return Ok (helpMonth);
         }
 

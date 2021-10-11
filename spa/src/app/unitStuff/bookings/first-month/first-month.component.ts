@@ -5,6 +5,7 @@ import { RequestedMonth } from 'src/app/_models/RequestedMonth';
 import { OccupancyService } from 'src/app/_services/occupancy.service';
 import { AlertifyService } from 'src/app/_services/Alertify.service';
 import { GeneralService } from 'src/app/_services/general.service';
+import { AuthService } from 'src/app/_services/Auth.service';
 
 @Component({
   selector: 'app-first-month',
@@ -12,9 +13,9 @@ import { GeneralService } from 'src/app/_services/general.service';
   styleUrls: ['./first-month.component.css']
 })
 export class FirstMonthComponent implements AfterContentInit {
-  @Input() rm: RequestedMonth | undefined
   @Output() updateDates = new EventEmitter<string[]>();
   requestedDates:Array<string> = [];
+  requestedMonth:RequestedMonth = { appointmentId: 0, picoUnit: 0, year: 0, month: 0 };
   
   currentMonth = 0;
   currentYear = 0;
@@ -42,24 +43,27 @@ export class FirstMonthComponent implements AfterContentInit {
 
   constructor(
     private dayService: DaysService,
+    private auth: AuthService,
     private alertify: AlertifyService,
     private gen: GeneralService,
     private occupancyService: OccupancyService) { }
 
     ngAfterContentInit() {
-    if (this.rm !== undefined) {
-      this.getOccDates(this.rm.Id);
-      this.getOccupancy(this.rm.picoUnit,this.rm.Id);
-      }
+    this.auth.firstMonth.subscribe((next)=>{
+      this.requestedMonth = next;
+      this.getOccDates(this.requestedMonth.month, this.requestedMonth.year);
+    })
   }
 
   nextMonth(m: RequestedMonth){
-    this.getOccDates(m.Id);
-    this.getOccupancy(m.picoUnit,m.Id);
+    this.monthName = this.gen.getMonthFromNo(m.month);
+    this.currentYear = m.year;
+    this.getOccDates(m.month, m.year);
+    //this.getOccupancy(m.picoUnit,m.Id);
   }
 
-  getOccDates(id: number) {
-    this.dayService.getDays(id).subscribe((res) => {
+  getOccDates(month: number, year: number) {
+    this.dayService.getDays(month,year).subscribe((res) => {
 
       this.element_1 = this.decodeDateNumbers(res.day_1);
       this.element_2 = this.decodeDateNumbers(res.day_2);

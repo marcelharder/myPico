@@ -153,11 +153,10 @@ namespace DatingApp.API.Data
                     case DayOfWeek.Friday: dn = fillMonth(dn, 5, daysInMonth); break;
                     case DayOfWeek.Saturday: dn = fillMonth(dn, 6, daysInMonth); break;
                 }
-
-
-
             });
             // get first day of the month in year
+            dn.Year = 2021;
+            dn.MonthId = month;
 
 
             return dn;
@@ -260,11 +259,14 @@ namespace DatingApp.API.Data
 
         public async Task<int> GetMonthId(int month, int year)
         {
-            var help = await _context.DateNumbers
+            var result = 0;
+            if(await _context.Months.AnyAsync()){
+            var help = await _context.Months
                .Where(x => x.MonthId == month)
                .Where(x => x.Year == year).FirstOrDefaultAsync();
-            return help.Id;
-
+               if(help != null){result = help.MonthId;}
+            }
+            return result;
         }
 
         public async Task<int> GetPicoUnitPrice(int picoNumber, string currency, int day, int month)
@@ -309,6 +311,17 @@ namespace DatingApp.API.Data
             var helpList = new List<int>();
             for (int a = 0; a < 43; a++) { helpList.Add(0); } // set up with all zero's
             for (int a = 1; a < noDays; a++) { helpList[a] = a; } // start at help with writing
+
+            switch(help){
+                case 0: break; // sunday
+                case 1: helpList.RemoveAt(42);helpList.Insert(0,0);break; // monday
+                case 2: helpList.RemoveAt(42);helpList.RemoveAt(41);helpList.Insert(0,0);helpList.Insert(1,0);break; // tuesday
+                case 3: helpList.RemoveAt(42);helpList.RemoveAt(41);helpList.RemoveAt(40);helpList.Insert(0,0);helpList.Insert(1,0);helpList.Insert(2,0);break;
+                case 4: helpList.RemoveAt(42);helpList.RemoveAt(41);helpList.RemoveAt(40);helpList.RemoveAt(39);
+                        helpList.Insert(0,0);helpList.Insert(1,0);helpList.Insert(2,0);helpList.Insert(3,0);break;
+                case 5: helpList.RemoveAt(42);helpList.RemoveAt(41);helpList.RemoveAt(40);helpList.RemoveAt(39);helpList.RemoveAt(38);
+                        helpList.Insert(0,0);helpList.Insert(1,0);helpList.Insert(2,0);helpList.Insert(3,0);helpList.Insert(4,0);break;
+            }
             
             dn.day_1 = helpList[0];
             dn.day_2 = helpList[1];
@@ -356,6 +369,9 @@ namespace DatingApp.API.Data
 
             dn.day_41 = helpList[40];
             dn.day_42 = helpList[41];
+
+
+            
 
 
             return dn;

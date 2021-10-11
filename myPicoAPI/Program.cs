@@ -29,8 +29,8 @@ namespace Dating.API
             var seeder = new seedDates(context);
             await seeder.seedUsers();
             await seeder.seedUnits();
-            await seeder.SeedDatesAsync();
-            await seeder.seedAppointments();
+            //await seeder.SeedDatesAsync();
+            //await seeder.seedAppointments();
             
             }
             catch(Exception ex)
