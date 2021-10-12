@@ -21,13 +21,7 @@ namespace myPicoAPI.Helpers {
             return total_price;
         }
 
-        public double getRentUSD (string[] requestedDays, int year, int PicoId) {
-            var conversionToUSD = 0.15;
-            var total_price = 0.0;
-            total_price = getRentPHP (requestedDays, year, PicoId);
-            total_price = total_price * conversionToUSD;
-            return total_price;
-        }
+        
 
     }
 }

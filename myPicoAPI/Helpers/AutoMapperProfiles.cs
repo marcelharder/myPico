@@ -24,15 +24,15 @@ namespace DatingApp.API.Helpers {
             CreateMap<UserForRegisterDto, User> ();
             CreateMap<MessageForCreationDto, Message> ().ReverseMap ();
 
-            CreateMap<Appointment, AppointmentForReturnDto> ()
+            CreateMap<Appointment, AppointmentForReturnDto> ();
                 // .ForMember (dest => dest.Status, opt => { opt.MapFrom (d => d.Status.ChangeStatus ()); });
-                .ForMember (dest => dest.RentUSD, opt => { opt.MapFrom (d => d.Rent.CalculateUSDFromPHP ()); });
+                // .ForMember (dest => dest.RentUSD, opt => { opt.MapFrom (d => d.Rent.CalculateUSDFromPHP ()); });
 
             CreateMap<AppointmentForUpdateDto, Appointment> ();
 
             CreateMap<AppointmentForCreationDto, Appointment> ()
-                .ForMember (dest => dest.RequestedDays, opt => { opt.MapFrom (d => d.RequestedDays.GetDaysOfTheYear ()); })
-                .ForMember (dest => dest.NoOfNights, opt => { opt.MapFrom (d => d.RequestedDays.CalculateNumberOfDays ()); });
+               .ForMember (dest => dest.NoOfNights, opt => { opt.MapFrom (d => d.RequestedDays.CalculateNumberOfDays ()); })
+               .ForMember (dest => dest.UnitId, opt => opt.MapFrom (u => u.picoUnitId));
 
             CreateMap<Message, MessageToReturnDto> ()
                 .ForMember (m => m.SenderPhotoUrl, opt => opt.MapFrom (u => u.Sender.Photos.FirstOrDefault (p => p.IsMain).Url))

@@ -1,4 +1,4 @@
-export class Appointment {
+export interface Appointment {
   picoUnitId: number;
   picoUnitPhotoUrl: string;
   userId: number;
@@ -12,10 +12,7 @@ export class Appointment {
   day: number;
   status: string;
   rent: number;
-  rentUSD: number;
   downPayment: number;
   paid_InFull: number;
   comment: string;
-  // tslint:disable-next-line:max-line-length
-  constructor() { }
 }

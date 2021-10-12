@@ -12,7 +12,7 @@ namespace DatingApp.API.Data
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveAll();
         Task<PagedList<User>> GetUsers(UserParams userParams);
-        Task<dateNumber> GetMonth(int id);
+        Task<Month_Model> GetMonth(int id);
 
         Task<dateNumber> GetMonthYear(int m, int y);
         Task<picoUnit> GetPicoUnitForThisUser(int userId);
@@ -34,7 +34,6 @@ namespace DatingApp.API.Data
         Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId);
         Task<dateOccupancy> getDateOccupancy(int id);
         Task<List<User>> getAppartmentUsers(int appartmentId);
-        Task<dateNumber> getDateNumber(int id);
         Task<int> GetPicoUnitPrice(int picoNumber, string currency, int day, int month);
     }
 }

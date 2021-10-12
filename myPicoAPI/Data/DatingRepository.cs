@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using DatingApp.API.Helpers;
 using DatingApp.API.Models;
 using myPicoAPI.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -28,12 +27,14 @@ namespace DatingApp.API.Data
         {
             _context.Add(entity);
         }
-
+        public async Task<bool> SaveAll()
+        {
+            return await _context.SaveChangesAsync() > 0;
+        }
         public void Delete<T>(T entity) where T : class
         {
             _context.Remove(entity);
         }
-
         public async Task<User> GetUser(int id)
         {
             var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.UserId == id);
@@ -44,23 +45,10 @@ namespace DatingApp.API.Data
             var photo = await _context.Photos.FirstOrDefaultAsync(u => u.Id == id);
             return photo;
         }
-        /* 
-                public async Task<IEnumerable<User>> GetUsers()
-                {
-                var users = await _context.Users.Include(p => p.Photos).ToListAsync();
-                   return users;
-                } */
-
-        public async Task<bool> SaveAll()
-        {
-            return await _context.SaveChangesAsync() > 0;
-        }
-
         public async Task<Photo> GetMainPhotoForUser(int userId)
         {
             return await _context.Photos.Where(u => u.UserId == userId).FirstOrDefaultAsync(p => p.IsMain);
         }
-
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
             List<int> userIds = new List<int>();
@@ -91,9 +79,7 @@ namespace DatingApp.API.Data
             }
             return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
-
         public async Task<Message> GetMessage(int id) { return await _context.Messages.FirstOrDefaultAsync(u => u.Id == id); }
-
         public async Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams)
         {
             var messages = _context.Messages
@@ -116,7 +102,6 @@ namespace DatingApp.API.Data
             messages = messages.OrderByDescending(d => d.MessageSent);
             return await PagedList<Message>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
         }
-
         public async Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
         {
             var messages = await _context.Messages
@@ -127,14 +112,10 @@ namespace DatingApp.API.Data
                 .ToListAsync();
             return messages;
         }
-
-        public async Task<dateNumber> GetMonth(int id)
+        public async Task<Month_Model> GetMonth(int id)
         {
-
-            return await _context.DateNumbers
-                .Where(x => x.Id == id).FirstOrDefaultAsync();
+            return await _context.Months.Where(x => x.MonthId == id).FirstOrDefaultAsync();
         }
-
         public async Task<dateNumber> GetMonthYear(int month, int year)
         {
             var dn = new dateNumber();
@@ -145,7 +126,7 @@ namespace DatingApp.API.Data
                 var help = firstDay.DayOfWeek;
                 switch (firstDay.DayOfWeek)
                 {
-                   
+
                     case DayOfWeek.Monday: dn = fillMonth(dn, 0, daysInMonth); break;
                     case DayOfWeek.Tuesday: dn = fillMonth(dn, 1, daysInMonth); break;
                     case DayOfWeek.Wednesday: dn = fillMonth(dn, 2, daysInMonth); break;
@@ -163,20 +144,10 @@ namespace DatingApp.API.Data
             return dn;
 
         }
-
-
-
-
-
-
-
-
-
         public async Task<Appointment> GetAppointment(int appointmentId)
         {
             return await _context.Appointments.FirstOrDefaultAsync(u => u.Id == appointmentId);
         }
-
         public async Task<dateOccupancy> GetOccupancy(int picoUnit, int id)
         {
             var result = await _context.DateOccupancy
@@ -184,28 +155,22 @@ namespace DatingApp.API.Data
                 .Where(j => j.picoUnit == picoUnit).FirstOrDefaultAsync();
             return result;
         }
-
-
-
         public async Task<PagedList<Appointment>> getAppointmentsForUser(int userId, MessageParams messageParams)
         { // gets the appointments for the requested user
             var appts = _context.Appointments.Where(b => b.userId == userId).AsQueryable();
             appts = appts.OrderByDescending(d => d.StartDate);
             return await PagedList<Appointment>.CreateAsync(appts, messageParams.PageNumber, messageParams.PageSize);
         }
-
         public async Task<PagedList<Appointment>> getAppointmentsForAdministrator(int picoUnitId, MessageParams messageParams)
         { // this gets the appointments from a particular pico unit
             var appts = _context.Appointments.Where(b => b.UnitId == picoUnitId).AsQueryable();
             appts = appts.OrderByDescending(d => d.StartDate);
             return await PagedList<Appointment>.CreateAsync(appts, messageParams.PageNumber, messageParams.PageSize);
         }
-
         public async Task<bool> IsOwnerOfAnyUnit(int userId)
         {
             return await _context.PicoUnits.Where(p => p.ownerId == userId).AnyAsync();
         }
-
         public async Task<int> getUnitIdForThisUser(int userId)
         {
             var pico = new picoUnit();
@@ -216,26 +181,18 @@ namespace DatingApp.API.Data
         {
             return await _context.DateOccupancy.Where(m => m.MonthId == id).FirstOrDefaultAsync();
         }
-
-        public async Task<dateNumber> getDateNumber(int id)
-        {
-            return await _context.DateNumbers.Where(m => m.MonthId == id).FirstOrDefaultAsync();
-        }
-
         public async Task<picoUnit> GetPicoUnit(int picoUnitId)
         {
             var pico = new picoUnit();
             pico = await _context.PicoUnits.Where(p => p.UnitId == picoUnitId).FirstOrDefaultAsync();
             return pico;
         }
-
         public async Task<picoUnit> GetPicoUnitForThisUser(int userId)
         {
             var pico = new picoUnit();
             pico = await _context.PicoUnits.Where(p => p.ownerId == userId).FirstOrDefaultAsync();
             return pico;
         }
-
         public async Task<List<User>> getAppartmentUsers(int appartmentId)
         {
             var help = new List<User>();
@@ -245,31 +202,28 @@ namespace DatingApp.API.Data
             foreach (int i in listOfUserIds) { help.Add(await GetUser(i)); }
             return help;
         }
-
         public async Task<int> GetPicoUnitId(string test)
         {
             var u = await _context.PicoUnits.FirstOrDefaultAsync(x => x.picoUnitNumber == test);
             return u.UnitId;
         }
-
         public async Task<string> GetPicoUnitName(int test)
         {
             var u = await _context.PicoUnits.FirstOrDefaultAsync(x => x.UnitId == test);
             return u.picoUnitNumber;
         }
-
         public async Task<int> GetMonthId(int month, int year)
         {
             var result = 0;
-            if(await _context.Months.AnyAsync()){
-            var help = await _context.Months
-               .Where(x => x.MonthId == month)
-               .Where(x => x.Year == year).FirstOrDefaultAsync();
-               if(help != null){result = help.MonthId;}
+            if (await _context.Months.AnyAsync())
+            {
+                var help = await _context.Months
+                   .Where(x => x.MonthId == month)
+                   .Where(x => x.Year == year).FirstOrDefaultAsync();
+                if (help != null) { result = help.MonthId; }
             }
             return result;
         }
-
         public async Task<int> GetPicoUnitPrice(int picoNumber, string currency, int day, int month)
         {
             var price = 0.00;
@@ -287,7 +241,7 @@ namespace DatingApp.API.Data
             }
             if (currency == "USD")
             {
-                var conv = 0.00;try { conv = Convert.ToDouble(php_usd_conversion); } catch (Exception e) { Console.Write(e); }
+                var conv = 0.00; try { conv = Convert.ToDouble(php_usd_conversion); } catch (Exception e) { Console.Write(e); }
                 price = price / conv;
             }
             if (currency == "EURO")
@@ -296,7 +250,7 @@ namespace DatingApp.API.Data
                 try { conv = Convert.ToDouble(php_eur_conversion); } catch (Exception e) { Console.Write(e); }
                 price = price / conv;
             }
-             if (currency == "YEN")
+            if (currency == "YEN")
             {
                 var conv = 0.00;
                 try { conv = Convert.ToDouble(php_yen_conversion); } catch (Exception e) { Console.Write(e); }
@@ -317,7 +271,6 @@ namespace DatingApp.API.Data
 
             return help;
         }
-
         private dateNumber fillMonth(dateNumber dn, int help, int noDays)
         {
             var helpList = new List<int>();
@@ -326,18 +279,19 @@ namespace DatingApp.API.Data
             for (int a = 0; a <= noDays; a++) { helpList[a] = a; } // start at help with writing
 
 
-            switch(help){
-                case 0: offset = 0;break; 
-                case 1: offset = 1 + noDays;helpList.Insert(0,0);break; 
-                case 2: offset = 2 + noDays;helpList.Insert(0,0);helpList.Insert(1,0);break; // tuesday
-                case 3: offset = 3 + noDays;helpList.Insert(0,0);helpList.Insert(1,0);helpList.Insert(2,0);break;
-                case 4: offset = 4 + noDays;helpList.Insert(0,0);helpList.Insert(1,0);helpList.Insert(2,0);helpList.Insert(3,0);break;
-                case 5: offset = 5 + noDays;helpList.Insert(0,0);helpList.Insert(1,0);helpList.Insert(2,0);helpList.Insert(3,0);helpList.Insert(4,0);break;
-                case 6: offset = 6 + noDays;helpList.Insert(0,0);helpList.Insert(1,0);helpList.Insert(2,0);helpList.Insert(3,0);helpList.Insert(4,0);helpList.Insert(5,0);break;
+            switch (help)
+            {
+                case 0: offset = 0; break;
+                case 1: offset = 1 + noDays; helpList.Insert(0, 0); break;
+                case 2: offset = 2 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); break; // tuesday
+                case 3: offset = 3 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); break;
+                case 4: offset = 4 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); break;
+                case 5: offset = 5 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); helpList.Insert(4, 0); break;
+                case 6: offset = 6 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); helpList.Insert(4, 0); helpList.Insert(5, 0); break;
             }
 
-            for (int a = offset; a < 43; a++ ){helpList.Add(0);} // remove any data beyound the dates
-            
+            for (int a = offset; a < 43; a++) { helpList.Add(0); } // remove any data beyound the dates
+
             dn.day_1 = helpList[1];
             dn.day_2 = helpList[2];
             dn.day_3 = helpList[3];
@@ -386,7 +340,7 @@ namespace DatingApp.API.Data
             dn.day_42 = helpList[42];
 
 
-            
+
 
 
             return dn;

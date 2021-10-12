@@ -71,12 +71,9 @@ namespace myPicoAPI.Controllers {
         public async Task<IActionResult> createAppointment (int userId, [FromBody] AppointmentForCreationDto app) {
             var currentUserId = int.Parse (User.FindFirst (ClaimTypes.NameIdentifier).Value);
             if (currentUserId != userId) return Unauthorized ();
-            var cr = new CalculateRent (_repo, _mapper);
-
+           
             var ap = new Appointment();
-            ap = _mapper.Map<Appointment> (app);
-            var calcRent = cr.getRentPHP (ap.RequestedDays, ap.StartDate.Year, ap.UnitId);
-            ap.Rent = Convert.ToSingle (calcRent);
+            ap = _mapper.Map<Appointment>(app);
             ap.Year = ap.StartDate.Year;
             _repo.Add (ap);
             if (await _repo.SaveAll ()) return CreatedAtRoute ("GetAppointment", new{controller = "Appointment" , id = ap.Id}, ap);
@@ -145,42 +142,6 @@ namespace myPicoAPI.Controllers {
          //   var selectedMonthOccupancy = await _repo.getDateOccupancy (selectedMonth.UserId);
          //   var loc = findLocation (selectedMonthDateNumber, selectedMonthOccupancy, theDate.Day, type);
 
-        }
-        private int findLocation (dateNumber sel, dateOccupancy docc, int day, int type) {
-            var help = 0;
-            if (sel.day_1 == day) docc.day_1 = type;
-            if (sel.day_2 == day) docc.day_2 = type;
-            if (sel.day_3 == day) docc.day_3 = type;
-            if (sel.day_4 == day) docc.day_4 = type;
-            if (sel.day_5 == day) docc.day_5 = type;
-            if (sel.day_6 == day) docc.day_6 = type;
-            if (sel.day_7 == day) docc.day_7 = type;
-            if (sel.day_8 == day) docc.day_8 = type;
-            if (sel.day_9 == day) docc.day_9 = type;
-            if (sel.day_10 == day) docc.day_10 = type;
-            if (sel.day_11 == day) docc.day_11 = type;
-            if (sel.day_12 == day) docc.day_12 = type;
-            if (sel.day_13 == day) docc.day_13 = type;
-            if (sel.day_14 == day) docc.day_14 = type;
-            if (sel.day_15 == day) docc.day_15 = type;
-            if (sel.day_16 == day) docc.day_16 = type;
-            if (sel.day_17 == day) docc.day_17 = type;
-            if (sel.day_18 == day) docc.day_18 = type;
-            if (sel.day_19 == day) docc.day_19 = type;
-            if (sel.day_20 == day) docc.day_20 = type;
-            if (sel.day_21 == day) docc.day_21 = type;
-            if (sel.day_22 == day) docc.day_22 = type;
-            if (sel.day_23 == day) docc.day_23 = type;
-            if (sel.day_24 == day) docc.day_24 = type;
-            if (sel.day_25 == day) docc.day_25 = type;
-            if (sel.day_26 == day) docc.day_26 = type;
-            if (sel.day_27 == day) docc.day_27 = type;
-            if (sel.day_28 == day) docc.day_28 = type;
-            if (sel.day_29 == day) docc.day_29 = type;
-            if (sel.day_30 == day) docc.day_30 = type;
-            if (sel.day_31 == day) docc.day_31 = type;
-
-            return help;
         }
 
     }
