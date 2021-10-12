@@ -157,14 +157,14 @@ export class BookingsComponent implements OnInit {
       // allow for jumping from december to january
       if (this.secondMonth.month === 12) {
         this.secondMonth.month = 1;
-        this.secondMonth.year = this.currentYear + 1;
+        this.secondMonth.year = this.secondMonth.year + 1;
         this.sm.nextMonth(this.secondMonth);
         this.firstMonth.month = this.firstMonth.month + 1;
         this.fm.nextMonth(this.firstMonth);
       } else {
         if (this.firstMonth.month === 12) {
           this.firstMonth.month = 1;
-          this.firstMonth.year = this.currentYear + 1;
+          this.firstMonth.year = this.firstMonth.year + 1;
           this.fm.nextMonth(this.firstMonth);
           this.secondMonth.month = this.secondMonth.month + 1;
           this.sm.nextMonth(this.secondMonth);

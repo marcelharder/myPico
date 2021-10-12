@@ -34,7 +34,8 @@
             </div>
             <!--show the array here-->
             <div class="row" *ngIf="secondMonthRequestedDays.length > 0">
-
+              <app-second-month-summary [fmrd]="secondMonthRequestedDays" [monthText]="secondMonth.month"
+              [currentPicoUnitId]="currentPicoUnitId"></app-second-month-summary>
              
 
             </div>
