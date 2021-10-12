@@ -12,9 +12,12 @@ import { BookingsComponent } from './unitStuff/bookings/bookings.component';
 import { HouseRulesComponent } from './unitStuff/houseRules/houseRules.component';
 import { RatingsComponent } from './unitStuff/ratings/ratings.component';
 import { UnitPicturesComponent } from './unitStuff/unitPictures/unitPictures.component';
+import { ListofAppointmentsComponent } from './user/appointments/listofAppointments/listofAppointments.component';
 import { ProfileComponent } from './user/Profile/Profile.component';
+import { AuthGuard } from './_guards/auth.guard';
 
-const routes: Routes = [{ path: '', component: HomeComponent },
+const routes: Routes = [
+{ path: '', component: HomeComponent },
 { path: 'contact', component: ContactComponent },
 { path: 'about', component: AboutComponent },
 { path: 'home', component: HomeComponent },
@@ -27,7 +30,23 @@ const routes: Routes = [{ path: '', component: HomeComponent },
 { path: 'unitBookings/:id', component: BookingsComponent },
 { path: 'unitPictures/:id', component: UnitPicturesComponent },
 { path: 'login', component: LoginComponent },
-{ path: 'profile', component: ProfileComponent },];
+
+{
+  path: '',
+  runGuardsAndResolvers: 'always',
+  canActivate: [AuthGuard],
+  children: [
+
+    { path: 'listOfAppointments', component: ListofAppointmentsComponent}, 
+    { path: 'profile', component: ProfileComponent },
+     
+    
+  ]
+},
+
+
+
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

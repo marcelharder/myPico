@@ -27,6 +27,7 @@ import { FirstMonthComponent } from './unitStuff/bookings/first-month/first-mont
 import { SecondMonthComponent } from './unitStuff/bookings/second-month/second-month.component';
 import { MonthSummaryComponent } from './unitStuff/bookings/first-month-summary/first-month-summary.component';
 import { SecondMonthSummaryComponent } from './unitStuff/bookings/second-month-summary/second-month-summary.component';
+import { ListofAppointmentsComponent } from './user/appointments/listofAppointments/listofAppointments.component';
 
 @NgModule({
   declarations: [						
@@ -47,7 +48,8 @@ import { SecondMonthSummaryComponent } from './unitStuff/bookings/second-month-s
       FirstMonthComponent,
       SecondMonthComponent,
       MonthSummaryComponent,
-      SecondMonthSummaryComponent
+      SecondMonthSummaryComponent,
+      ListofAppointmentsComponent
 
    ],
   imports: [

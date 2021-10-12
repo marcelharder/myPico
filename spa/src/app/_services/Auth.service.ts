@@ -50,7 +50,12 @@ export class AuthService {
 
 register(model: any) {return this.http.post(this.baseUrl + 'auth/register', model); }
 
-loggedIn() {return !this.jwtHelper.isTokenExpired(localStorage.getItem('token')!);}
+loggedIn() {
+  const token = localStorage.getItem('token');
+  if(token !== null || token === undefined){return !this.jwtHelper.isTokenExpired(token);}else return false;
+
+}
+
 
 logOut(){
   localStorage.setItem('chosen', '0');
