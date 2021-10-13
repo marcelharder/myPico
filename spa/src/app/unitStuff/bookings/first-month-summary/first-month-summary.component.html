@@ -1,48 +1,57 @@
-<div class="row">
-  <div class="col-sm-12">
-    <div class="d-flex flex-row bd-highlight mb-3">
-      <div class="p-2 bd-highlight"> <h4><span class="badge bg-secondary">Requested days in {{monthName}}</span></h4></div>
-      <div class="p-2 bd-highlight">
-        <div class="row">
-          <div class="col-sm-5 mr-2"><h6><span class="badge bg-info">Currency</span></h6></div>
-          <div class="col-sm-7"><select 
-            class="form-select form-select-sm" 
-            [(ngModel)]="desiredCurrency"
-            (change)="currencyChanged()">
-            <option selected value="PHP">PHP</option>
-            <option value="USD">USD</option>
-            <option value="EURO">Euro</option>
-            <option value="YEN">Yen</option>
-          </select></div>
+
+
+
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="d-flex flex-row bd-highlight mb-3">
+            <div class="p-2 bd-highlight"> <h4><span class="badge bg-secondary">Requested days in {{monthName}}</span></h4></div>
+            <div class="p-2 bd-highlight">
+              <div class="row">
+                <div class="col-sm-5 mr-2"><h6><span class="badge bg-info">Currency</span></h6></div>
+                <div class="col-sm-7"><select 
+                  class="form-select form-select-sm" 
+                  [(ngModel)]="desiredCurrency"
+                  (change)="currencyChanged()">
+                  <option selected value="PHP">PHP</option>
+                  <option value="USD">USD</option>
+                  <option value="EURO">Euro</option>
+                  <option value="YEN">Yen</option>
+                </select></div>
+              </div>
+            </div>
+          </div>
         </div>
+      
+        <table class="table table-striped">
+          <tr>
+            <th>Date</th>
+            <th>Price {{desiredCurrency}}</th>
+          </tr>
+          <tr *ngFor="let item of fmrd">
+            <th>{{item.daynumber}}-{{item.month}}-{{item.year}}</th>
+            <th>{{item.price}}</th>
+          </tr>
+          
+        </table>
+        <!--here come the buttons for sending the appointment to the owner-->
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="btn-group" role="group" aria-label="Basic example">
+              <button type="button" class="btn btn-warning" (click)="Cancel()">Cancel</button>
+              <button type="button" class="btn btn-secondary" (click)="RequestStay()">Request this stay</button>
+            </div>
+          </div>
+          <div class="col-sm-6"></div>
+        </div>
+      
       </div>
-    </div>
-  </div>
 
-  <table class="table table-striped">
-    <tr>
-      <th>Date</th>
-      <th>Price {{desiredCurrency}}</th>
-    </tr>
-    <tr *ngFor="let item of fmrd">
-      <th>{{item.daynumber}}-{{item.month}}-{{item.year}}</th>
-      <th>{{item.price}}</th>
-    </tr>
-    <tr>
-      <th></th>
-      <th>Total:</th>
-    </tr>
-  </table>
-  <!--here come the buttons for sending the appointment to the owner-->
-  <div class="row">
-    <div class="col-sm-6">
-      <div class="btn-group" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-secondary">Left</button>
-        <button type="button" class="btn btn-secondary">Middle</button>
-        <button type="button" class="btn btn-secondary">Right</button>
-      </div>
-    </div>
-    <div class="col-sm-6"></div>
-  </div>
 
-</div>
+
+      
+
+
+
+
+
+   

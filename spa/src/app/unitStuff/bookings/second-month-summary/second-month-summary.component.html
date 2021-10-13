@@ -29,4 +29,14 @@
       <th>{{item.price}}</th>
     </tr>
   </table>
+  <!--here come the buttons for sending the appointment to the owner-->
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-warning" (click)="Cancel()">Cancel</button>
+        <button type="button" class="btn btn-secondary" (click)="RequestStay()">Request this stay</button>
+      </div>
+    </div>
+    <div class="col-sm-6"></div>
+  </div>
 </div>

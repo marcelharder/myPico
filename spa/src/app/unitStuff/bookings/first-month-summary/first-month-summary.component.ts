@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { requestDays } from 'src/app/_models/requestDays';
 import { AlertifyService } from 'src/app/_services/Alertify.service';
 import { AuthService } from 'src/app/_services/Auth.service';
@@ -15,13 +16,15 @@ export class MonthSummaryComponent implements OnInit {
   @Input() currentPicoUnitId = 0;
   monthName = "";
   
-  desiredCurrency = '';
-  constructor(private alertify: AlertifyService, private auth:AuthService, private gen: GeneralService) { }
+  desiredCurrency = 'PHP';
+  constructor(private alertify: AlertifyService, private auth:AuthService, private gen: GeneralService, private router:Router) { }
 
   ngOnInit() {
     this.monthName = this.gen.getMonthFromNo(this.monthText).toString();
 
   }
+
+  
 
   currencyChanged() {
     for (let i = 0; i < this.fmrd.length; i++) {
@@ -33,6 +36,17 @@ export class MonthSummaryComponent implements OnInit {
     }
 
     this.alertify.success(this.desiredCurrency);
+  }
+
+  RequestStay(){
+    // show the email page with the email text and appointment details do this all on the server
+    // then make a sort of invoice page
+    this.alertify.success("Request stay");}
+  
+  Cancel(){
+    
+    this.router.navigate(['']);
+  
   }
 
 }

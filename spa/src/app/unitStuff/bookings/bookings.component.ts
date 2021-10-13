@@ -7,7 +7,9 @@ import { AlertifyService } from 'src/app/_services/Alertify.service';
 import { AuthService } from 'src/app/_services/Auth.service';
 import { DaysService } from 'src/app/_services/days.service';
 import { GeneralService } from 'src/app/_services/general.service';
+import { MonthSummaryComponent } from './first-month-summary/first-month-summary.component';
 import { FirstMonthComponent } from './first-month/first-month.component';
+import { SecondMonthSummaryComponent } from './second-month-summary/second-month-summary.component';
 import { SecondMonthComponent } from './second-month/second-month.component';
 
 @Component({
@@ -115,6 +117,10 @@ export class BookingsComponent implements OnInit {
       this.sm.makeVacant();
       this.firstMonthRequestedDays = [];
       this.secondMonthRequestedDays = [];
+           
+
+
+     
 
       // allow for jumping from january to december
 

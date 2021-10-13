@@ -11,9 +11,12 @@ export class OccupancyService {
 
 constructor(private http: HttpClient) { }
 
-getOccupancy(UnitId: number, id: number){
-  return this.http.get<dateOccupancy>(this.bu + 'occupancy/' + UnitId + '/' + id)
+getOccupancy(UnitId: number, id: number){return this.http.get<dateOccupancy>(this.bu + 'occupancy/' + UnitId + '/' + id)}
 
-}
+saveOccupancy(){}
+
+deleteOccupancy(){}
+
+
 
 }
