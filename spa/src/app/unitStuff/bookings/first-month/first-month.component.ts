@@ -60,7 +60,7 @@ export class FirstMonthComponent implements AfterContentInit {
     //this.monthName = this.gen.getMonthFromNo(m.month);
     this.currentYear = m.year; // write this to the html
     this.getOccDates(m.month, m.year);
-    //this.getOccupancy(m.picoUnit,m.Id);
+    this.getOccupancy(m.picoUnit,m.month, m.year);
   }
 
   getOccDates(month: number, year: number) {
@@ -116,8 +116,8 @@ export class FirstMonthComponent implements AfterContentInit {
     });
 
   }
-  getOccupancy(unit: number, id: number) {
-    this.occupancyService.getOccupancy(unit, id).subscribe((res) => {
+  getOccupancy(unit: number, month: number, year: number) {
+    this.occupancyService.getOccupancy(unit, month, year).subscribe((res) => {
       this.element_1_class = this.decodeColor(res.day_1);
       this.element_2_class = this.decodeColor(res.day_2);
       this.element_3_class = this.decodeColor(res.day_3);
