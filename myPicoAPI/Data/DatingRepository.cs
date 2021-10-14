@@ -166,12 +166,30 @@ namespace DatingApp.API.Data
             }
             else
             {
-                var newRecord = new dateOccupancy();
-                newRecord.MonthId = month;
-                newRecord.Year = year;
-                newRecord.picoUnit = picoUnit;
-                _context.DateOccupancy.Add(newRecord);
-                if (await SaveAll()) { return _mapper.Map<SeasonForReturnDTO>(newRecord); } else return null;
+                // a new dateOccupancy object needs markings for off-agenda days to give visual clue which dates can not be booked
+                var nr = new dateOccupancy();
+                int daysInMonth = DateTime.DaysInMonth(year, month);
+                await Task.Run(() =>
+                {
+                    var firstDay = new DateTime(year, month, 1);
+                    var help = firstDay.DayOfWeek;
+                    switch (firstDay.DayOfWeek)
+                    {
+
+                        case DayOfWeek.Monday: nr = fillOccupancyMonth(nr, 0, daysInMonth); break;
+                        case DayOfWeek.Tuesday: nr = fillOccupancyMonth(nr, 1, daysInMonth); break;
+                        case DayOfWeek.Wednesday: nr = fillOccupancyMonth(nr, 2, daysInMonth); break;
+                        case DayOfWeek.Thursday: nr = fillOccupancyMonth(nr, 3, daysInMonth); break;
+                        case DayOfWeek.Friday: nr = fillOccupancyMonth(nr, 4, daysInMonth); break;
+                        case DayOfWeek.Saturday: nr = fillOccupancyMonth(nr, 5, daysInMonth); break;
+                        case DayOfWeek.Sunday: nr = fillOccupancyMonth(nr, 6, daysInMonth); break;
+                    }
+                });
+                nr.MonthId = month;
+                nr.Year = year;
+                nr.picoUnit = picoUnit;
+                _context.DateOccupancy.Add(nr);
+                if (await SaveAll()) { return _mapper.Map<SeasonForReturnDTO>(nr); } else return null;
             }
 
 
@@ -203,7 +221,7 @@ namespace DatingApp.API.Data
             pico = await _context.PicoUnits.Where(p => p.ownerId == userId).FirstOrDefaultAsync();
             return pico.UnitId;
         }
-        
+
         public async Task<int> UpdateOccupancy(SeasonForReturnDTO doc)
         {
             var result = 0;
@@ -320,6 +338,83 @@ namespace DatingApp.API.Data
             }
 
             for (int a = offset; a < 43; a++) { helpList.Add(0); } // remove any data beyound the dates
+
+            dn.day_1 = helpList[1];
+            dn.day_2 = helpList[2];
+            dn.day_3 = helpList[3];
+            dn.day_4 = helpList[4];
+            dn.day_5 = helpList[5];
+            dn.day_6 = helpList[6];
+            dn.day_7 = helpList[7];
+            dn.day_8 = helpList[8];
+            dn.day_9 = helpList[9];
+            dn.day_10 = helpList[10];
+
+            dn.day_11 = helpList[11];
+            dn.day_12 = helpList[12];
+            dn.day_13 = helpList[13];
+            dn.day_14 = helpList[14];
+            dn.day_15 = helpList[15];
+            dn.day_16 = helpList[16];
+            dn.day_17 = helpList[17];
+            dn.day_18 = helpList[18];
+            dn.day_19 = helpList[19];
+            dn.day_20 = helpList[20];
+
+            dn.day_21 = helpList[21];
+            dn.day_22 = helpList[22];
+            dn.day_23 = helpList[23];
+            dn.day_24 = helpList[24];
+            dn.day_25 = helpList[25];
+            dn.day_26 = helpList[26];
+            dn.day_27 = helpList[27];
+            dn.day_28 = helpList[28];
+            dn.day_29 = helpList[29];
+            dn.day_30 = helpList[30];
+
+            dn.day_31 = helpList[31];
+            dn.day_32 = helpList[32];
+            dn.day_33 = helpList[33];
+            dn.day_34 = helpList[34];
+            dn.day_35 = helpList[35];
+            dn.day_36 = helpList[36];
+            dn.day_37 = helpList[37];
+            dn.day_38 = helpList[38];
+            dn.day_39 = helpList[39];
+            dn.day_40 = helpList[40];
+
+            dn.day_41 = helpList[41];
+            dn.day_42 = helpList[42];
+
+
+
+
+
+            return dn;
+        }
+        private dateOccupancy fillOccupancyMonth(dateOccupancy dn, int help, int noDays)
+        {
+            var helpList = new List<int>();
+            var offset = 0;
+          switch (help)
+            {
+                case 0: offset = 0; break;
+                case 1: offset = 1 ; helpList.Insert(0, 3); break;
+                case 2: offset = 2 ; helpList.Insert(0, 3); helpList.Insert(1, 3); break; 
+                case 3: offset = 3 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); break;
+                case 4: offset = 4 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); break;
+                case 5: offset = 5 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3); break;
+                case 6: offset = 6 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3); helpList.Insert(5, 3); break;
+            }
+
+            var startOcc = offset + 1;
+            var startTail = startOcc + noDays + 1;
+
+            for (int a = startOcc; a < noDays + startOcc; a++) { helpList.Add(0); } // set up with all 0
+ 
+            while(helpList.Count() < 43){helpList.Add(3);}
+
+           // for (int a = startTail; a < 43 ; a++) { helpList.Add(3); } // write 3 to the tails
 
             dn.day_1 = helpList[1];
             dn.day_2 = helpList[2];
