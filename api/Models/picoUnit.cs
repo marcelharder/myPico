@@ -14,6 +14,7 @@ namespace myPicoAPI.Models {
         public float HighSeasonRent { get; set; }
         public float DiscountPercentage { get; set; }
         public string Iban { get; set; }
+        public string Main_Photo_Url { get; set; }
         public string BankAddress { get; set; }
         public string BankName { get; set; }
         public string AccountNo { get; set; }

@@ -35,10 +35,12 @@ export class NavBarComponent implements OnInit {
   else return false;
   } 
 
-  selectUnit(picoUnitNumber: string) {
-    this.picoUnitId = +picoUnitNumber;
-    this.gen.changeUnitName(this.picoUnitId);
-    this.gen.changeChosen(true);
+  selectUnit(name: string) {
+    this.gen.getPicoUnitId(name).subscribe((next)=>{
+      this.picoUnitId = next;
+      this.auth.changePicoUnitId(next.toString());
+      this.gen.changeChosen(true);
+    });
     // go straight to the details page
     this.showDetails("./unitRules/");
     

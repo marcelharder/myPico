@@ -78,7 +78,7 @@ export class BookingsComponent implements OnInit {
 
   ngOnInit() {
 
-    this.currentPicoUnitId = +this.route.snapshot.params.id; // ignored for now used behaviossubject instead
+    //this.currentPicoUnitId = +this.route.snapshot.params.id; // ignored for now used behaviossubject instead
 
     this.auth.firstMonth.subscribe((next) => { 
       this.firstMonth = next; 
@@ -89,9 +89,18 @@ export class BookingsComponent implements OnInit {
     
     })
 
-    if (this.firstMonth.picoUnit === 1) { this.location = "Myna 610-A" }
+    this.auth.currentPicoUnit.subscribe((next)=>{
+       this.currentPicoUnitId = +next;
+      this.gen.getPicoUnitName(this.currentPicoUnitId).subscribe((next)=>{
+        this.location = next;
+      })
+    })
+
+    
+
+   /*  if (this.firstMonth.picoUnit === 1) { this.location = "Myna 610-A" }
     if (this.firstMonth.picoUnit === 2) { this.location = "Myna 611-A" }
-    if (this.firstMonth.picoUnit === 3) { this.location = "Myna 612-A" }
+    if (this.firstMonth.picoUnit === 3) { this.location = "Myna 612-A" } */
 
 
   }

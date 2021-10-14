@@ -13,17 +13,16 @@
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" (click)="showDetails('./unitRules/')">Details and Rules</a></li>
           <li><a class="dropdown-item" (click)="showDetails('./unitPictures/')">Photo's</a></li>
-          <li><a class="dropdown-item" (click)="showDetails('./unitBookings/')">Bookings</a></li>
           <li><a class="dropdown-item" (click)="showDetails('./unitRatings/')">Ratings</a></li>
         </ul>
       </li>
       <li class="nav-item dropdown" id="myDropdown2" *ngIf="!unitChosen()">
         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Select Unit</a>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" (click)="selectUnit('1')">Myna 610-A</a></li>
-          <li><a class="dropdown-item" (click)="selectUnit('2')">Myna 611-A</a></li>
-          <li><a class="dropdown-item" (click)="selectUnit('3')">Myna 612-A</a></li>
-          <li><a class="dropdown-item" (click)="selectUnit('4')">Myna 613-A</a></li>
+          <li><a class="dropdown-item" (click)="selectUnit('Myna 610-A')">Myna 610-A</a></li>
+          <li><a class="dropdown-item" (click)="selectUnit('Myna 611-A')">Myna 611-A</a></li>
+          <li><a class="dropdown-item" (click)="selectUnit('Myna 612-A')">Myna 612-A</a></li>
+          <li><a class="dropdown-item" (click)="selectUnit('Myna 613-A')">Myna 613-A</a></li>
         </ul>
       </li>
       <li class="nav-item dropdown" id="myDropdown3">
