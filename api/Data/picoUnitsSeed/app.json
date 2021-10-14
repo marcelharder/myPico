@@ -1,0 +1,48 @@
+[
+    {
+        "ownerId": 1,
+        "picoUnitNumber": "Myna 610-A",
+        "LowSeasonRent": "1200",
+        "MidSeasonRent":"1400",
+        "HighSeasonRent": "1800",
+        "DiscountPercentage": "5",
+        "Iban": "ABNABNA 74858-8485895",
+        "BankAddress": "Gen Phil Santos",
+        "BankName": "Hope",
+        "AccountNo": "2400-8959-76863",
+        "Swift": "100",
+        "Caretaker": "Cleaner-2",
+        "CaretakerMobile": "06475856896"
+    },
+    {
+        "ownerId": 2,
+        "picoUnitNumber": "Myna 614-A",
+        "LowSeasonRent": "1200",
+        "MidSeasonRent":"1400",
+        "HighSeasonRent": "1800",
+        "DiscountPercentage": "5",
+        "Iban": "ABNABNA 74858-8485895",
+        "BankAddress": "Gen Phil Santos",
+        "BankName": "Hope",
+        "AccountNo": "2400-8959-76863",
+        "Swift": "100",
+        "Caretaker": "Cleaner-2",
+        "CaretakerMobile": "06475856896"
+    },
+    {
+        "ownerId": 3,
+        "picoUnitNumber": "Myna 618-A",
+        "LowSeasonRent": "1200",
+        "MidSeasonRent":"1400",
+        "HighSeasonRent": "1800",
+        "DiscountPercentage": "5",
+        "Iban": "ABNABNA 74858-8485895",
+        "BankAddress": "Gen Phil Santos",
+        "BankName": "Hope",
+        "AccountNo": "2400-8959-76863",
+        "Swift": "100",
+        "Caretaker": "Cleaner-2",
+        "CaretakerMobile": "06475856896"
+    }
+
+]
