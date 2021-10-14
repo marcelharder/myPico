@@ -8,18 +8,22 @@ using DatingApp.API.Models;
 using myPicoAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using myPicoAPI.Dtos;
+using AutoMapper;
 
 namespace DatingApp.API.Data
 {
     public class DatingRepository : IDatingRepository
     {
         private readonly DataContext _context;
+        private IMapper _mapper;
 
         private IConfiguration _config;
 
-        public DatingRepository(DataContext context, IConfiguration config)
+        public DatingRepository(DataContext context, IConfiguration config, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
             _config = config;
 
         }
@@ -112,10 +116,6 @@ namespace DatingApp.API.Data
                 .ToListAsync();
             return messages;
         }
-        public async Task<Month_Model> GetMonth(int id)
-        {
-            return await _context.Months.Where(x => x.MonthId == id).FirstOrDefaultAsync();
-        }
         public async Task<dateNumber> GetMonthYear(int month, int year)
         {
             var dn = new dateNumber();
@@ -148,12 +148,38 @@ namespace DatingApp.API.Data
         {
             return await _context.Appointments.FirstOrDefaultAsync(u => u.Id == appointmentId);
         }
-        public async Task<dateOccupancy> GetOccupancy(int picoUnit, int id)
+        public async Task<SeasonForReturnDTO> GetOccupancy(int picoUnit, int month, int year)
         {
-            var result = await _context.DateOccupancy
-                .Where(j => j.Id == id)
+            // if there is no record then now is the time to add one
+            var res = await _context.DateOccupancy
+                .Where(j => j.MonthId == month)
+                .Where(j => j.Year == year)
+                .Where(j => j.picoUnit == picoUnit).AnyAsync();
+
+            if (res)
+            { // a record was found
+                var result = await _context.DateOccupancy
+                .Where(j => j.MonthId == month)
+                .Where(j => j.Year == year)
                 .Where(j => j.picoUnit == picoUnit).FirstOrDefaultAsync();
-            return result;
+                return _mapper.Map<SeasonForReturnDTO>(result);
+            }
+            else
+            {
+                var newRecord = new dateOccupancy();
+                newRecord.MonthId = month;
+                newRecord.Year = year;
+                newRecord.picoUnit = picoUnit;
+                _context.DateOccupancy.Add(newRecord);
+                if (await SaveAll()) { return _mapper.Map<SeasonForReturnDTO>(newRecord); } else return null;
+            }
+
+
+
+
+
+
+
         }
         public async Task<PagedList<Appointment>> getAppointmentsForUser(int userId, MessageParams messageParams)
         { // gets the appointments for the requested user
@@ -177,9 +203,23 @@ namespace DatingApp.API.Data
             pico = await _context.PicoUnits.Where(p => p.ownerId == userId).FirstOrDefaultAsync();
             return pico.UnitId;
         }
-        public async Task<dateOccupancy> getDateOccupancy(int id)
+        
+        public async Task<int> UpdateOccupancy(SeasonForReturnDTO doc)
         {
-            return await _context.DateOccupancy.Where(m => m.MonthId == id).FirstOrDefaultAsync();
+            var result = 0;
+            var selectedRecord = await _context.DateOccupancy.FirstOrDefaultAsync(s => s.Id == doc.Id);
+            selectedRecord = _mapper.Map<dateOccupancy>(doc);
+            _context.DateOccupancy.Update(selectedRecord);
+            if (await SaveAll()) { result = 1; }
+            return result;
+        }
+        public async Task<int> DeleteOccupancy(int id)
+        {
+            var result = 0;
+            var selectedRecord = await _context.DateOccupancy.FirstOrDefaultAsync(s => s.Id == id);
+            _context.DateOccupancy.Remove(selectedRecord);
+            if (await SaveAll()) { result = 1; }
+            return result;
         }
         public async Task<picoUnit> GetPicoUnit(int picoUnitId)
         {
@@ -212,18 +252,7 @@ namespace DatingApp.API.Data
             var u = await _context.PicoUnits.FirstOrDefaultAsync(x => x.UnitId == test);
             return u.picoUnitNumber;
         }
-        public async Task<int> GetMonthId(int month, int year)
-        {
-            var result = 0;
-            if (await _context.Months.AnyAsync())
-            {
-                var help = await _context.Months
-                   .Where(x => x.MonthId == month)
-                   .Where(x => x.Year == year).FirstOrDefaultAsync();
-                if (help != null) { result = help.MonthId; }
-            }
-            return result;
-        }
+
         public async Task<int> GetPicoUnitPrice(int picoNumber, string currency, int day, int month)
         {
             var price = 0.00;
@@ -345,7 +374,6 @@ namespace DatingApp.API.Data
 
             return dn;
         }
-
 
     }
 

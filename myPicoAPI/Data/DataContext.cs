@@ -9,7 +9,6 @@ namespace DatingApp.API.Data {
         public DbSet<User> Users { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public DbSet<Month_Model> Months { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<dateNumber> DateNumbers { get; set; }
         public DbSet<dateOccupancy> DateOccupancy { get; set; }

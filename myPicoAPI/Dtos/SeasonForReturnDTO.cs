@@ -3,7 +3,6 @@ namespace myPicoAPI.Dtos
     public class SeasonForReturnDTO
     {
     public int Id { get; set; }
-    public int Month_ModelId {get; set;}
     public string day_1 { get; set; }
     public string day_2 { get; set; }
     public string day_3 { get; set; }

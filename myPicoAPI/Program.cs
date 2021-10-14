@@ -26,11 +26,11 @@ namespace Dating.API
             {
             var context = services.GetRequiredService<DataContext>();
             await context.Database.MigrateAsync();
-            var seeder = new seedDates(context);
-            await seeder.seedUsers();
+            var seeder = new Seed(context);
+            await seeder.SeedUsers();
             await seeder.seedUnits();
             //await seeder.SeedDatesAsync();
-            //await seeder.seedAppointments();
+            await seeder.SeedAppointments();
             
             }
             catch(Exception ex)

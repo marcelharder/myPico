@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DatingApp.API.Helpers;
 using DatingApp.API.Models;
+using myPicoAPI.Dtos;
 using myPicoAPI.Models;
 
 namespace DatingApp.API.Data
@@ -12,14 +13,14 @@ namespace DatingApp.API.Data
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveAll();
         Task<PagedList<User>> GetUsers(UserParams userParams);
-        Task<Month_Model> GetMonth(int id);
-
         Task<dateNumber> GetMonthYear(int m, int y);
         Task<picoUnit> GetPicoUnitForThisUser(int userId);
-        Task<dateOccupancy> GetOccupancy(int picoUnit, int id);
+        Task<SeasonForReturnDTO> GetOccupancy(int picoUnit, int month, int year);
+        Task<int> UpdateOccupancy(SeasonForReturnDTO doc);
+        Task<int> DeleteOccupancy(int id);
+
         Task<User> GetUser(int id);
         Task<PagedList<Appointment>> getAppointmentsForAdministrator(int picoUnitId, MessageParams messageParams);
-        Task<int> GetMonthId(int month, int year);
         Task<Appointment> GetAppointment(int appointmentId);
         Task<bool> IsOwnerOfAnyUnit(int userId);
         Task<int> getUnitIdForThisUser(int userId);
@@ -32,7 +33,7 @@ namespace DatingApp.API.Data
         Task<string> GetPicoUnitName(int test);
         Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams);
         Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId);
-        Task<dateOccupancy> getDateOccupancy(int id);
+        
         Task<List<User>> getAppartmentUsers(int appartmentId);
         Task<int> GetPicoUnitPrice(int picoNumber, string currency, int day, int month);
     }
