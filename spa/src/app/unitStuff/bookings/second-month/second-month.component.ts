@@ -52,6 +52,7 @@ export class SecondMonthComponent implements AfterContentInit {
         this.requestedMonth = next;
         this.currentYear = this.requestedMonth.year; // write this to the html
         this.getOccDates(this.requestedMonth.month, this.requestedMonth.year);
+        this.getOccupancy(this.requestedMonth.picoUnit,this.requestedMonth.month, this.requestedMonth.year);
       })
   }
 
