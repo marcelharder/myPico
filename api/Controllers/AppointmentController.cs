@@ -21,11 +21,13 @@ namespace myPicoAPI.Controllers {
         private readonly IMapper _mapper;
 
         private readonly IUnit _unit;
+        private readonly IOwner _owner;
         private readonly IDatingRepository _repo;
-        public AppointmentController (IDatingRepository repo, IMapper mapper, IUnit unit) {
+        public AppointmentController (IDatingRepository repo, IMapper mapper, IUnit unit, IOwner owner) {
             _mapper = mapper;
             _unit = unit;
             _repo = repo;
+            _owner = owner;
         }
 
         [HttpGet ("{id}", Name = "GetAppointment")]
@@ -51,7 +53,7 @@ namespace myPicoAPI.Controllers {
                 // Yes, he or she is owner of Unit, so get all the appointments for this unit
                 pu = await _unit.getUnitIdForThisUser (m.UserId);
                
-                var a = await _repo.getAppointmentsForAdministrator (pu, m);
+                var a = await _owner.getAppointmentsForAdministrator (pu, m);
                 var b = _mapper.Map<IEnumerable<AppointmentForReturnDto>> (a);
                 Response.AddPagination (a.Currentpage,
                     a.PageSize,

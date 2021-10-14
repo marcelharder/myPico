@@ -54,6 +54,7 @@ namespace Dating.API
             services.AddScoped<IDatingRepository, DatingRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IUnit, Unit>();
+            services.AddScoped<IOwner, Owner>();
             services.AddScoped<IGeneralStuff, GeneralRepo>();
             services.AddScoped<LogUserActivity>();
 

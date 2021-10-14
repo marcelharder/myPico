@@ -18,7 +18,7 @@ namespace DatingApp.API.Data
         Task<int> UpdateOccupancy(SeasonForReturnDTO doc);
         Task<int> DeleteOccupancy(int id);
         Task<User> GetUser(int id);
-        Task<PagedList<Appointment>> getAppointmentsForAdministrator(int picoUnitId, MessageParams messageParams);
+        
         Task<Appointment> GetAppointment(int appointmentId);
         Task<PagedList<Appointment>> getAppointmentsForUser(int userId, MessageParams messageParams);
         Task<Photo> GetPhoto(int id);
