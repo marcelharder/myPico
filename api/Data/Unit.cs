@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using DatingApp.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,14 +14,16 @@ namespace DatingApp.API.Data
     public class Unit : IUnit
     {
         private readonly DataContext _context;
-        
+
         private IConfiguration _config;
+
+        private const string V = @"Data/unitPictures/pictures.xml";
 
         public Unit(DataContext context, IConfiguration config)
         {
             _context = context;
             _config = config;
-           
+
         }
 
         public async Task<User> GetUser(int id)
@@ -62,7 +65,7 @@ namespace DatingApp.API.Data
             return pico;
         }
 
-         public async Task<int> GetPicoUnitId(string test)
+        public async Task<int> GetPicoUnitId(string test)
         {
             var u = await _context.PicoUnits.FirstOrDefaultAsync(x => x.picoUnitNumber == test);
             return u.UnitId;
@@ -123,14 +126,14 @@ namespace DatingApp.API.Data
         {
             return await _context.PicoUnits.Where(p => p.ownerId == userId).AnyAsync();
         }
-        
+
 
         public async Task<bool> SaveAll()
         {
             return await _context.SaveChangesAsync() > 0;
         }
 
-         private int getSeason(int d, int m)
+        private int getSeason(int d, int m)
         {
             var help = 0;
 
@@ -139,6 +142,30 @@ namespace DatingApp.API.Data
             if (m == 4) { if (d > 2 && d < 27) { help = 2; } }   // test holiday
 
             return help;
+        }
+
+        public async Task<List<string>> getUnitPictures(string unitName)
+        {
+            var result = new List<string>();
+            await Task.Run(() =>
+            {
+                // get the picture url's from the different units
+                XDocument xdoc = XDocument.Load(V);
+                IEnumerable<XElement> el = from t in xdoc.Descendants("unit")
+                                           where (string)t.Element("name") == unitName
+                                           select t;
+
+                foreach (XElement j in el)
+                {
+                  result.Add(j.Element("name").Value);
+
+                };
+            });
+
+            return result;
+
+
+
         }
     }
 }

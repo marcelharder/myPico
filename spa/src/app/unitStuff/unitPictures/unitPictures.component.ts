@@ -30,7 +30,7 @@ export class UnitPicturesComponent implements OnInit {
     this.currentPicoUnitId = +this.route.snapshot.params.id;
     
        
-    if (this.currentPicoUnitId === 1) {
+    if (this.currentPicoUnitId === 7) {
       this.showDetails(1);
       this.pictureLocation = "Unit 610-A";
       this.photo_1 = "../assets/images/unit-pictures/610-A/DSC_6765.JPG";

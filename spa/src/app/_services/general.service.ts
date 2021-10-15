@@ -18,6 +18,7 @@ constructor(private http: HttpClient) { }
 getPicoUnitId(test: string){return this.http.get<number>(this.bu + 'getUnitId/' + test)}
 getPicoUnitName(test: number){return this.http.get<string>(this.bu + 'getUnitName/' + test,{responseType: 'text' as 'json'})}
 getPicoUnitDetails(test: number){return this.http.get<PicoUnit>(this.bu + 'unitDetails/' + test)}
+getPicoUnitPictures(test: number){return this.http.get<string[]>(this.bu + 'unitPictures/' + test)}
 
 getMonthFromNo(no: number): String{
   let test:Array<String> = [];
