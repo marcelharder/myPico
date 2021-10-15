@@ -151,14 +151,17 @@ namespace DatingApp.API.Data
             {
                 // get the picture url's from the different units
                 XDocument xdoc = XDocument.Load(V);
-                IEnumerable<XElement> el = from t in xdoc.Descendants("unit")
-                                           where (string)t.Element("name") == unitName
+                IEnumerable<XElement> el = from t in xdoc.Descendants("unit").Elements("name")
+                                           where (string)t.Attribute("id") == unitName
                                            select t;
 
                 foreach (XElement j in el)
                 {
-                  result.Add(j.Element("name").Value);
-
+                    IEnumerable<XElement> h = from s in el.Descendants ("image") select s;
+                    foreach(XElement r in h) {
+                        result.Add(r.Element("image").Value);
+                    }
+           
                 };
             });
 
