@@ -58,7 +58,7 @@ namespace myPicoAPI.Controllers {
         [Route("api/unitPictures/{id}")]
         public async Task<IActionResult> getUnitPictures(int id){
             
-            List<string> result = new List<string>();
+            var result = new List<string>();
             await Task.Run(async ()=>{
                // get the unit naam van de unit no
                var help = await _repo.GetPicoUnitName(id);

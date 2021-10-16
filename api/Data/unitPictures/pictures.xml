@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-    <unit>
+     <!--<unit>
         <name id="Myna 610-A">
             <image>../assets/images/unit-pictures/610-A/DSC_6765.JPG</image>
             <image>../assets/images/unit-pictures/610-A/DSC_6770.JPG</image>
@@ -14,7 +14,7 @@
             <image>../assets/images/unit-pictures/610-A/DSC_6778.JPG</image>
             <image>../assets/images/unit-pictures/610-A/DSC_6779.JPG</image>
         </name>
-    </unit>
+    </unit> -->
     <unit>
         <name id="Myna 611-A">
             <image>"../assets/images/unit-pictures/610-A/DSC_6780.JPG"</image>
@@ -23,7 +23,7 @@
             <image>"../assets/images/unit-pictures/610-A/DSC_6783.JPG"</image>
         </name>
     </unit>
-    <unit>
+    <!-- <unit>
         <name id="Myna 612-A">
             <image>../assets/images/unit-pictures/610-A/DSC_6780.JPG</image>
             <image>../assets/images/unit-pictures/610-A/DSC_6781.JPG</image>
@@ -38,5 +38,5 @@
             <image>../assets/images/unit-pictures/610-A/DSC_6782.JPG</image>
             <image>../assets/images/unit-pictures/610-A/DSC_6783.JPG</image>
         </name>
-    </unit>
+    </unit> -->
 </root>
