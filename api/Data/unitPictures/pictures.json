@@ -1,0 +1,37 @@
+[
+    {
+        "unit": "Myna 610-A",
+        "pictures": [
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6765.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6770.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6771.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6772.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6773.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6774.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6775.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6776.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6777.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6778.JPG"}]
+    },
+    {
+        "unit": "Myna 611-A",
+        "pictures": [
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6780.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6780.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6780.JPG"}]
+    },
+    {
+        "unit": "Myna 612-A",
+        "pictures": [
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6780.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6780.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6780.JPG"}]
+    },
+    {
+        "unit": "Myna 613-A",
+        "pictures": [
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6780.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6780.JPG"},
+            {"image":"../assets/images/unit-pictures/610-A/DSC_6780.JPG"}]
+    }
+]

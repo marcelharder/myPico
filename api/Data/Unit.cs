@@ -144,32 +144,63 @@ namespace DatingApp.API.Data
             return help;
         }
 
-        public async Task<List<string>> getUnitPictures(string unitName)
+       /*  public async Task<List<string>> getUnitPictures(string unitName)
         {
             var result = new List<string>();
+            var units = new List<unitPictures>();
             await Task.Run(() =>
-            {
-                // get the picture url's from the different units
-                XDocument xdoc = XDocument.Load(V);
-                IEnumerable<XElement> el = from t in xdoc.Descendants("unit").Elements("name")
-                                           where (string)t.Attribute("id") == unitName
-                                           select t;
-
-                foreach (XElement j in el)
-                {
-                    IEnumerable<XElement> h = el.Descendants ("image");
-                    foreach(XElement r in h) {
-                        
-                        result.Add(r.Element("image").Value);
-                    }
-           
-                };
-            });
-
+                          {
+                              var appData = System.IO.File.ReadAllText("Data/unitPictures/pictures.json");
+                              var picoUnits = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.List<unitPictures>>(appData);
+                              foreach (var p in picoUnits) { units.Add(p); }
+                              foreach (unitPictures p in units)
+                              {
+                                  if (p.unit == unitName)
+                                  {
+                                     result = p.pictures.ToList();
+                                  }
+                              }
+                          });
             return result;
+        } */
 
 
 
-        }
+
+
+
+           public async Task<List<string>> getUnitPictures(string unitName)
+          {
+              var result = new List<string>();
+              await Task.Run(() =>
+              {
+                  // get the picture url's from the different units
+                  XDocument xdoc = XDocument.Load(V);
+                  IEnumerable<XElement> el = from t in xdoc.Descendants("unit").Elements("name")
+                                             where (string)t.Attribute("id") == unitName
+                                             select t;
+
+                  foreach (XElement j in el)
+                  {
+                      IEnumerable<XElement> h = el.Descendants ("image");
+                      foreach(XElement r in h) {
+
+                          result.Add(r.Element("image").Value);
+                      }
+
+                  };
+              });
+
+              return result;
+
+
+
+          } 
+    }
+
+    class unitPictures
+    {
+        public string unit { get; set; }
+        public string[] pictures { get; set; }
     }
 }
