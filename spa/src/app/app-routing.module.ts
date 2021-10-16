@@ -4,6 +4,7 @@ import { AboutComponent } from './About/About.component';
 import { ContactComponent } from './Contact/Contact.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './Login/Login.component';
+import { MessageComponent } from './Message/Message.component';
 import { PicoGeneralComponent } from './picodeloroStuff/pico-general/pico-general.component';
 import { PicoImagesComponent } from './picodeloroStuff/pico-images/pico-images.component';
 import { PicoRulesComponent } from './picodeloroStuff/pico-rules/pico-rules.component';
@@ -39,6 +40,7 @@ const routes: Routes = [
 
     { path: 'listOfAppointments', component: ListofAppointmentsComponent}, 
     { path: 'profile', component: ProfileComponent },
+    { path: 'message', component: MessageComponent },
      
     
   ]

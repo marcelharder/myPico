@@ -28,9 +28,13 @@ import { SecondMonthComponent } from './unitStuff/bookings/second-month/second-m
 import { MonthSummaryComponent } from './unitStuff/bookings/first-month-summary/first-month-summary.component';
 import { SecondMonthSummaryComponent } from './unitStuff/bookings/second-month-summary/second-month-summary.component';
 import { ListofAppointmentsComponent } from './user/appointments/listofAppointments/listofAppointments.component';
+import { MessageComponent } from './Message/Message.component';
+import { GeneralService } from './_services/general.service';
+import { OccupancyService } from './_services/occupancy.service';
+import { AuthService } from './_services/Auth.service';
 
 @NgModule({
-  declarations: [						
+  declarations: [							
     AppComponent,
       NavBarComponent,
       HomeComponent,
@@ -49,8 +53,8 @@ import { ListofAppointmentsComponent } from './user/appointments/listofAppointme
       SecondMonthComponent,
       MonthSummaryComponent,
       SecondMonthSummaryComponent,
-      ListofAppointmentsComponent
-
+      ListofAppointmentsComponent,
+      MessageComponent
    ],
   imports: [
     BrowserAnimationsModule,
@@ -63,7 +67,10 @@ import { ListofAppointmentsComponent } from './user/appointments/listofAppointme
     AppRoutingModule
   ],
   providers: [
-    AlertifyService
+    AlertifyService,
+    GeneralService,
+    OccupancyService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })
