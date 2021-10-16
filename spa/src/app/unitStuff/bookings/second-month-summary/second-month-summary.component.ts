@@ -1,4 +1,6 @@
+
 import { Component, Input, OnInit } from '@angular/core';
+import { Message}  from 'src/app/_models/Message';
 import { Router } from '@angular/router';
 import { requestDays } from 'src/app/_models/requestDays';
 import { AlertifyService } from 'src/app/_services/Alertify.service';
@@ -15,8 +17,14 @@ export class SecondMonthSummaryComponent implements OnInit {
   @Input() monthText: any;
   @Input() fmrd: Array<requestDays> = [];
   @Input() currentPicoUnitId = 0;
+
+  mes: Message = {
+    id:0,senderId:0,senderKnownAs:'',
+    senderPhotoUrl:'',recipientId:0,
+    recipientKnownAs:'',recipientPhotoUrl:'',
+    content:'',isRead:false,dateRead: new Date, messageSent: new Date };
+
   monthName = "";
-  
   desiredCurrency = 'PHP';
   constructor(private alertify: AlertifyService, private auth:AuthService, private gen: GeneralService, private router: Router) { }
 
@@ -24,9 +32,16 @@ export class SecondMonthSummaryComponent implements OnInit {
     this.monthName = this.gen.getMonthFromNo(this.monthText).toString();
   }
 
+  RequestStay(){
+    this.alertify.success('stay requested in Unit ' + this.currentPicoUnitId);
+    // send a message to the caretaker of this unit ....
+    
   
+  }
 
-  RequestStay(){this.alertify.success('stay requested');}
+
+
+
   Cancel(){this.router.navigate(['']);}
 
   currencyChanged() {

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Message } from 'src/app/_models/Message';
 import { requestDays } from 'src/app/_models/requestDays';
 import { AlertifyService } from 'src/app/_services/Alertify.service';
 import { AuthService } from 'src/app/_services/Auth.service';
@@ -14,6 +15,13 @@ export class MonthSummaryComponent implements OnInit {
   @Input() monthText: any;
   @Input() fmrd: Array<requestDays> = [];
   @Input() currentPicoUnitId = 0;
+
+  mes: Message = {
+    id:0,senderId:0,senderKnownAs:'',
+    senderPhotoUrl:'',recipientId:0,
+    recipientKnownAs:'',recipientPhotoUrl:'',
+    content:'',isRead:false,dateRead: new Date, messageSent: new Date };
+    
   monthName = "";
   
   desiredCurrency = 'PHP';
@@ -39,9 +47,10 @@ export class MonthSummaryComponent implements OnInit {
   }
 
   RequestStay(){
-    // show the email page with the email text and appointment details do this all on the server
-    // then make a sort of invoice page
-    this.alertify.success("Request stay");}
+    this.alertify.success('stay requested in Unit ' + this.currentPicoUnitId);
+    // send a message to the caretaker of this unit ....
+  
+  }
   
   Cancel(){
     

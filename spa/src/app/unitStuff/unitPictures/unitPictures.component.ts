@@ -10,7 +10,7 @@ import { AuthService } from '../../_services/Auth.service';
 })
 export class UnitPicturesComponent implements OnInit {
   currentPicoUnitId = 0;;
-  pictureLocation = "Pico de loro";
+  pictureLocation = "";
 
   unitPictures: Array<string> = [];
   photo_0: string = "";
@@ -36,7 +36,7 @@ export class UnitPicturesComponent implements OnInit {
 
     // get the pictures from the backend
     this.gen.getPicoUnitPictures(this.currentPicoUnitId).subscribe((next)=>{
-      this.showDetails(1);
+      
       this.unitPictures = next;
       
       this.photo_1 = this.unitPictures[0];
@@ -57,9 +57,9 @@ export class UnitPicturesComponent implements OnInit {
    
 
   }
-  showDetails(x:number)  { if (this.currentPicoUnitId === 0) {return false; } else {return true; } }
+  
 
-  availability() {this.router.navigate(['/unitBookings/' + this.currentPicoUnitId]); }
+  
 
   details() {this.router.navigate(['/unitRules/' + this.currentPicoUnitId]); }
 
