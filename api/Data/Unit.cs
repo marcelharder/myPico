@@ -157,8 +157,9 @@ namespace DatingApp.API.Data
 
                 foreach (XElement j in el)
                 {
-                    IEnumerable<XElement> h = from s in el.Descendants ("image") select s;
+                    IEnumerable<XElement> h = el.Descendants ("image");
                     foreach(XElement r in h) {
+                        
                         result.Add(r.Element("image").Value);
                     }
            
