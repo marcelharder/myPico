@@ -2,7 +2,19 @@
   <div class="row" style="height: auto;">
     <div class="col-sm-12">
       <h2>Pictures of {{pictureLocation}}</h2> 
-      <carousel>
+
+      <!--  <carousel>
+        <span *ngFor="let image of unitPictures">
+          <slide>
+            <img src="image" alt="slide" style="max-height: 600px !important;display: block; width: 100%;">
+          </slide>
+        </span>
+       </carousel> -->
+
+
+
+
+       <carousel>
         <slide>
           <img src="{{photo_1}}" alt="First slide" style="max-height: 600px !important;display: block; width: 100%;">
         </slide>
@@ -33,7 +45,7 @@
         <slide>
           <img src="{{photo_10}}" alt="Tenth slide" style="max-height: 600px !important;display: block; width: 100%;">
         </slide>
-      </carousel>
+      </carousel> 
     </div>
   </div>
   <div class="row" *ngIf="showDetails(1)" style="padding-top: 25px">
