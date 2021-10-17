@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../_services/Auth.service';
 import { AlertifyService } from '../_services/Alertify.service';
 import { Message } from '../_models/Message';
+import { UserService } from '../_services/UserService.service';
 
 @Component({
   selector: 'app-messages',
@@ -34,7 +35,8 @@ export class MessageComponent implements OnInit {
   compose = 0;
   title = '';
 
-  constructor(private userService: UserService,
+  constructor(
+    private userService: UserService,
     private authService: AuthService,
     private route: ActivatedRoute,
     private alertify: AlertifyService) { }

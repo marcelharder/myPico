@@ -62,7 +62,7 @@ namespace myPicoAPI.Controllers {
             await Task.Run(async ()=>{
                // get the unit naam van de unit no
                var help = await _repo.GetPicoUnitName(id);
-               // get the strings from the xml file
+               // get the strings from the json file
                result = await _repo.getUnitPictures(help);
             });
             return Ok(result);
