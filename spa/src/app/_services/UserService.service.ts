@@ -15,7 +15,7 @@ baseUrl = environment.apiUrl;
 constructor(private http: HttpClient) { }
 
 getMessages(id: number, page: string, itemsPerPage: string, messageContainer: string) {
-  const paginatedResult: PaginatedResult = new PaginatedResult();
+  const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
   let params = new HttpParams();
   params = params.append('MessageContainer', messageContainer);
   if (page != null && itemsPerPage != null) {
@@ -25,7 +25,7 @@ getMessages(id: number, page: string, itemsPerPage: string, messageContainer: st
   return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages', { observe: 'response', params })
       .pipe(
           map(response => {
-              if(response.body !== null){paginatedResult.result = response.body;}
+              paginatedResult.result = response.body;
               if (response.headers.get('Pagination') !== null) { 
                 paginatedResult.pagination = JSON.parse(response.headers.get('Pagination')); }
               return paginatedResult;
