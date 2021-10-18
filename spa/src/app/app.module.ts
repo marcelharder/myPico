@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CarouselModule} from 'ngx-bootstrap/carousel';
 import { AccordionModule} from 'ngx-bootstrap/accordion';
 import { BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import {PaginationModule} from 'ngx-bootstrap/pagination';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -32,10 +33,12 @@ import { MessageComponent } from './Message/Message.component';
 import { GeneralService } from './_services/general.service';
 import { OccupancyService } from './_services/occupancy.service';
 import { AuthService } from './_services/Auth.service';
+import { TimeagoModule } from 'ngx-timeago';
 
 @NgModule({
-  declarations: [							
-    AppComponent,
+  declarations: [	
+     					
+      AppComponent,
       NavBarComponent,
       HomeComponent,
       ContactComponent,
@@ -57,10 +60,12 @@ import { AuthService } from './_services/Auth.service';
       MessageComponent
    ],
   imports: [
+    TimeagoModule.forRoot(),
     BrowserAnimationsModule,
     BsDatepickerModule.forRoot(),
     CarouselModule.forRoot(),
     AccordionModule.forRoot(),
+    PaginationModule,
     FormsModule,
     BrowserModule,
     HttpClientModule,
