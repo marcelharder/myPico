@@ -95,26 +95,25 @@ namespace DatingApp.API.Data
                 case 1: price = selectedUnit.MidSeasonRent; break;
                 case 2: price = selectedUnit.HighSeasonRent; break;
             }
-
             if (currency == "USD")
             {
                 var hep = await _gen.convertCurrency((float)price, "USD", "PHP");
                 
-                return (int)Math.Round(Convert.ToDecimal(hep));
+                return Convert.ToInt32(hep);
             }
             else
             {
                 if (currency == "EUR")
                 {
                     var hep = await _gen.convertCurrency((float)price, "EUR", "PHP");
-                    return (int)Math.Round(Convert.ToDecimal(hep));
+                   return Convert.ToInt32(hep);
                 }
                 else
                 {
                     if (currency == "YEN")
                     {
                         var hep = await _gen.convertCurrency((float)price, "YEN", "PHP");
-                        return (int)Math.Round(Convert.ToDecimal(hep));
+                        return Convert.ToInt32(hep);
                     }
                     else { return 0;}
                 }
