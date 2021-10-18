@@ -44,6 +44,7 @@
         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Welcome {{ this.auth.decodedToken?.unique_name | titlecase }}</a>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="./profile"> Profile </a></li>
+          <li><a class="dropdown-item" href="./message"> Messages </a></li>
           <li><a class="dropdown-item" href="./listOfAppointments"> Stays </a></li>
           <li><a class="dropdown-item" (click)="logout()"><i class="fa fa-sign-out"></i>Log out</a></li>
         </ul>

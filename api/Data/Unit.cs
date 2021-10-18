@@ -17,12 +17,15 @@ namespace DatingApp.API.Data
 
         private IConfiguration _config;
 
+        private IGeneralStuff _gen;
+
         private const string V = @"Data/unitPictures/pictures.xml";
 
-        public Unit(DataContext context, IConfiguration config)
+        public Unit(DataContext context, IConfiguration config, IGeneralStuff gen)
         {
             _context = context;
             _config = config;
+            _gen = gen;
 
         }
 
@@ -80,9 +83,9 @@ namespace DatingApp.API.Data
         public async Task<int> GetPicoUnitPrice(int picoNumber, string currency, int day, int month)
         {
             var price = 0.00;
-            var php_usd_conversion = _config.GetSection("php_usd_conversion").Value;
-            var php_eur_conversion = _config.GetSection("php_eur_conversion").Value;
-            var php_yen_conversion = _config.GetSection("php_yen_conversion").Value;
+            // var php_usd_conversion = _config.GetSection("php_usd_conversion").Value;
+            // var php_eur_conversion = _config.GetSection("php_eur_conversion").Value;
+            // var php_yen_conversion = _config.GetSection("php_yen_conversion").Value;
             var selectedUnit = await _context.PicoUnits.FirstOrDefaultAsync(a => a.UnitId == picoNumber);
             // find out which season it is
             var season = getSeason(day, month);
@@ -92,7 +95,32 @@ namespace DatingApp.API.Data
                 case 1: price = selectedUnit.MidSeasonRent; break;
                 case 2: price = selectedUnit.HighSeasonRent; break;
             }
+
             if (currency == "USD")
+            {
+                var hep = await _gen.convertCurrency((float)price, "USD", "PHP");
+                
+                return (int)Math.Round(Convert.ToDecimal(hep));
+            }
+            else
+            {
+                if (currency == "EUR")
+                {
+                    var hep = await _gen.convertCurrency((float)price, "EUR", "PHP");
+                    return (int)Math.Round(Convert.ToDecimal(hep));
+                }
+                else
+                {
+                    if (currency == "YEN")
+                    {
+                        var hep = await _gen.convertCurrency((float)price, "YEN", "PHP");
+                        return (int)Math.Round(Convert.ToDecimal(hep));
+                    }
+                    else { return 0;}
+                }
+            }
+
+            /* if (currency == "USD")
             {
                 var conv = 0.00; try { conv = Convert.ToDouble(php_usd_conversion); } catch (Exception e) { Console.Write(e); }
                 price = price / conv;
@@ -108,11 +136,11 @@ namespace DatingApp.API.Data
                 var conv = 0.00;
                 try { conv = Convert.ToDouble(php_yen_conversion); } catch (Exception e) { Console.Write(e); }
                 price = price / conv;
-            }
+            } */
 
 
 
-            return (int)Math.Round(price);
+
         }
 
         public async Task<int> getUnitIdForThisUser(int userId)
@@ -144,31 +172,32 @@ namespace DatingApp.API.Data
             return help;
         }
 
-          public async Task<List<string>> getUnitPictures(string unitName)
-         {
-             var result = new unitPictures();
-             var units = new List<unitPictures>();
-             var help1 = new List<string>();
-             await Task.Run(() =>
-                           {
-                               var appData = System.IO.File.ReadAllText("Data/unitPictures/pictures.json");
-                               var picoUnits = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.List<unitPictures>>(appData);
-                               foreach (var p in picoUnits) { units.Add(p); }
-                               foreach (unitPictures p in units)
-                               {
-                                   if (p.unit == unitName)
-                                   {
-                                     result = p;
-                                     var test = p.pictures;
-                                     foreach(pics r in test){
-                                        help1.Add(r.image);
-                                     }
-                                   }
-                               } 
-                           });
-                           
-             return help1;
-         } 
+        public async Task<List<string>> getUnitPictures(string unitName)
+        {
+            var result = new unitPictures();
+            var units = new List<unitPictures>();
+            var help1 = new List<string>();
+            await Task.Run(() =>
+                          {
+                              var appData = System.IO.File.ReadAllText("Data/unitPictures/pictures.json");
+                              var picoUnits = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.List<unitPictures>>(appData);
+                              foreach (var p in picoUnits) { units.Add(p); }
+                              foreach (unitPictures p in units)
+                              {
+                                  if (p.unit == unitName)
+                                  {
+                                      result = p;
+                                      var test = p.pictures;
+                                      foreach (pics r in test)
+                                      {
+                                          help1.Add(r.image);
+                                      }
+                                  }
+                              }
+                          });
+
+            return help1;
+        }
 
 
 
@@ -200,13 +229,13 @@ namespace DatingApp.API.Data
         } */
     }
 
-    
+
 
 
 }
 namespace DatingApp.API.Data
 {
-public class unitPictures
+    public class unitPictures
     {
         public string unit { get; set; }
         public pics[] pictures { get; set; }
@@ -215,7 +244,8 @@ public class unitPictures
 
 namespace DatingApp.API.Data
 {
-   public class pics {
+    public class pics
+    {
         public string image { get; set; }
     }
 }
