@@ -14,7 +14,7 @@ baseUrl = environment.apiUrl;
 
 constructor(private http: HttpClient) { }
 
-getMessages(id: number, page: string, itemsPerPage: string, messageContainer: string) {
+getMessages(id: number, page: any, itemsPerPage: any, messageContainer: string) {
   const paginatedResult: PaginatedResult<Message[]> = new PaginatedResult<Message[]>();
   let params = new HttpParams();
   params = params.append('MessageContainer', messageContainer);
@@ -24,12 +24,16 @@ getMessages(id: number, page: string, itemsPerPage: string, messageContainer: st
   }
   return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages', { observe: 'response', params })
       .pipe(
-          map(response => {
-              paginatedResult.result = response.body;
-              if (response.headers.get('Pagination') !== null) { 
-                paginatedResult.pagination = JSON.parse(response.headers.get('Pagination')); }
-              return paginatedResult;
-          }));
+        map((response) => {
+          paginatedResult.result = response.body!;
+          if (response.headers.get('Pagination') != null) {
+            paginatedResult.pagination = JSON.parse(
+              response.headers.get('Pagination')!
+            );
+          }
+          return paginatedResult;
+        })
+          );
 }
 // tslint:disable-next-line: max-line-length
 getMessageThread(id: number, recipientId: number) { return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages/thread/' + recipientId); }

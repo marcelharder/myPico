@@ -53,10 +53,7 @@ export class MessageComponent implements OnInit {
       case 2: this.messageContainer = 'Inbox'; break;
       case 3: this.messageContainer = 'Outbox'; break;
     }
-    this.userService.getMessages(this.authService.decodedToken.nameid,
-      this.pagination.currentPage,
-      this.pagination.itemsPerPage,
-      this.messageContainer).subscribe((res: PaginatedResult<Message[]>) => {
+    this.userService.getMessages(this.authService.decodedToken.nameid, this.pagination.currentPage, this.pagination.itemsPerPage, this.messageContainer).subscribe((res: PaginatedResult<Message[]>) => {
         this.messages = res.result;
         this.pagination = res.pagination;
       }, (error) => { this.alertify.error(error); });
@@ -71,7 +68,7 @@ export class MessageComponent implements OnInit {
           error => {
             this.alertify.error('Failed to delete the message');
           });
-    }, ()=>{});
+    });
   }
   pageChanged(event: any): void {
     this.pagination.currentPage = event.page;
@@ -88,9 +85,9 @@ export class MessageComponent implements OnInit {
     this.list = 0;
     this.compose = 0;
   }
-  showDetails() { if (this.details === 1) { return true; } }
-  showList() { if (this.list === 1) { return true; } }
-  showCompose() { if (this.compose === 1) { return true; } }
+  showDetails() { if (this.details === 1) { return true; } else {return false} }
+  showList() { if (this.list === 1) { return true; } else {return false}  }
+  showCompose() { if (this.compose === 1) { return true; } else {return false}  }
   cancel() { this.list = 1; this.compose = 0; this.details = 0; }
   composeMessage() {
     this.mail.content = '';
@@ -99,10 +96,9 @@ export class MessageComponent implements OnInit {
     this.compose = 1;
   }
   replyMessage() {
-    debugger;
     this.newMessage.recipientId = this.mail.senderId;
     this.newMessage.content = this.mail.content;
-    this.userService.sendMessage(this.authService.decodedToken.nameid, this.newMessage).subscribe((message: Message) => {
+    this.userService.sendMessage(this.authService.decodedToken.nameid, this.newMessage).subscribe(() => {
       this.newMessage.content = '';
       this.cancel();
     }, error => {
