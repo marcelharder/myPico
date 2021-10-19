@@ -34,6 +34,7 @@ import { GeneralService } from './_services/general.service';
 import { OccupancyService } from './_services/occupancy.service';
 import { AuthService } from './_services/Auth.service';
 import { TimeagoModule } from 'ngx-timeago';
+import { RequestStayComponent } from './unitStuff/requestStay/requestStay.component';
 
 @NgModule({
   declarations: [	
@@ -57,7 +58,8 @@ import { TimeagoModule } from 'ngx-timeago';
       MonthSummaryComponent,
       SecondMonthSummaryComponent,
       ListofAppointmentsComponent,
-      MessageComponent
+      MessageComponent,
+      RequestStayComponent
    ],
   imports: [
     TimeagoModule.forRoot(),

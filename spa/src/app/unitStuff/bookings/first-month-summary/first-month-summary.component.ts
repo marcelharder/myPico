@@ -49,6 +49,7 @@ export class MonthSummaryComponent implements OnInit {
   RequestStay(){
     this.alertify.success('stay requested in Unit ' + this.currentPicoUnitId);
     // send a message to the caretaker of this unit ....
+    this.router.navigate(['/requestStay/' + appo]);
   
   }
   

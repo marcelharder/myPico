@@ -12,6 +12,7 @@ import { PicoMapComponent } from './picodeloroStuff/picoMap/picoMap.component';
 import { BookingsComponent } from './unitStuff/bookings/bookings.component';
 import { HouseRulesComponent } from './unitStuff/houseRules/houseRules.component';
 import { RatingsComponent } from './unitStuff/ratings/ratings.component';
+import { RequestStayComponent } from './unitStuff/requestStay/requestStay.component';
 import { UnitPicturesComponent } from './unitStuff/unitPictures/unitPictures.component';
 import { ListofAppointmentsComponent } from './user/appointments/listofAppointments/listofAppointments.component';
 import { ProfileComponent } from './user/Profile/Profile.component';
@@ -31,6 +32,7 @@ const routes: Routes = [
 { path: 'unitBookings/:id', component: BookingsComponent },
 { path: 'unitPictures/:id', component: UnitPicturesComponent },
 { path: 'login', component: LoginComponent },
+{ path: 'requestStay/:id', component: RequestStayComponent },
 
 {
   path: '',
@@ -41,6 +43,7 @@ const routes: Routes = [
     { path: 'listOfAppointments', component: ListofAppointmentsComponent}, 
     { path: 'profile', component: ProfileComponent },
     { path: 'message', component: MessageComponent },
+   
      
     
   ]
