@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" *ngIf="!showRequest()">
   <div class="card-header">
     <h4><span>{{location}}</span></h4>
   </div>
@@ -45,4 +45,8 @@
     </div>
   </div>
   <div class="card-footer"></div>
+</div>
+
+<div *ngIf="showRequest()">
+  <app-requestStay [appointment]="appoin"></app-requestStay>
 </div>

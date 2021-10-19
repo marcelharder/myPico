@@ -1,6 +1,7 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Appointment } from 'src/app/_models/appointment';
 import { requestDays } from 'src/app/_models/requestDays';
 import { RequestedMonth } from 'src/app/_models/RequestedMonth';
 import { AlertifyService } from 'src/app/_services/Alertify.service';
@@ -22,6 +23,26 @@ export class BookingsComponent implements OnInit {
   currentPicoUnitId = 0;
   selectedCurrency = "PHP";
   desiredCurrency = "PHP";
+  request = 0;
+  appt: Appointment = {
+    picoUnitId: 0,
+    picoUnitPhotoUrl: "",
+    userId: 0,
+    requestedDays: [],
+    startDate: new Date,
+    endDate: new Date,
+    noOfNights: 0,
+    id: 0,
+    year: 0,
+    month: 0,
+    day: 0,
+    status: "",
+    rent: 0,
+    rentUSD: 0,
+    downPayment: 0,
+    paid_InFull: 0,
+    comment: ""};
+  
 
 
   currentYear = 0;
@@ -40,33 +61,7 @@ export class BookingsComponent implements OnInit {
   @ViewChild(FirstMonthComponent) fm!: FirstMonthComponent;
   @ViewChild(SecondMonthComponent) sm!: SecondMonthComponent;
 
-  //secondMonth!: RequestedMonth;
-  /* listDaysArray: Array<DaysModel> = [];
-  bsConfig!: Partial<BsDatepickerConfig>;
-
-  currentMonth = 0;
-  currentYear = 0;
-  selectedUnit: string = "";
-  mb!: Appointment;
-  util: Utilities = new Utilities();
-  hmos: Array<string> = this.util.getMonths();
-  years: Array<string> = this.util.getYears();
-  listDays: Array<string> =[];
-  lo: Array<string>=[];
-  listOccupancy: Array<string>=[];
-  currentUser!: User;
-  picoUnitId: string = "";
-  id: number =0;
-  arrivalDate!: Date;
-  dischargeDate!: Date;
-  requestedDays: string[] = [];
-  requestedDaysPrices: string[] = [];
-  requestedDaysSeason: string[] = [];
-  totalRent: number = 0;
-  selectedMonth!: string;
-  selectedYear!: string;
-  allowAddingOccupancy = false;
-  allowDeletingOccupancy = false; */
+  
 
   constructor(private auth: AuthService,
     public gen: GeneralService,
@@ -78,9 +73,7 @@ export class BookingsComponent implements OnInit {
 
   ngOnInit() {
 
-    //this.currentPicoUnitId = +this.route.snapshot.params.id; // ignored for now used behaviossubject instead
-
-    this.auth.firstMonth.subscribe((next) => { 
+   this.auth.firstMonth.subscribe((next) => { 
       this.firstMonth = next; 
      
     })
@@ -95,14 +88,6 @@ export class BookingsComponent implements OnInit {
         this.location = next;
       })
     })
-
-    
-
-   /*  if (this.firstMonth.picoUnit === 1) { this.location = "Myna 610-A" }
-    if (this.firstMonth.picoUnit === 2) { this.location = "Myna 611-A" }
-    if (this.firstMonth.picoUnit === 3) { this.location = "Myna 612-A" } */
-
-
   }
 
   showPhp() { this.alertify.message("PHP"); }
@@ -238,7 +223,9 @@ export class BookingsComponent implements OnInit {
 
   getMonthText(test: number) { return this.gen.getMonthFromNo(test); }
 
-
+  showRequest(){
+    
+    if(this.request === 1){return true;} else {return false;}}
 
 
 }

@@ -52,11 +52,9 @@ export class SecondMonthSummaryComponent implements OnInit {
   }
 
   RequestStay(){
-    // build the appointment and save it to the database
-
     this.alertify.success('stay requested in Unit ' + this.currentPicoUnitId);
     // send a message to the caretaker of this unit ....
-    this.router.navigate(['/requestStay/' + this.appt.picoUnitId]);
+    
     
   
   }
