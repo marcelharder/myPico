@@ -86,17 +86,19 @@ namespace DatingApp.API.Data
 
             // check to see if the currency's are available for this day
             var current_date = DateTime.Today;
-            if(await _context.Currency.AnyAsync(a => a.date == current_date)){
+            if (await _context.Currency.AnyAsync(a => a.date == current_date))
+            {
                 // get the stuff from the database
                 var h = await _context.Currency.FirstOrDefaultAsync(a => a.date == current_date);
                 php_coeff = h.USDPHP;
                 eur_coeff = h.USDEUR;
                 yen_coeff = h.USDJPY;
             }
-            else{ // get the stuff from the currency api
-            var h = await _gen.convertCurrency();
- 
-                php_coeff =  Convert.ToDouble(h.quotes.USDPHP);
+            else
+            { // get the stuff from the currency api
+                var h = await _gen.convertCurrency();
+
+                php_coeff = Convert.ToDouble(h.quotes.USDPHP);
                 eur_coeff = Convert.ToDouble(h.quotes.USDEUR);
                 yen_coeff = Convert.ToDouble(h.quotes.USDJPY);
                 // and make a new record in the database
@@ -106,11 +108,11 @@ namespace DatingApp.API.Data
                 nr.USDEUR = eur_coeff;
                 nr.USDJPY = yen_coeff;
                 _context.Currency.Add(nr);
-                if(await SaveAll()){}
+                if (await SaveAll()) { }
             }
 
             var price = 0.00F;
-           
+
             var selectedUnit = await _context.PicoUnits.FirstOrDefaultAsync(a => a.UnitId == picoNumber);
             // find out which season it is
             var season = getSeason(day, month);
@@ -120,21 +122,37 @@ namespace DatingApp.API.Data
                 case 1: price = selectedUnit.MidSeasonRent; break;
                 case 2: price = selectedUnit.HighSeasonRent; break;
             }
-            if (currency == "USD") { 
-                    help = price / php_coeff; }
+
+            if (currency == "PHP")
+            {
+                help = price;
+            }
+            else
+            {
+                if (currency == "USD")
+                {
+                    help = price / php_coeff;
+                }
                 else
                 {
-                    if (currency == "EUR") { 
-                        var usd = price/php_coeff;
-                        help = usd * eur_coeff; }
+                    if (currency == "EUR")
+                    {
+                        var usd = price / php_coeff;
+                        help = usd * eur_coeff;
+                    }
                     else
                     {
-                        if (currency == "YEN") { 
-                            var usd = price/php_coeff;
-                            help = usd * yen_coeff; }
+                        if (currency == "YEN")
+                        {
+                            var usd = price / php_coeff;
+                            help = usd * yen_coeff;
+                        }
                     }
                 }
-           return help.ToString("#.##");
+            }
+
+
+            return help.ToString("#.##");
         }
 
         public async Task<int> getUnitIdForThisUser(int userId)
@@ -192,7 +210,7 @@ namespace DatingApp.API.Data
 
             return help1;
         }
-      
+
     }
 
 
