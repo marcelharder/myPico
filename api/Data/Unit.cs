@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 using DatingApp.API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -18,8 +17,6 @@ namespace DatingApp.API.Data
         private IConfiguration _config;
 
         private IGeneralStuff _gen;
-
-        private const string V = @"Data/unitPictures/pictures.xml";
 
         public Unit(DataContext context, IConfiguration config, IGeneralStuff gen)
         {
@@ -195,35 +192,7 @@ namespace DatingApp.API.Data
 
             return help1;
         }
-
-
-
-
-
-
-        /* public async Task<List<string>> getUnitPictures(string unitName)
-        {
-            var result = new List<string>();
-            await Task.Run(() =>
-            {
-                  // get the picture url's from the different units
-                  XDocument xdoc = XDocument.Load(V);
-                IEnumerable<XElement> el = from t in xdoc.Descendants("unit").Elements("name")
-                                           where (string)t.Attribute("id") == unitName
-                                           select t;
-                foreach (XElement j in el)
-                {
-                    IEnumerable<XElement> h = el.Descendants("image");
-                    foreach (XElement r in h)
-                    {
-                        result.Add(r.Element("image").Value);
-                    }
-
-                };
-            });
-
-            return result;
-        } */
+      
     }
 
 

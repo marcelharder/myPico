@@ -126,10 +126,7 @@ export class BookingsComponent implements OnInit {
       this.sm.makeVacant();
       this.firstMonthRequestedDays = [];
       this.secondMonthRequestedDays = [];
-           
-
-
-     
+          
 
       // allow for jumping from january to december
 
@@ -142,7 +139,7 @@ export class BookingsComponent implements OnInit {
       } else {
         if (this.secondMonth.month === 1) {
           this.secondMonth.month = 12;
-          this.secondMonth.year = this.currentYear - 1;
+          this.secondMonth.year = this.secondMonth.year - 1;
           this.sm.nextMonth(this.secondMonth);
           this.firstMonth.month = this.firstMonth.month - 1;
           this.fm.nextMonth(this.firstMonth);
