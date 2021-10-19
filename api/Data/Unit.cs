@@ -80,12 +80,40 @@ namespace DatingApp.API.Data
             return u.picoUnitNumber;
         }
 
-        public async Task<int> GetPicoUnitPrice(int picoNumber, string currency, int day, int month)
+        public async Task<string> GetPicoUnitPrice(int picoNumber, string currency, int day, int month)
         {
-            var price = 0.00;
-            // var php_usd_conversion = _config.GetSection("php_usd_conversion").Value;
-            // var php_eur_conversion = _config.GetSection("php_eur_conversion").Value;
-            // var php_yen_conversion = _config.GetSection("php_yen_conversion").Value;
+            var help = 0.00;
+            var php_coeff = 0.00;
+            var eur_coeff = 0.00;
+            var yen_coeff = 0.00;
+
+            // check to see if the currency's are available for this day
+            var current_date = DateTime.Today;
+            if(await _context.Currency.AnyAsync(a => a.date == current_date)){
+                // get the stuff from the database
+                var h = await _context.Currency.FirstOrDefaultAsync(a => a.date == current_date);
+                php_coeff = h.USDPHP;
+                eur_coeff = h.USDEUR;
+                yen_coeff = h.USDJPY;
+            }
+            else{ // get the stuff from the currency api
+            var h = await _gen.convertCurrency();
+ 
+                php_coeff =  Convert.ToDouble(h.quotes.USDPHP);
+                eur_coeff = Convert.ToDouble(h.quotes.USDEUR);
+                yen_coeff = Convert.ToDouble(h.quotes.USDJPY);
+                // and make a new record in the database
+                var nr = new Model_Currency();
+                nr.date = current_date;
+                nr.USDPHP = php_coeff;
+                nr.USDEUR = eur_coeff;
+                nr.USDJPY = yen_coeff;
+                _context.Currency.Add(nr);
+                if(await SaveAll()){}
+            }
+
+            var price = 0.00F;
+           
             var selectedUnit = await _context.PicoUnits.FirstOrDefaultAsync(a => a.UnitId == picoNumber);
             // find out which season it is
             var season = getSeason(day, month);
@@ -95,51 +123,21 @@ namespace DatingApp.API.Data
                 case 1: price = selectedUnit.MidSeasonRent; break;
                 case 2: price = selectedUnit.HighSeasonRent; break;
             }
-            if (currency == "USD")
-            {
-                var hep = await _gen.convertCurrency((float)price, "USD", "PHP");
-                
-                return Convert.ToInt32(hep);
-            }
-            else
-            {
-                if (currency == "EUR")
-                {
-                    var hep = await _gen.convertCurrency((float)price, "EUR", "PHP");
-                   return Convert.ToInt32(hep);
-                }
+            if (currency == "USD") { 
+                    help = price / php_coeff; }
                 else
                 {
-                    if (currency == "YEN")
+                    if (currency == "EUR") { 
+                        var usd = price/php_coeff;
+                        help = usd * eur_coeff; }
+                    else
                     {
-                        var hep = await _gen.convertCurrency((float)price, "YEN", "PHP");
-                        return Convert.ToInt32(hep);
+                        if (currency == "YEN") { 
+                            var usd = price/php_coeff;
+                            help = usd * yen_coeff; }
                     }
-                    else { return 0;}
                 }
-            }
-
-            /* if (currency == "USD")
-            {
-                var conv = 0.00; try { conv = Convert.ToDouble(php_usd_conversion); } catch (Exception e) { Console.Write(e); }
-                price = price / conv;
-            }
-            if (currency == "EURO")
-            {
-                var conv = 0.00;
-                try { conv = Convert.ToDouble(php_eur_conversion); } catch (Exception e) { Console.Write(e); }
-                price = price / conv;
-            }
-            if (currency == "YEN")
-            {
-                var conv = 0.00;
-                try { conv = Convert.ToDouble(php_yen_conversion); } catch (Exception e) { Console.Write(e); }
-                price = price / conv;
-            } */
-
-
-
-
+           return help.ToString("#.##");
         }
 
         public async Task<int> getUnitIdForThisUser(int userId)

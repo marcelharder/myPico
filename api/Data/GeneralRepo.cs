@@ -1,19 +1,16 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using myPicoAPI.Data;
 using Newtonsoft.Json;
 
 namespace myPicoAPI.Data
 {
-
     public class GeneralRepo : IGeneralStuff
     {
-        public async Task<string> convertCurrency(float amount, string desiredCurrency, string inhandCurrency)
+
+      public async Task<help> convertCurrency()
         {
-            var result = 0.00;
+            var h = new help();
             var baseUrl = "http://api.currencylayer.com/live?access_key=" + "b4affeb80bcb4fe9ea9b09c31d41c30a";
             var client = new HttpClient();
             var request = new HttpRequestMessage
@@ -25,31 +22,17 @@ namespace myPicoAPI.Data
             {
                 response.EnsureSuccessStatusCode();
                 var body = await response.Content.ReadAsStringAsync();
-                var h = Newtonsoft.Json.JsonConvert.DeserializeObject<help>(body);
-
-                var php_coeff = Convert.ToDouble(h.quotes.USDPHP);
-                var eur_coeff = Convert.ToDouble(h.quotes.USDEUR);
-                var yen_coeff = Convert.ToDouble(h.quotes.USDJPY);
-             
-
-                if (desiredCurrency == "USD") { result = amount / php_coeff; }
-                else
-                {
-                    if (desiredCurrency == "EUR") { result = amount / eur_coeff; }
-                    else
-                    {
-                        if (desiredCurrency == "YEN") { result = amount / yen_coeff; }
-                    }
-                }
+                h = Newtonsoft.Json.JsonConvert.DeserializeObject<help>(body);
+              
             }
-         return result.ToString();
+         return h;
         }
     }
 }
 
 
 
-class help
+public class help
 {
     [JsonProperty("success")]
     public bool success { get; set; }
@@ -61,7 +44,7 @@ class help
     public quote quotes { get; set; }
 
 }
-class quote
+public class quote
 {
     public string USDPHP { get; set; }
     public string USDEUR { get; set; }
