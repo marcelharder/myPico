@@ -12,7 +12,7 @@ export interface PicoUnit {
     bankName: string;
     accountNo: string;
     swift: string;
-    caretaker: string;
-    caretakerMobile: string;
+    Caretaker: string;
+    CaretakerMobile: string;
 
 }
