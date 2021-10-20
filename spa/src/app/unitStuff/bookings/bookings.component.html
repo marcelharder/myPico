@@ -48,5 +48,5 @@
 </div>
 
 <div *ngIf="showRequest()">
-  <app-requestStay [appointment]="appoin"></app-requestStay>
+  <app-requestStay [appointment]="appointment" (message)="sendMessage($event)"></app-requestStay>
 </div>

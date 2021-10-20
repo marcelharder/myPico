@@ -93,6 +93,10 @@ export class BookingsComponent implements OnInit {
   showPhp() { this.alertify.message("PHP"); }
   showUsd() { this.alertify.message("USD"); }
 
+  sendMessage(m: any){
+    
+  }
+
   currencyChanged() {
     for (let i = 0; i < this.firstMonthRequestedDays.length; i++) {
       let item: requestDays = this.firstMonthRequestedDays[i];

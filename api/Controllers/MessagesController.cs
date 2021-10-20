@@ -59,8 +59,8 @@ namespace DatingApp.API.Controllers {
         [HttpPost]
         public async Task<IActionResult> CreatMessage (int userId, [FromBody] MessageForCreationDto messageForCreationDto) {
             var currentUserId = int.Parse (User.FindFirst (ClaimTypes.NameIdentifier).Value);
-
             if (currentUserId != userId) return Unauthorized ();
+            
             messageForCreationDto.SenderId = currentUserId;
             var recipient = await _repo.GetUser (messageForCreationDto.RecipientId);
             var sender = await _repo.GetUser (messageForCreationDto.SenderId);
