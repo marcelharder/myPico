@@ -8,8 +8,8 @@ import { UserService } from '../_services/UserService.service';
 
 @Component({
   selector: 'app-messages',
-  templateUrl: './message.component.html',
-  styleUrls: ['./message.component.css']
+  templateUrl: './Message.component.html',
+  styleUrls: ['./Message.component.css']
 })
 
 export class MessageComponent implements OnInit {

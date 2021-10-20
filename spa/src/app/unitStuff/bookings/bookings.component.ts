@@ -2,6 +2,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Appointment } from 'src/app/_models/appointment';
+import { Message } from 'src/app/_models/Message';
 import { requestDays } from 'src/app/_models/requestDays';
 import { RequestedMonth } from 'src/app/_models/RequestedMonth';
 import { AlertifyService } from 'src/app/_services/Alertify.service';
@@ -42,6 +43,19 @@ export class BookingsComponent implements OnInit {
     downPayment: 0,
     paid_InFull: 0,
     comment: ""};
+  message: Message = {
+    id: 0,
+    senderId: 0,
+    senderKnownAs: "",
+    senderPhotoUrl: "",
+    recipientId: 0,
+    recipientKnownAs:  "",
+    recipientPhotoUrl:  "",
+    content:  "",
+    isRead: false,
+    dateRead: new Date,
+    messageSent: new Date
+  }
   
 
 
@@ -223,13 +237,39 @@ export class BookingsComponent implements OnInit {
 
   }
 
+  composeMessage(w: string){
+    
+    if(w === '1'){
+    //comes back from first month summary, fmrd should contain the price/day
+    // save the appointment to the database, as new appointment
+       
+    this.appt.picoUnitId = this.currentPicoUnitId;
+    this.appt.requestedDays = this.firstMonthRequestedDays;
+    this.appt.rent = 900;
+    this.appt.month = this.firstMonth.month;
+    if(this.auth.loggedIn()){this.appt.userId = this.auth.decodedToken.name_id;};
+    this.appt.status = "0";
+    
+    // send message to the caretaker of this unit to nofify that appointment arrived
+
+    
+
+    this.request = 1;
+
+
+
+
+    };
+    if(w === '2'){//comes back from second month summary
+
+    };
+  }
+
 
 
   getMonthText(test: number) { return this.gen.getMonthFromNo(test); }
 
-  showRequest(){
-    
-    if(this.request === 1){return true;} else {return false;}}
+  showRequest(){ if(this.request === 1){return true;} else {return false;}}
 
 
 }

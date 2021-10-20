@@ -1,5 +1,5 @@
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Message}  from 'src/app/_models/Message';
 import { Router } from '@angular/router';
 import { requestDays } from 'src/app/_models/requestDays';
@@ -18,31 +18,9 @@ export class SecondMonthSummaryComponent implements OnInit {
   @Input() monthText: any;
   @Input() fmrd: Array<requestDays> = [];
   @Input() currentPicoUnitId = 0;
+  @Output() sm = new EventEmitter<string>();
 
-  mes: Message = {
-    id:0,senderId:0,senderKnownAs:'',
-    senderPhotoUrl:'',recipientId:0,
-    recipientKnownAs:'',recipientPhotoUrl:'',
-    content:'',isRead:false,dateRead: new Date, messageSent: new Date };
-  appt: Appointment = {
-    picoUnitId: 0,
-    picoUnitPhotoUrl: "",
-    userId: 0,
-    requestedDays: [],
-    startDate: new Date,
-    endDate: new Date,
-    noOfNights: 0,
-    id: 0,
-    year: 0,
-    month: 0,
-    day: 0,
-    status: "",
-    rent: 0,
-    rentUSD: 0,
-    downPayment: 0,
-    paid_InFull: 0,
-    comment: ""};
-
+ 
   monthName = "";
   desiredCurrency = 'PHP';
   constructor(private alertify: AlertifyService, private auth:AuthService, private gen: GeneralService, private router: Router) { }
@@ -53,7 +31,7 @@ export class SecondMonthSummaryComponent implements OnInit {
 
   RequestStay(){
     this.alertify.success('stay requested in Unit ' + this.currentPicoUnitId);
-    // send a message to the caretaker of this unit ....
+    this.sm.emit("2");
     
     
   
