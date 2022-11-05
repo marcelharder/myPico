@@ -16,7 +16,7 @@ namespace myPicoAPI.Data
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-               RequestUri = new Uri("http://api.exchangeratesapi.io/v1/latest?access_key=a7216b0cb4cbdf9fc95a0e5c4e2f6b92"),
+                RequestUri = new Uri("http://api.exchangeratesapi.io/v1/latest?access_key=a7216b0cb4cbdf9fc95a0e5c4e2f6b92"),
               //   RequestUri = new Uri("http://api.exchangeratesapi.io/v1/latest?access_key=a7216b0cb4cbdf9fc95a0e5c4e2f6b92&base=USD"),
              //   RequestUri = new Uri("https://currency-exchange.p.rapidapi.com/exchange?to=USD&from=PHP&q=1000.0"),
                /*  Headers =

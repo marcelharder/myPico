@@ -133,7 +133,7 @@ export class BookingsComponent implements OnInit {
       } else {
         if (this.secondMonth.month === 1) {
           this.secondMonth.month = 12;
-          this.secondMonth.year = this.currentYear - 1;
+          this.secondMonth.year = this.secondMonth.year - 1;
           this.sm.nextMonth(this.secondMonth);
           this.firstMonth.month = this.firstMonth.month - 1;
           this.fm.nextMonth(this.firstMonth);
@@ -192,7 +192,7 @@ export class BookingsComponent implements OnInit {
     for (let i = 0; i < dates.length; i++) { // this is a list of string, like 17,18,19 etc
       let help: requestDays = { daynumber: 0, month: '', price: 0, year: 0, date: new Date, dayOfYear: 0 };
       
-      this.gen.getUnitPrice(this.currentPicoUnitId, this.selectedCurrency, +dates[i], this.firstMonth.year)
+      this.gen.getUnitPrice(this.currentPicoUnitId, this.selectedCurrency, +dates[i], this.firstMonth.month)
         .subscribe(
         (next) => { help.price = next }, 
         (error) => { this.alertify.error(error) }, 
@@ -212,7 +212,7 @@ export class BookingsComponent implements OnInit {
     this.secondMonthRequestedDays = [];
     for (let i = 0; i < dates.length; i++) {
       let help: requestDays = { daynumber: 0, month: '', price: 0, year: 0, date: new Date, dayOfYear: 0 }
-      this.gen.getUnitPrice(this.currentPicoUnitId, this.selectedCurrency,  +dates[i], this.firstMonth.year)
+      this.gen.getUnitPrice(this.currentPicoUnitId, this.selectedCurrency,  +dates[i], this.firstMonth.month)
         .subscribe((next) => { help.price = next }, (error) => { this.alertify.error(error) }, () => {
           // do the rest when this observable is finished
           help.daynumber = +dates[i];
