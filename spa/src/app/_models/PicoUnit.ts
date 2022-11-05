@@ -7,11 +7,12 @@ export interface PicoUnit {
     highSeasonRent: string;
     discountPercentage: string;
     iban: string;
+    Main_Photo_Url: string;
     bankAddress: string;
     bankName: string;
     accountNo: string;
     swift: string;
-    caretaker: string;
-    caretakerMobile: string;
+    Caretaker: string;
+    CaretakerMobile: string;
 
 }

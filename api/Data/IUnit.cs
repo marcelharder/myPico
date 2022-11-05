@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DatingApp.API.Data;
 using DatingApp.API.Models;
 using myPicoAPI.Models;
 
@@ -10,8 +11,9 @@ namespace myPicoAPI.Data
         Task<picoUnit> GetPicoUnit(int picoUnitId);
         Task<int> GetPicoUnitId(string test);
         Task<string> GetPicoUnitName(int test);
-        Task<int> GetPicoUnitPrice(int picoNumber, string currency, int day, int month);
+        Task<string> GetPicoUnitPrice(int picoNumber, string currency, int day, int month);
         Task<int> getUnitIdForThisUser(int userId);
+        Task<List<string>> getUnitPictures(string unitName);
         Task<picoUnit> GetPicoUnitForThisUser(int userId);
         Task<bool> IsOwnerOfAnyUnit(int userId);
         Task<List<User>> getAppartmentUsers(int appartmentId);

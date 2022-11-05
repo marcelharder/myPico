@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/_services/Auth.service';
 import { RequestedMonth } from 'src/app/_models/RequestedMonth';
+import { GeneralService } from 'src/app/_services/general.service';
 
 
 @Component({
@@ -20,24 +21,24 @@ export class HouseRulesComponent implements OnInit {
   secondMonth: RequestedMonth = { appointmentId: 0, picoUnit: 0, year: 0, month: 0 };
 
   constructor(private auth: AuthService, 
+    private gen:GeneralService,
     private router: Router, 
     private route:ActivatedRoute) { }
 
   ngOnInit() {
-    
-    this.picoUnit = +this.route.snapshot.params.id;
-    if (this.picoUnit === 1) { 
+   
+    this.auth.currentPicoUnit.subscribe((next)=>{
+      this.picoUnit = +next;
       
-      this.header = 'Myna 610-A';
-      this.photo_map = "../../assets/images/unit-pictures/610-A/DSC_6774.JPG";
-     };
-     if (this.picoUnit === 2) { 
-      
-      this.header = 'Myna 611-A';
-      this.photo_map = "../../assets/images/unit-pictures/610-A/DSC_6774.JPG";
-     }
-      
+      // get the unit details
+      this.gen.getPicoUnitDetails(this.picoUnit).subscribe((next)=>{
+       
+        this.header = next.picoUnitNumber;
+        this.photo_map = next.Main_Photo_Url;
+        
 
+      })
+    })
   }
 
   availability() {
@@ -69,8 +70,6 @@ export class HouseRulesComponent implements OnInit {
       this.secondMonth.year = this.currentYear;
       this.secondMonth.month = this.currentMonth + 1;
     }
-   
-
     this.auth.setFirstMonth(this.firstMonth);
     this.auth.setSecondMonth(this.secondMonth);
 

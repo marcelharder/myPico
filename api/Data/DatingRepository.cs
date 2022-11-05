@@ -175,7 +175,6 @@ namespace DatingApp.API.Data
                     var help = firstDay.DayOfWeek;
                     switch (firstDay.DayOfWeek)
                     {
-
                         case DayOfWeek.Monday: nr = fillOccupancyMonth(nr, 0, daysInMonth); break;
                         case DayOfWeek.Tuesday: nr = fillOccupancyMonth(nr, 1, daysInMonth); break;
                         case DayOfWeek.Wednesday: nr = fillOccupancyMonth(nr, 2, daysInMonth); break;
@@ -298,11 +297,6 @@ namespace DatingApp.API.Data
 
             dn.day_41 = helpList[41];
             dn.day_42 = helpList[42];
-
-
-
-
-
             return dn;
         }
         private dateOccupancy fillOccupancyMonth(dateOccupancy dn, int help, int noDays)
@@ -320,7 +314,8 @@ namespace DatingApp.API.Data
                 case 6: offset = 6 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3); helpList.Insert(5, 3); break;
             }
 
-            var startOcc = offset + 1;
+            var startOcc = offset;
+            //var startTail = startOcc + noDays;
             var startTail = startOcc + noDays + 1;
 
             for (int a = startOcc; a < noDays + startOcc; a++) { helpList.Add(0); } // set up with all 0

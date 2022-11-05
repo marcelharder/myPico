@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { PicoUnit } from '../_models/PicoUnit';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,8 @@ constructor(private http: HttpClient) { }
 
 getPicoUnitId(test: string){return this.http.get<number>(this.bu + 'getUnitId/' + test)}
 getPicoUnitName(test: number){return this.http.get<string>(this.bu + 'getUnitName/' + test,{responseType: 'text' as 'json'})}
+getPicoUnitDetails(test: number){return this.http.get<PicoUnit>(this.bu + 'unitDetails/' + test)}
+getPicoUnitPictures(test: number){return this.http.get<string[]>(this.bu + 'unitPictures/' + test)}
 
 getMonthFromNo(no: number): String{
   let test:Array<String> = [];
@@ -26,11 +29,11 @@ getMonthFromNo(no: number): String{
   return test[no];
 }
 
-changeUnitName(no: number){
+/* changeUnitName(no: number){
   let help = "";
   this.getPicoUnitName(no).subscribe((data)=>{help = data; });
   this.picoName.next(help);
-}
+} */
 
 changeChosen(sh: boolean){
   if(sh){localStorage.setItem("chosen", '1');} else {localStorage.setItem("chosen", '0')};
@@ -39,3 +42,5 @@ changeChosen(sh: boolean){
 getUnitPrice(picoUnit: number, currency: string, day: number, month: number){
   return this.http.get<number>(this.bu + 'getUnitPrice/' + picoUnit + "/" + currency + "/" + day + "/" + month )};
 }
+
+

@@ -1,8 +1,10 @@
+import { requestDays } from "./requestDays";
+
 export interface Appointment {
   picoUnitId: number;
   picoUnitPhotoUrl: string;
   userId: number;
-  requestedDays: Array<string>;
+  requestedDays: Array<requestDays>;
   startDate: Date;
   endDate: Date;
   noOfNights: number;

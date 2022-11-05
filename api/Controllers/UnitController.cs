@@ -54,6 +54,20 @@ namespace myPicoAPI.Controllers {
             return Ok(help);
         }
 
+        [HttpGet]
+        [Route("api/unitPictures/{id}")]
+        public async Task<IActionResult> getUnitPictures(int id){
+            
+            var result = new List<string>();
+            await Task.Run(async ()=>{
+               // get the unit naam van de unit no
+               var help = await _repo.GetPicoUnitName(id);
+               // get the strings from the json file
+               result = await _repo.getUnitPictures(help);
+            });
+            return Ok(result);
+        }
+
         [HttpPost]
         [Route ("api/unitDetails/{userId}")]
         public async Task<IActionResult> savePicoUnitDetails (int userId, [FromBody] picoUnit pic) {
