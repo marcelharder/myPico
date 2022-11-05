@@ -16,6 +16,8 @@ export class RegisterComponent implements OnInit {
   registerModel: any = {username:"", password:"", city:"", country:"", gender:"", knownAs:""};
   genderoptions:Array<DropItem> = [];
   countryoptions:Array<DropItem> = [];
+  cityoptions:Array<DropItem> = [];
+  
 
   constructor(
     private router:Router, 
@@ -30,6 +32,9 @@ export class RegisterComponent implements OnInit {
     this.countryoptions.push({value:"China", description:"China"});
     this.countryoptions.push({value:"US", description:"US"});
     this.countryoptions.push({value:"Netherlands", description:"Netherlands"});
+
+    this.cityoptions.push({value:"Manila", description:"manila"});
+
   }
 
   cancel(){this.alertify.success("Cancelling")}

@@ -13,6 +13,8 @@ export class NavBarComponent implements OnInit {
 
   photoUrl: string | undefined;
 
+  owner = 0;
+
   picoUnitId = 0;
 
   constructor(public auth: AuthService,
@@ -22,6 +24,9 @@ export class NavBarComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.auth.currentRole.subscribe(next => {
+      if (next === "owner") { this.owner = 1; }
+    })
   }
 
   loggedIn() { return this.auth.loggedIn(); }
@@ -31,22 +36,22 @@ export class NavBarComponent implements OnInit {
 
 
   unitChosen(): boolean {
-  if (localStorage.getItem('chosen') === '1') return true;
-  else return false;
-  } 
+    if (localStorage.getItem('chosen') === '1') return true;
+    else return false;
+  }
 
   selectUnit(name: string) {
-    this.gen.getPicoUnitId(name).subscribe((next)=>{
+    this.gen.getPicoUnitId(name).subscribe((next) => {
       this.picoUnitId = next;
       this.auth.changePicoUnitId(next.toString());
       this.gen.changeChosen(true);
     });
     // go straight to the details page
     this.showDetails("./unitRules/");
-    
+
   }
 
-  showDetails(url: string){
+  showDetails(url: string) {
     this.router.navigate([url + this.picoUnitId]);
   }
 
@@ -56,7 +61,7 @@ export class NavBarComponent implements OnInit {
     this.auth.logOut();
     this.router.navigate(['/home']);
     this.alertify.message('logged out');
-}
   }
+}
 
 

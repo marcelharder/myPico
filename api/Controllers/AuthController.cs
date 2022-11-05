@@ -67,6 +67,7 @@ namespace DatingApp.API.Controllers
                 {
                 new Claim(ClaimTypes.NameIdentifier, userFromRepo.UserId.ToString()),
                 new Claim(ClaimTypes.Name, userFromRepo.Username),
+                new Claim(ClaimTypes.Role, userFromRepo.DatabaseRole),
 
                 }),
                 Expires = System.DateTime.Now.AddMinutes(30),
