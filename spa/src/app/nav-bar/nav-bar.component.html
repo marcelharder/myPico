@@ -40,6 +40,9 @@
       <li class="nav-item" *ngIf="!loggedIn()">
         <a class="nav-link" href="./login" >Login</a>
       </li>
+      <li class="nav-item" *ngIf="!loggedIn()">
+        <a class="nav-link" href="./register" >Register</a>
+      </li>
       <li class="nav-item dropdown" id="myDropdown02" *ngIf="loggedIn()">
         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Welcome {{ this.auth.decodedToken?.unique_name | titlecase }}</a>
         <ul class="dropdown-menu">

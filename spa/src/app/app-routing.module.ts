@@ -9,6 +9,7 @@ import { PicoGeneralComponent } from './picodeloroStuff/pico-general/pico-genera
 import { PicoImagesComponent } from './picodeloroStuff/pico-images/pico-images.component';
 import { PicoRulesComponent } from './picodeloroStuff/pico-rules/pico-rules.component';
 import { PicoMapComponent } from './picodeloroStuff/picoMap/picoMap.component';
+import { RegisterComponent } from './register/register.component';
 import { BookingsComponent } from './unitStuff/bookings/bookings.component';
 import { HouseRulesComponent } from './unitStuff/houseRules/houseRules.component';
 import { RatingsComponent } from './unitStuff/ratings/ratings.component';
@@ -32,6 +33,7 @@ const routes: Routes = [
 { path: 'unitBookings/:id', component: BookingsComponent },
 { path: 'unitPictures/:id', component: UnitPicturesComponent },
 { path: 'login', component: LoginComponent },
+{ path: 'register', component: RegisterComponent },
 { path: 'requestStay/:id', component: RequestStayComponent },
 
 {
