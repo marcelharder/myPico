@@ -16,21 +16,18 @@ namespace DatingApp.API.Data
 
         public async Task<int> seedUnits()
         {
+            // seed alleen als er geen data zijn
             var help = 0;
-            await Task.Run(() =>
+            if (!await _context.PicoUnits.AnyAsync())
             {
-                _context.PicoUnits.RemoveRange(_context.PicoUnits);
-                _context.SaveChanges();
-
-                var appData = System.IO.File.ReadAllText("Data/picoUnitsSeed/app.json");
-                var picoUnits = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.List<picoUnit>>(appData);
-                foreach (var p in picoUnits)
+                await Task.Run(() =>
                 {
-                    _context.PicoUnits.Add(p);
-                }
-                _context.SaveChanges();
-
-            });
+                    var appData = System.IO.File.ReadAllText("Data/picoUnitsSeed/app.json");
+                    var picoUnits = Newtonsoft.Json.JsonConvert.DeserializeObject<System.Collections.Generic.List<picoUnit>>(appData);
+                    foreach (var p in picoUnits) { _context.PicoUnits.Add(p); }
+                    _context.SaveChanges();
+                });
+            }
             return help;
         }
         public async Task<int> SeedAppointments()
@@ -58,6 +55,7 @@ namespace DatingApp.API.Data
         public async Task<int> SeedUsers()
         {
             var help = 0;
+            if(!await _context.Users.AnyAsync()){
             await Task.Run(() =>
             {
                 _context.Users.RemoveRange(_context.Users);
@@ -78,6 +76,7 @@ namespace DatingApp.API.Data
                 }
                 _context.SaveChanges();
             });
+            }
             return help;
         }
         private void CreatePasswordhash(string password, out byte[] passwordHash, out byte[] passwordSalt)

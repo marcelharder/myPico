@@ -1,3 +1,5 @@
+import { Message } from "./Message";
+
 export interface Pagination {
   currentPage: number;
   itemsPerPage: number;
@@ -6,6 +8,7 @@ export interface Pagination {
 }
 
 export class PaginatedResult<T> {
-    result: T;
-    pagination: Pagination;
+    result!: T;
+    pagination!: Pagination;
+    
 }

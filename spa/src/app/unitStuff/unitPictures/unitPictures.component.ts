@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { GeneralService } from 'src/app/_services/general.service';
 import { AuthService } from '../../_services/Auth.service';
 
 @Component({
@@ -9,8 +10,10 @@ import { AuthService } from '../../_services/Auth.service';
 })
 export class UnitPicturesComponent implements OnInit {
   currentPicoUnitId = 0;;
-  pictureLocation = "Pico de loro";
+  pictureLocation = "";
 
+  unitPictures: Array<string> = [];
+  photo_0: string = "";
   photo_1: string = "";
   photo_2: string = "";
   photo_3: string = "";
@@ -22,46 +25,41 @@ export class UnitPicturesComponent implements OnInit {
   photo_9: string = "";
   photo_10: string = "";
 
-  constructor(private route:ActivatedRoute, 
+  constructor(private route:ActivatedRoute, private gen: GeneralService,
     private auth:AuthService, 
     private router:Router) { }
 
   ngOnInit() {
     this.currentPicoUnitId = +this.route.snapshot.params.id;
+
+    this.gen.getPicoUnitDetails(this.currentPicoUnitId).subscribe((next)=>{this.pictureLocation = next.picoUnitNumber})
+
+    // get the pictures from the backend
+    this.gen.getPicoUnitPictures(this.currentPicoUnitId).subscribe((next)=>{
+      
+      this.unitPictures = next;
+      
+      this.photo_1 = this.unitPictures[0];
+      this.photo_2 = this.unitPictures[1];
+      this.photo_3 = this.unitPictures[2];
+      this.photo_4 = this.unitPictures[3];
+      this.photo_5 = this.unitPictures[4];
+      this.photo_6 = this.unitPictures[5];
+      this.photo_7 = this.unitPictures[6];
+      this.photo_8 = this.unitPictures[7];
+      this.photo_9 = this.unitPictures[8];
+      this.photo_10 = this.unitPictures[9]; 
+    
+    })
     
        
-    if (this.currentPicoUnitId === 4) {
-      this.showDetails(1);
-      debugger;
-      this.pictureLocation = "Unit 610-A";
-      this.photo_1 = "../../assets/images/unit-pictures/610-A/DSC_6765.JPG";
-      this.photo_2 = "../../assets/images/unit-pictures/610-A/DSC_6770.JPG";
-      this.photo_3 = "../../assets/images/unit-pictures/610-A/DSC_6771.JPG";
-      this.photo_4 = "../../assets/images/unit-pictures/610-A/DSC_6772.JPG";
-      this.photo_5 = "../../assets/images/unit-pictures/610-A/DSC_6773.JPG";
-      this.photo_6 = "../../assets/images/unit-pictures/610-A/DSC_6774.JPG";
-      this.photo_7 = "../../assets/images/unit-pictures/610-A/DSC_6775.JPG";
-      this.photo_8 = "../../assets/images/unit-pictures/610-A/DSC_6776.JPG";
-      this.photo_9 = "../../assets/images/unit-pictures/610-A/DSC_6777.JPG";
-      this.photo_10 = "../../assets/images/unit-pictures/610-A/DSC_6778.JPG";
-
-    }
-    if (this.currentPicoUnitId === 2) {
-      this.showDetails(1);
-      this.pictureLocation = "Unit 620-A";
-
-    }
-    if (this.currentPicoUnitId === 3) {
-      this.showDetails(1);
-      this.pictureLocation = "Unit 640-A";
-
-    }
+    
    
 
   }
-  showDetails(x:number)  { if (this.currentPicoUnitId === 0) {return false; } else {return true; } }
+  
 
-  availability() {this.router.navigate(['/unitBookings/' + this.currentPicoUnitId]); }
+  
 
   details() {this.router.navigate(['/unitRules/' + this.currentPicoUnitId]); }
 

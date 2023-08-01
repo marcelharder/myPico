@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" *ngIf="!showRequest()">
   <div class="card-header">
     <h4><span>{{location}}</span></h4>
   </div>
@@ -28,14 +28,21 @@
 
             <div class="row" *ngIf="firstMonthRequestedDays.length > 0">
 
-              <app-monthSummary [fmrd]="firstMonthRequestedDays" [monthText]="firstMonth.month"
-              [currentPicoUnitId]="currentPicoUnitId"></app-monthSummary>
+              <app-monthSummary 
+              [fmrd]="firstMonthRequestedDays" 
+              [monthText]="firstMonth.month"
+              [currentPicoUnitId]="currentPicoUnitId" 
+              (sm)="composeMessage($event)"></app-monthSummary>
 
             </div>
             <!--show the array here-->
             <div class="row" *ngIf="secondMonthRequestedDays.length > 0">
-              <app-second-month-summary [fmrd]="secondMonthRequestedDays" [monthText]="secondMonth.month"
-              [currentPicoUnitId]="currentPicoUnitId"></app-second-month-summary>
+
+              <app-second-month-summary 
+              [fmrd]="secondMonthRequestedDays" 
+              [monthText]="secondMonth.month"
+              [currentPicoUnitId]="currentPicoUnitId" 
+              (sm)="composeMessage($event)"></app-second-month-summary>
              
 
             </div>
@@ -45,4 +52,8 @@
     </div>
   </div>
   <div class="card-footer"></div>
+</div>
+
+<div *ngIf="showRequest()">
+  <app-requestStay [message]="message" [appointment]="appt" (m)="sendMessage($event)"></app-requestStay>
 </div>

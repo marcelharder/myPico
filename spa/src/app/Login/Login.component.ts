@@ -20,17 +20,27 @@ export class LoginComponent implements OnInit {
   ngOnInit() { }
 
   cancel() { }
-
   
 
   login() {
-    this.authService.login(this.model).subscribe(data => {
-      this.alertify.success('logged in succssfully'); }
-    , error => {
-      this.alertify.error('Failed to login'); }
-    , () => {
-     
-    });
+     if(this.model.username !== undefined && this.model.password !== undefined){
+      this.authService.login(this.model).subscribe(data => {
+        this.alertify.success('logged in succssfully'); }
+      , error => {
+        this.alertify.error('Failed to login'); }
+      , () => {
+      });
+     }
+     else {this.alertify.error('Pls enter username/password');}
+  }
+
+  register(){
+    if(this.model.username !== undefined && this.model.password !== undefined){
+    this.authService.register(this.model);
+    
+    this.alertify.success('registered ...');
+    }
+    else {this.alertify.error('Pls enter username/password');}
   }
 
 }

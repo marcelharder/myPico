@@ -21,8 +21,12 @@ export class AuthService {
   fmo = this.firstMonth.asObservable();
   secondMonth = new BehaviorSubject<RequestedMonth>( { appointmentId: 0, picoUnit: 0, year: 0, month: 0 });
   smo = this.secondMonth.asObservable();
+
   picoUnit = new BehaviorSubject<string>('0');
   currentPicoUnit = this.picoUnit.asObservable();
+
+  role = new BehaviorSubject<string>("");
+  currentRole = this.role.asObservable();
  
 
   constructor(private http: HttpClient, private router:Router) {}
@@ -31,6 +35,7 @@ export class AuthService {
   changePicoUnitId(sh: string){this.picoUnit.next(sh);}
   setFirstMonth(sh: RequestedMonth){this.firstMonth.next(sh);}
   setSecondMonth(sh: RequestedMonth){this.secondMonth.next(sh);}
+  setRole(sh: string){this.role.next(sh);}
 
   
   
@@ -41,6 +46,7 @@ export class AuthService {
         if (this.currentUser) {
           localStorage.setItem('token', response.tokenString);
           this.decodedToken = this.jwtHelper.decodeToken(response.tokenString);
+          this.setRole(this.decodedToken.role);
           console.log(this.decodedToken);
           this.router.navigate(['/home']);
         }

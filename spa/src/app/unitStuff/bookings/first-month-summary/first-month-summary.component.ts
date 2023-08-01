@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { Appointment } from 'src/app/_models/appointment';
+import { Message } from 'src/app/_models/Message';
 import { requestDays } from 'src/app/_models/requestDays';
 import { AlertifyService } from 'src/app/_services/Alertify.service';
 import { AuthService } from 'src/app/_services/Auth.service';
@@ -14,6 +16,8 @@ export class MonthSummaryComponent implements OnInit {
   @Input() monthText: any;
   @Input() fmrd: Array<requestDays> = [];
   @Input() currentPicoUnitId = 0;
+  @Output() sm = new EventEmitter<string>();
+
   monthName = "";
   
   desiredCurrency = 'PHP';
@@ -39,9 +43,12 @@ export class MonthSummaryComponent implements OnInit {
   }
 
   RequestStay(){
-    // show the email page with the email text and appointment details do this all on the server
-    // then make a sort of invoice page
-    this.alertify.success("Request stay");}
+
+    this.alertify.success('stay requested in Unit ' + this.currentPicoUnitId);
+    this.sm.emit("1");
+   
+  
+  }
   
   Cancel(){
     

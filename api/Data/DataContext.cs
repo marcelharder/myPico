@@ -13,6 +13,7 @@ namespace DatingApp.API.Data {
         public DbSet<dateNumber> DateNumbers { get; set; }
         public DbSet<dateOccupancy> DateOccupancy { get; set; }
         public DbSet<picoUnit> PicoUnits { get; set; }
+        public DbSet<Model_Currency> Currency { get; set; }
 
 
         protected override void OnModelCreating (ModelBuilder builder) {

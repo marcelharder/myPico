@@ -1,6 +1,8 @@
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Appointment } from 'src/app/_models/appointment';
+import { Message } from 'src/app/_models/Message';
 import { requestDays } from 'src/app/_models/requestDays';
 import { RequestedMonth } from 'src/app/_models/RequestedMonth';
 import { AlertifyService } from 'src/app/_services/Alertify.service';
@@ -22,6 +24,39 @@ export class BookingsComponent implements OnInit {
   currentPicoUnitId = 0;
   selectedCurrency = "PHP";
   desiredCurrency = "PHP";
+  request = 0;
+  appt: Appointment = {
+    picoUnitId: 0,
+    picoUnitPhotoUrl: "",
+    userId: 0,
+    requestedDays: [],
+    startDate: new Date,
+    endDate: new Date,
+    noOfNights: 0,
+    id: 0,
+    year: 0,
+    month: 0,
+    day: 0,
+    status: "",
+    rent: 0,
+    rentUSD: 0,
+    downPayment: 0,
+    paid_InFull: 0,
+    comment: ""};
+  message: Message = {
+    id: 0,
+    senderId: 0,
+    senderKnownAs: "",
+    senderPhotoUrl: "",
+    recipientId: 0,
+    recipientKnownAs:  "",
+    recipientPhotoUrl:  "",
+    content:  "",
+    isRead: false,
+    dateRead: new Date,
+    messageSent: new Date
+  }
+  
 
 
   currentYear = 0;
@@ -40,33 +75,7 @@ export class BookingsComponent implements OnInit {
   @ViewChild(FirstMonthComponent) fm!: FirstMonthComponent;
   @ViewChild(SecondMonthComponent) sm!: SecondMonthComponent;
 
-  //secondMonth!: RequestedMonth;
-  /* listDaysArray: Array<DaysModel> = [];
-  bsConfig!: Partial<BsDatepickerConfig>;
-
-  currentMonth = 0;
-  currentYear = 0;
-  selectedUnit: string = "";
-  mb!: Appointment;
-  util: Utilities = new Utilities();
-  hmos: Array<string> = this.util.getMonths();
-  years: Array<string> = this.util.getYears();
-  listDays: Array<string> =[];
-  lo: Array<string>=[];
-  listOccupancy: Array<string>=[];
-  currentUser!: User;
-  picoUnitId: string = "";
-  id: number =0;
-  arrivalDate!: Date;
-  dischargeDate!: Date;
-  requestedDays: string[] = [];
-  requestedDaysPrices: string[] = [];
-  requestedDaysSeason: string[] = [];
-  totalRent: number = 0;
-  selectedMonth!: string;
-  selectedYear!: string;
-  allowAddingOccupancy = false;
-  allowDeletingOccupancy = false; */
+  
 
   constructor(private auth: AuthService,
     public gen: GeneralService,
@@ -78,9 +87,7 @@ export class BookingsComponent implements OnInit {
 
   ngOnInit() {
 
-    //this.currentPicoUnitId = +this.route.snapshot.params.id; // ignored for now used behaviossubject instead
-
-    this.auth.firstMonth.subscribe((next) => { 
+   this.auth.firstMonth.subscribe((next) => { 
       this.firstMonth = next; 
      
     })
@@ -95,18 +102,14 @@ export class BookingsComponent implements OnInit {
         this.location = next;
       })
     })
-
-    
-
-   /*  if (this.firstMonth.picoUnit === 1) { this.location = "Myna 610-A" }
-    if (this.firstMonth.picoUnit === 2) { this.location = "Myna 611-A" }
-    if (this.firstMonth.picoUnit === 3) { this.location = "Myna 612-A" } */
-
-
   }
 
   showPhp() { this.alertify.message("PHP"); }
   showUsd() { this.alertify.message("USD"); }
+
+  sendMessage(m: any){
+    
+  }
 
   currencyChanged() {
     for (let i = 0; i < this.firstMonthRequestedDays.length; i++) {
@@ -126,10 +129,7 @@ export class BookingsComponent implements OnInit {
       this.sm.makeVacant();
       this.firstMonthRequestedDays = [];
       this.secondMonthRequestedDays = [];
-           
-
-
-     
+          
 
       // allow for jumping from january to december
 
@@ -142,7 +142,7 @@ export class BookingsComponent implements OnInit {
       } else {
         if (this.secondMonth.month === 1) {
           this.secondMonth.month = 12;
-          this.secondMonth.year = this.currentYear - 1;
+          this.secondMonth.year = this.secondMonth.year - 1;
           this.sm.nextMonth(this.secondMonth);
           this.firstMonth.month = this.firstMonth.month - 1;
           this.fm.nextMonth(this.firstMonth);
@@ -201,7 +201,7 @@ export class BookingsComponent implements OnInit {
     for (let i = 0; i < dates.length; i++) { // this is a list of string, like 17,18,19 etc
       let help: requestDays = { daynumber: 0, month: '', price: 0, year: 0, date: new Date, dayOfYear: 0 };
       
-      this.gen.getUnitPrice(this.currentPicoUnitId, this.selectedCurrency, +dates[i], this.firstMonth.year)
+      this.gen.getUnitPrice(this.currentPicoUnitId, this.selectedCurrency, +dates[i], this.firstMonth.month)
         .subscribe(
         (next) => { help.price = next }, 
         (error) => { this.alertify.error(error) }, 
@@ -221,7 +221,7 @@ export class BookingsComponent implements OnInit {
     this.secondMonthRequestedDays = [];
     for (let i = 0; i < dates.length; i++) {
       let help: requestDays = { daynumber: 0, month: '', price: 0, year: 0, date: new Date, dayOfYear: 0 }
-      this.gen.getUnitPrice(this.currentPicoUnitId, this.selectedCurrency,  +dates[i], this.firstMonth.year)
+      this.gen.getUnitPrice(this.currentPicoUnitId, this.selectedCurrency,  +dates[i], this.firstMonth.month)
         .subscribe((next) => { help.price = next }, (error) => { this.alertify.error(error) }, () => {
           // do the rest when this observable is finished
           help.daynumber = +dates[i];
@@ -237,11 +237,37 @@ export class BookingsComponent implements OnInit {
 
   }
 
+  composeMessage(w: string){
+    
+    if(w === '1'){
+    //comes back from first month summary, fmrd should contain the price/day
+    // save the appointment to the database, as new appointment
+       
+    this.appt.picoUnitId = this.currentPicoUnitId;
+    this.appt.requestedDays = this.firstMonthRequestedDays;
+    this.appt.rent = 900;
+    this.appt.month = this.firstMonth.month;
+    this.appt.year = this.firstMonth.year;
+    if(this.auth.loggedIn()){this.appt.userId = this.auth.decodedToken.name_id;};
+    this.appt.status = "0";
+    
+    // send message to the caretaker of this unit to nofify that appointment arrived
+    this.request = 1;
+
+
+
+
+    };
+    if(w === '2'){//comes back from second month summary
+
+    };
+  }
+
 
 
   getMonthText(test: number) { return this.gen.getMonthFromNo(test); }
 
-
+  showRequest(){ if(this.request === 1){return true;} else {return false;}}
 
 
 }

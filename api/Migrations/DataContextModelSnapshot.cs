@@ -61,6 +61,29 @@ namespace Dating.API.Migrations
                     b.ToTable("Messages");
                 });
 
+            modelBuilder.Entity("DatingApp.API.Models.Model_Currency", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<double>("USDEUR")
+                        .HasColumnType("double");
+
+                    b.Property<double>("USDJPY")
+                        .HasColumnType("double");
+
+                    b.Property<double>("USDPHP")
+                        .HasColumnType("double");
+
+                    b.Property<DateTime>("date")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Currency");
+                });
+
             modelBuilder.Entity("DatingApp.API.Models.Photo", b =>
                 {
                     b.Property<int>("Id")

@@ -1,0 +1,74 @@
+<div class="card">
+  <div class="card-header"><h2>Register</h2></div>
+  <div class="card-body">
+<div class="row">
+  <div class="col-sm-5">
+    <div class="row">
+      <div class="col-sm-2">
+        <h5><span class="badge bg-secondary">Username</span></h5>
+      </div>
+      <div class="col-sm-4"><input type="text" [(ngModel)]="registerModel.username" name="1" class="form-control" required></div>
+      <div class="col-sm-6"></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2">
+        <h5><span class="badge bg-secondary">Password</span></h5>
+      </div>
+      <div class="col-sm-4"><input type="password" [(ngModel)]="registerModel.password" name="2" class="form-control" required></div>
+      <div class="col-sm-6"></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2">
+        <h5><span class="badge bg-secondary">Country</span></h5>
+      </div>
+      <div class="col-sm-4">
+        <select class="form-control" [(ngModel)]="registerModel.country" name="23">
+        <option *ngFor="let item of countryoptions" [value]=item.value>{{ item.description }}
+      </select>
+    </div>
+      <div class="col-sm-6"></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2">
+        <h5><span class="badge bg-secondary">City</span></h5>
+      </div>
+      <div class="col-sm-4"> <select class="form-control" [(ngModel)]="registerModel.city" name="23">
+        <option *ngFor="let item of cityoptions" [value]=item.value>{{ item.description }}
+      </select></div>
+      <div class="col-sm-6"></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2">
+        <h5><span class="badge bg-secondary">Gender</span></h5>
+      </div>
+      <div class="col-sm-4"> <select class="form-control" [(ngModel)]="registerModel.gender" name="23">
+        <option *ngFor="let item of genderoptions" [value]=item.value>{{ item.description }}
+      </select></div>
+      <div class="col-sm-6"></div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4 mt-5">
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-warning" (click)="cancel()">Cancel</button>
+          <button type="button" class="btn btn-success" (click)="register()">Submit</button>
+        </div>
+      </div>
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4"></div>
+    </div>
+  </div>
+  <div class="col-sm-7">
+    <img src="../../assets/images/pico-pictures/DSC_6707.JPG" height="500px" width="900px">
+  
+  </div>
+</div>
+
+
+
+
+   
+  </div>
+  <div class="card-footer">
+    <h5><span class="badge bg-secondary">CSD - 2022 -</span></h5>
+  </div>
+</div>

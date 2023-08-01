@@ -203,9 +203,6 @@ export class SecondMonthComponent implements AfterContentInit {
     return help;
 
   }
-
-  
-
   makeVacant() {
     this.requestedDates = [];
     const el = document.getElementsByClassName('requested');

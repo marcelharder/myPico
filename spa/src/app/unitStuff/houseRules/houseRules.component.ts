@@ -29,11 +29,14 @@ export class HouseRulesComponent implements OnInit {
    
     this.auth.currentPicoUnit.subscribe((next)=>{
       this.picoUnit = +next;
-      debugger;
+      
       // get the unit details
       this.gen.getPicoUnitDetails(this.picoUnit).subscribe((next)=>{
+       
         this.header = next.picoUnitNumber;
-        this.photo_map == next.main_Photo_Url;
+        this.photo_map = next.Main_Photo_Url;
+        
+
       })
     })
   }
@@ -67,8 +70,6 @@ export class HouseRulesComponent implements OnInit {
       this.secondMonth.year = this.currentYear;
       this.secondMonth.month = this.currentMonth + 1;
     }
-   
-
     this.auth.setFirstMonth(this.firstMonth);
     this.auth.setSecondMonth(this.secondMonth);
 
