@@ -30,19 +30,20 @@ export class UnitPicturesComponent implements OnInit {
     this.currentPicoUnitId = +this.route.snapshot.params.id;
     
        
-    if (this.currentPicoUnitId === 1) {
+    if (this.currentPicoUnitId === 4) {
       this.showDetails(1);
+      debugger;
       this.pictureLocation = "Unit 610-A";
-      this.photo_1 = "../assets/images/unit-pictures/610-A/DSC_6765.JPG";
-      this.photo_2 = "../assets/images/unit-pictures/610-A/DSC_6770.JPG";
-      this.photo_3 = "../assets/images/unit-pictures/610-A/DSC_6771.JPG";
-      this.photo_4 = "../assets/images/unit-pictures/610-A/DSC_6772.JPG";
-      this.photo_5 = "../assets/images/unit-pictures/610-A/DSC_6773.JPG";
-      this.photo_6 = "../assets/images/unit-pictures/610-A/DSC_6774.JPG";
-      this.photo_7 = "../assets/images/unit-pictures/610-A/DSC_6775.JPG";
-      this.photo_8 = "../assets/images/unit-pictures/610-A/DSC_6776.JPG";
-      this.photo_9 = "../assets/images/unit-pictures/610-A/DSC_6777.JPG";
-      this.photo_10 = "../assets/images/unit-pictures/610-A/DSC_6778.JPG";
+      this.photo_1 = "../../assets/images/unit-pictures/610-A/DSC_6765.JPG";
+      this.photo_2 = "../../assets/images/unit-pictures/610-A/DSC_6770.JPG";
+      this.photo_3 = "../../assets/images/unit-pictures/610-A/DSC_6771.JPG";
+      this.photo_4 = "../../assets/images/unit-pictures/610-A/DSC_6772.JPG";
+      this.photo_5 = "../../assets/images/unit-pictures/610-A/DSC_6773.JPG";
+      this.photo_6 = "../../assets/images/unit-pictures/610-A/DSC_6774.JPG";
+      this.photo_7 = "../../assets/images/unit-pictures/610-A/DSC_6775.JPG";
+      this.photo_8 = "../../assets/images/unit-pictures/610-A/DSC_6776.JPG";
+      this.photo_9 = "../../assets/images/unit-pictures/610-A/DSC_6777.JPG";
+      this.photo_10 = "../../assets/images/unit-pictures/610-A/DSC_6778.JPG";
 
     }
     if (this.currentPicoUnitId === 2) {
