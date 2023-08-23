@@ -8,7 +8,7 @@ namespace DatingApp.API.Models
 
         public DateTime date { get; set; }
         public double USDPHP { get; set; }
-        public double USDEUR { get; set; }
-        public double USDJPY { get; set; }
+        public double EURPHP { get; set; }
+        public double JPYPHP { get; set; }
     }
 }

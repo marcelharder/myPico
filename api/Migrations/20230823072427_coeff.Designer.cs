@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Dating.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20211019075649_dayModelAdded")]
-    partial class dayModelAdded
+    [Migration("20230823072427_coeff")]
+    partial class coeff
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -69,10 +69,10 @@ namespace Dating.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<double>("USDEUR")
+                    b.Property<double>("EURPHP")
                         .HasColumnType("double");
 
-                    b.Property<double>("USDJPY")
+                    b.Property<double>("JPYPHP")
                         .HasColumnType("double");
 
                     b.Property<double>("USDPHP")
@@ -101,18 +101,21 @@ namespace Dating.API.Migrations
                     b.Property<bool>("IsMain")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<int?>("PicoUnitUnitId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PublicId")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<int>("UnitId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Url")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("PicoUnitUnitId");
 
                     b.ToTable("Photos");
                 });
@@ -168,11 +171,17 @@ namespace Dating.API.Migrations
                     b.Property<string>("Mobile")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<int>("OwnerId")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("PasswordHash")
                         .HasColumnType("longblob");
 
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("longblob");
+
+                    b.Property<string>("ProfileImage")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<string>("Username")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -605,11 +614,9 @@ namespace Dating.API.Migrations
 
             modelBuilder.Entity("DatingApp.API.Models.Photo", b =>
                 {
-                    b.HasOne("DatingApp.API.Models.User", "User")
+                    b.HasOne("myPicoAPI.Models.picoUnit", "PicoUnit")
                         .WithMany("Photos")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PicoUnitUnitId");
                 });
 
             modelBuilder.Entity("myPicoAPI.Models.Appointment", b =>

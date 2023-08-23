@@ -10,6 +10,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using myPicoAPI.Dtos;
 using AutoMapper;
+using CloudinaryDotNet.Actions;
+using System.Net;
+using Org.BouncyCastle.Asn1.Ntt;
+using System.ComponentModel;
 
 namespace DatingApp.API.Data
 {
@@ -41,7 +45,7 @@ namespace DatingApp.API.Data
         }
         public async Task<User> GetUser(int id)
         {
-            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.UserId == id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
             return user;
         }
         public async Task<Photo> GetPhoto(int id)
@@ -51,12 +55,12 @@ namespace DatingApp.API.Data
         }
         public async Task<Photo> GetMainPhotoForUser(int userId)
         {
-            return await _context.Photos.Where(u => u.UserId == userId).FirstOrDefaultAsync(p => p.IsMain);
+            return await _context.Photos.FirstOrDefaultAsync(p => p.IsMain);
         }
         public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
             List<int> userIds = new List<int>();
-            var users = _context.Users.Include(p => p.Photos).OrderByDescending(u => u.LastActive).AsQueryable();
+            var users = _context.Users.OrderByDescending(u => u.LastActive).AsQueryable();
             // filter out the current loggedin user
             users = users.Where(u => u.UserId != userParams.UserId);
             // filter out the same sex
@@ -84,42 +88,44 @@ namespace DatingApp.API.Data
             return await PagedList<User>.CreateAsync(users, userParams.PageNumber, userParams.PageSize);
         }
         public async Task<Message> GetMessage(int id) { return await _context.Messages.FirstOrDefaultAsync(u => u.Id == id); }
-        public async Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams)
-        {
-            var messages = _context.Messages
-                .Include(u => u.Sender).ThenInclude(p => p.Photos)
-                .Include(u => u.Recipient).ThenInclude(p => p.Photos)
-                .AsQueryable();
+        /*  public async Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams)
+         {
+             var messages = _context.Messages
+                 .Include(u => u.Sender).ThenInclude(p => p.Photos)
+                 .Include(u => u.Recipient).ThenInclude(p => p.Photos)
+                 .AsQueryable();
 
-            switch (messageParams.MessageContainer)
-            {
-                case "Inbox":
-                    messages = messages.Where(u => u.RecipientId == messageParams.UserId && u.RecipientDeleted == false);
-                    break;
-                case "Outbox":
-                    messages = messages.Where(u => u.SenderId == messageParams.UserId && u.SenderDeleted == false);
-                    break;
-                default:
-                    messages = messages.Where(u => u.RecipientId == messageParams.UserId && u.RecipientDeleted == false && u.IsRead == false);
-                    break;
-            }
-            messages = messages.OrderByDescending(d => d.MessageSent);
-            return await PagedList<Message>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
-        }
-        public async Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
+             switch (messageParams.MessageContainer)
+             {
+                 case "Inbox":
+                     messages = messages.Where(u => u.RecipientId == messageParams.UserId && u.RecipientDeleted == false);
+                     break;
+                 case "Outbox":
+                     messages = messages.Where(u => u.SenderId == messageParams.UserId && u.SenderDeleted == false);
+                     break;
+                 default:
+                     messages = messages.Where(u => u.RecipientId == messageParams.UserId && u.RecipientDeleted == false && u.IsRead == false);
+                     break;
+             }
+             messages = messages.OrderByDescending(d => d.MessageSent);
+             return await PagedList<Message>.CreateAsync(messages, messageParams.PageNumber, messageParams.PageSize);
+         } */
+        /*   public async Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
+          {
+              var messages = await _context.Messages
+                  .Include(u => u.Sender).ThenInclude(p => p.Photos)
+                  .Include(u => u.Recipient).ThenInclude(p => p.Photos)
+                  .Where(m => (m.RecipientId == userId && m.RecipientDeleted == false && m.SenderId == recipientId) ||
+                     (m.RecipientId == recipientId && m.SenderId == userId && m.SenderDeleted == false))
+                  .ToListAsync();
+              return messages;
+          } */
+        public async Task<Model_Occupancy_Date> GetMonthYear(int picoUnitId, int month, int year)
         {
-            var messages = await _context.Messages
-                .Include(u => u.Sender).ThenInclude(p => p.Photos)
-                .Include(u => u.Recipient).ThenInclude(p => p.Photos)
-                .Where(m => (m.RecipientId == userId && m.RecipientDeleted == false && m.SenderId == recipientId) ||
-                   (m.RecipientId == recipientId && m.SenderId == userId && m.SenderDeleted == false))
-                .ToListAsync();
-            return messages;
-        }
-        public async Task<dateNumber> GetMonthYear(int month, int year)
-        {
-            var dn = new dateNumber();
+            var dn = new List<int>();
+            var occ = new List<int>();
             int daysInMonth = DateTime.DaysInMonth(year, month);
+
             await Task.Run(() =>
             {
                 var firstDay = new DateTime(year, month, 1);
@@ -127,23 +133,38 @@ namespace DatingApp.API.Data
                 switch (firstDay.DayOfWeek)
                 {
 
-                    case DayOfWeek.Monday: dn = fillMonth(dn, 0, daysInMonth); break;
-                    case DayOfWeek.Tuesday: dn = fillMonth(dn, 1, daysInMonth); break;
-                    case DayOfWeek.Wednesday: dn = fillMonth(dn, 2, daysInMonth); break;
-                    case DayOfWeek.Thursday: dn = fillMonth(dn, 3, daysInMonth); break;
-                    case DayOfWeek.Friday: dn = fillMonth(dn, 4, daysInMonth); break;
-                    case DayOfWeek.Saturday: dn = fillMonth(dn, 5, daysInMonth); break;
-                    case DayOfWeek.Sunday: dn = fillMonth(dn, 6, daysInMonth); break;
+                    case DayOfWeek.Monday: dn = fillMonth(0, daysInMonth); break;
+                    case DayOfWeek.Tuesday: dn = fillMonth(1, daysInMonth); break;
+                    case DayOfWeek.Wednesday: dn = fillMonth(2, daysInMonth); break;
+                    case DayOfWeek.Thursday: dn = fillMonth(3, daysInMonth);  break;
+                    case DayOfWeek.Friday: dn = fillMonth(4, daysInMonth);  break;
+                    case DayOfWeek.Saturday: dn = fillMonth(5, daysInMonth); break;
+                    case DayOfWeek.Sunday: dn = fillMonth(6, daysInMonth);  break;
                 }
+
+               
             });
-            // get first day of the month in year
-            dn.Year = 2021;
-            dn.MonthId = month;
-
-
-            return dn;
+            SeasonForReturnDTO sr = await GetOccupancy(picoUnitId, month, year);
+            occ.Add(sr.day_1);occ.Add(sr.day_2);occ.Add(sr.day_3);occ.Add(sr.day_4);occ.Add(sr.day_5);
+            occ.Add(sr.day_6);occ.Add(sr.day_7);occ.Add(sr.day_8);occ.Add(sr.day_9);occ.Add(sr.day_10);
+            occ.Add(sr.day_11);occ.Add(sr.day_12);occ.Add(sr.day_13);occ.Add(sr.day_14);occ.Add(sr.day_15);
+            occ.Add(sr.day_16);occ.Add(sr.day_17);occ.Add(sr.day_18);occ.Add(sr.day_19);occ.Add(sr.day_20);
+            occ.Add(sr.day_21);occ.Add(sr.day_22);occ.Add(sr.day_23);occ.Add(sr.day_24);occ.Add(sr.day_25);
+            occ.Add(sr.day_26);occ.Add(sr.day_27);occ.Add(sr.day_28);occ.Add(sr.day_29);occ.Add(sr.day_30);
+            occ.Add(sr.day_31);occ.Add(sr.day_32);occ.Add(sr.day_33);occ.Add(sr.day_34);occ.Add(sr.day_35);
+            occ.Add(sr.day_36);occ.Add(sr.day_37);occ.Add(sr.day_38);occ.Add(sr.day_39);occ.Add(sr.day_40);
+            occ.Add(sr.day_41);occ.Add(sr.day_42);
+          
+            return new Model_Occupancy_Date(dn,occ);
 
         }
+
+        private List<int> getTest(SeasonForReturnDTO help)
+        {
+            throw new NotImplementedException();
+        }
+
+
         public async Task<Appointment> GetAppointment(int appointmentId)
         {
             return await _context.Appointments.FirstOrDefaultAsync(u => u.Id == appointmentId);
@@ -166,8 +187,10 @@ namespace DatingApp.API.Data
             }
             else
             {
-                // a new dateOccupancy object needs markings for off-agenda days to give visual clue which dates can not be booked
-                var nr = new dateOccupancy();
+                var newrecord = new dateOccupancy();
+                var strip = new List<int>();
+                for (int x = 0; x < 43; x++) { strip.Add(0); }
+
                 int daysInMonth = DateTime.DaysInMonth(year, month);
                 await Task.Run(() =>
                 {
@@ -175,20 +198,30 @@ namespace DatingApp.API.Data
                     var help = firstDay.DayOfWeek;
                     switch (firstDay.DayOfWeek)
                     {
-                        case DayOfWeek.Monday: nr = fillOccupancyMonth(nr, 0, daysInMonth); break;
-                        case DayOfWeek.Tuesday: nr = fillOccupancyMonth(nr, 1, daysInMonth); break;
-                        case DayOfWeek.Wednesday: nr = fillOccupancyMonth(nr, 2, daysInMonth); break;
-                        case DayOfWeek.Thursday: nr = fillOccupancyMonth(nr, 3, daysInMonth); break;
-                        case DayOfWeek.Friday: nr = fillOccupancyMonth(nr, 4, daysInMonth); break;
-                        case DayOfWeek.Saturday: nr = fillOccupancyMonth(nr, 5, daysInMonth); break;
-                        case DayOfWeek.Sunday: nr = fillOccupancyMonth(nr, 6, daysInMonth); break;
+                        case DayOfWeek.Monday: strip = fillOccupancyMonth(strip, 0, daysInMonth); break;
+                        case DayOfWeek.Tuesday: strip = fillOccupancyMonth(strip, 1, daysInMonth); break;
+                        case DayOfWeek.Wednesday: strip = fillOccupancyMonth(strip, 2, daysInMonth); break;
+                        case DayOfWeek.Thursday: strip = fillOccupancyMonth(strip, 3, daysInMonth); break;
+                        case DayOfWeek.Friday: strip = fillOccupancyMonth(strip, 4, daysInMonth); break;
+                        case DayOfWeek.Saturday: strip = fillOccupancyMonth(strip, 5, daysInMonth); break;
+                        case DayOfWeek.Sunday: strip = fillOccupancyMonth(strip, 6, daysInMonth); break;
                     }
                 });
-                nr.MonthId = month;
-                nr.Year = year;
-                nr.picoUnit = picoUnit;
-                _context.DateOccupancy.Add(nr);
-                if (await SaveAll()) { return _mapper.Map<SeasonForReturnDTO>(nr); } else return null;
+                newrecord.MonthId = month;
+                newrecord.Year = year;
+                newrecord.picoUnit = picoUnit;
+                newrecord.day_1 = strip[0];newrecord.day_2 = strip[1]; newrecord.day_3 = strip[2];newrecord.day_4 = strip[3];newrecord.day_5 = strip[4];
+                newrecord.day_6 = strip[5];newrecord.day_7 = strip[6]; newrecord.day_8 = strip[7];newrecord.day_9 = strip[8]; newrecord.day_10 = strip[9];
+                newrecord.day_11 = strip[10]; newrecord.day_12 = strip[11];newrecord.day_33 = strip[12];newrecord.day_14 = strip[13]; newrecord.day_15 = strip[14];
+                newrecord.day_16 = strip[15]; newrecord.day_17 = strip[16];newrecord.day_18 = strip[17];newrecord.day_19 = strip[18]; newrecord.day_20 = strip[19];
+                newrecord.day_21 = strip[20];newrecord.day_22 = strip[21];newrecord.day_23 = strip[22];newrecord.day_24 = strip[23]; newrecord.day_25 = strip[24];
+                newrecord.day_26 = strip[25];newrecord.day_27 = strip[26];newrecord.day_28 = strip[27];newrecord.day_29 = strip[28]; newrecord.day_30 = strip[29];
+                newrecord.day_31 = strip[30];newrecord.day_32 = strip[31];newrecord.day_33 = strip[32];newrecord.day_34 = strip[33]; newrecord.day_35 = strip[34];
+                newrecord.day_36 = strip[35];newrecord.day_37 = strip[36];newrecord.day_38 = strip[37];newrecord.day_39 = strip[38]; newrecord.day_40 = strip[39];
+                newrecord.day_41 = strip[40];newrecord.day_42 = strip[41];
+
+                _context.DateOccupancy.Add(newrecord);
+                if (await SaveAll()) { return _mapper.Map<SeasonForReturnDTO>(newrecord); } else return null;
             }
 
 
@@ -204,7 +237,6 @@ namespace DatingApp.API.Data
             appts = appts.OrderByDescending(d => d.StartDate);
             return await PagedList<Appointment>.CreateAsync(appts, messageParams.PageNumber, messageParams.PageSize);
         }
-        
         public async Task<int> UpdateOccupancy(SeasonForReturnDTO doc)
         {
             var result = 0;
@@ -222,15 +254,14 @@ namespace DatingApp.API.Data
             if (await SaveAll()) { result = 1; }
             return result;
         }
-        
-        
-        
-       
-        
 
-        
-       
-        private dateNumber fillMonth(dateNumber dn, int help, int noDays)
+
+
+
+
+
+
+        private List<int> fillMonth(int help, int noDays)
         {
             var helpList = new List<int>();
             var offset = 0;
@@ -242,7 +273,7 @@ namespace DatingApp.API.Data
             {
                 case 0: offset = 0; break;
                 case 1: offset = 1 + noDays; helpList.Insert(0, 0); break;
-                case 2: offset = 2 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); break; // tuesday
+                case 2: offset = 2 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); break;
                 case 3: offset = 3 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); break;
                 case 4: offset = 4 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); break;
                 case 5: offset = 5 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); helpList.Insert(4, 0); break;
@@ -251,133 +282,39 @@ namespace DatingApp.API.Data
 
             for (int a = offset; a < 43; a++) { helpList.Add(0); } // remove any data beyound the dates
 
-            dn.day_1 = helpList[1];
-            dn.day_2 = helpList[2];
-            dn.day_3 = helpList[3];
-            dn.day_4 = helpList[4];
-            dn.day_5 = helpList[5];
-            dn.day_6 = helpList[6];
-            dn.day_7 = helpList[7];
-            dn.day_8 = helpList[8];
-            dn.day_9 = helpList[9];
-            dn.day_10 = helpList[10];
-
-            dn.day_11 = helpList[11];
-            dn.day_12 = helpList[12];
-            dn.day_13 = helpList[13];
-            dn.day_14 = helpList[14];
-            dn.day_15 = helpList[15];
-            dn.day_16 = helpList[16];
-            dn.day_17 = helpList[17];
-            dn.day_18 = helpList[18];
-            dn.day_19 = helpList[19];
-            dn.day_20 = helpList[20];
-
-            dn.day_21 = helpList[21];
-            dn.day_22 = helpList[22];
-            dn.day_23 = helpList[23];
-            dn.day_24 = helpList[24];
-            dn.day_25 = helpList[25];
-            dn.day_26 = helpList[26];
-            dn.day_27 = helpList[27];
-            dn.day_28 = helpList[28];
-            dn.day_29 = helpList[29];
-            dn.day_30 = helpList[30];
-
-            dn.day_31 = helpList[31];
-            dn.day_32 = helpList[32];
-            dn.day_33 = helpList[33];
-            dn.day_34 = helpList[34];
-            dn.day_35 = helpList[35];
-            dn.day_36 = helpList[36];
-            dn.day_37 = helpList[37];
-            dn.day_38 = helpList[38];
-            dn.day_39 = helpList[39];
-            dn.day_40 = helpList[40];
-
-            dn.day_41 = helpList[41];
-            dn.day_42 = helpList[42];
-            return dn;
+            return helpList;
         }
-        private dateOccupancy fillOccupancyMonth(dateOccupancy dn, int help, int noDays)
+        private List<int> fillOccupancyMonth(List<int> helpList, int help, int noDays)
         {
-            var helpList = new List<int>();
             var offset = 0;
-          switch (help)
+
+            switch (help)
             {
                 case 0: offset = 0; break;
-                case 1: offset = 1 ; helpList.Insert(0, 3); break;
-                case 2: offset = 2 ; helpList.Insert(0, 3); helpList.Insert(1, 3); break; 
-                case 3: offset = 3 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); break;
-                case 4: offset = 4 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); break;
-                case 5: offset = 5 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3); break;
-                case 6: offset = 6 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3); helpList.Insert(5, 3); break;
+                case 1: offset = 1 + noDays; helpList.Insert(0, 3); break;
+                case 2: offset = 2 + noDays; helpList.Insert(0, 3); helpList.Insert(1, 3); break;
+                case 3: offset = 3 + noDays; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); break;
+                case 4: offset = 4 + noDays; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); break;
+                case 5: offset = 5 + noDays; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3); break;
+                case 6: offset = 6 + noDays; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3); helpList.Insert(5, 3); break;
             }
 
             var startOcc = offset;
-            //var startTail = startOcc + noDays;
             var startTail = startOcc + noDays + 1;
+            for (int a = startTail; a < 43; a++) { helpList.Add(3); } // write 3 to the tails
 
-            for (int a = startOcc; a < noDays + startOcc; a++) { helpList.Add(0); } // set up with all 0
- 
-            while(helpList.Count() < 43){helpList.Add(3);}
-
-           // for (int a = startTail; a < 43 ; a++) { helpList.Add(3); } // write 3 to the tails
-
-            dn.day_1 = helpList[1];
-            dn.day_2 = helpList[2];
-            dn.day_3 = helpList[3];
-            dn.day_4 = helpList[4];
-            dn.day_5 = helpList[5];
-            dn.day_6 = helpList[6];
-            dn.day_7 = helpList[7];
-            dn.day_8 = helpList[8];
-            dn.day_9 = helpList[9];
-            dn.day_10 = helpList[10];
-
-            dn.day_11 = helpList[11];
-            dn.day_12 = helpList[12];
-            dn.day_13 = helpList[13];
-            dn.day_14 = helpList[14];
-            dn.day_15 = helpList[15];
-            dn.day_16 = helpList[16];
-            dn.day_17 = helpList[17];
-            dn.day_18 = helpList[18];
-            dn.day_19 = helpList[19];
-            dn.day_20 = helpList[20];
-
-            dn.day_21 = helpList[21];
-            dn.day_22 = helpList[22];
-            dn.day_23 = helpList[23];
-            dn.day_24 = helpList[24];
-            dn.day_25 = helpList[25];
-            dn.day_26 = helpList[26];
-            dn.day_27 = helpList[27];
-            dn.day_28 = helpList[28];
-            dn.day_29 = helpList[29];
-            dn.day_30 = helpList[30];
-
-            dn.day_31 = helpList[31];
-            dn.day_32 = helpList[32];
-            dn.day_33 = helpList[33];
-            dn.day_34 = helpList[34];
-            dn.day_35 = helpList[35];
-            dn.day_36 = helpList[36];
-            dn.day_37 = helpList[37];
-            dn.day_38 = helpList[38];
-            dn.day_39 = helpList[39];
-            dn.day_40 = helpList[40];
-
-            dn.day_41 = helpList[41];
-            dn.day_42 = helpList[42];
-
-
-
-
-
-            return dn;
+            return helpList;
         }
 
+        public Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PagedList<Message>> GetMessagesForUser(MessageParams messageParams)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

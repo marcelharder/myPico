@@ -124,8 +124,8 @@ export class BookingsComponent implements OnInit {
   }
 
   prevMonth() {
-    this.alertify.confirm("This will erase your current request ...", () => {
-      this.fm.makeVacant();
+    // this.alertify.confirm("This will erase your current request ...", () => {
+    //   this.fm.makeVacant();
       this.sm.makeVacant();
       this.firstMonthRequestedDays = [];
       this.secondMonthRequestedDays = [];
@@ -159,11 +159,11 @@ export class BookingsComponent implements OnInit {
 
 
 
-    })
+    // })
   }
   nextMonth() {
-    this.alertify.confirm("This will erase your current request ...", () => {
-      this.fm.makeVacant();
+   /*  this.alertify.confirm("This will erase your current request ...", () => {
+    */   this.fm.makeVacant();
       this.sm.makeVacant();
       this.firstMonthRequestedDays = [];
       this.secondMonthRequestedDays = [];
@@ -193,7 +193,7 @@ export class BookingsComponent implements OnInit {
 
 
 
-    })
+    // })
   }
   receiveUpdatesFirstMonth(dates: Array<string>) {
     this.firstMonthRequestedDays = [];

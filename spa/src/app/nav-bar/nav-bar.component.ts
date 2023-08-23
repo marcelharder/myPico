@@ -40,6 +40,8 @@ export class NavBarComponent implements OnInit {
     else return false;
   }
 
+  selectAnotherUnit(){localStorage.setItem("chosen","0");}
+
   selectUnit(name: string) {
     this.gen.getPicoUnitId(name).subscribe((next) => {
       this.picoUnitId = next;

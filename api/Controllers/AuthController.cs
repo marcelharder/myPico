@@ -34,6 +34,7 @@ namespace DatingApp.API.Controllers
             if (!string.IsNullOrEmpty(userForRegisterDto.Username))
             {
                 userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
+                
             }
 
             if (await _repo.UserExists(userForRegisterDto.Username)) { ModelState.AddModelError("Username", "Username is already taken"); }

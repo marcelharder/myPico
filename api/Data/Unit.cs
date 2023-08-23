@@ -28,7 +28,7 @@ namespace DatingApp.API.Data
 
         public async Task<User> GetUser(int id)
         {
-            var user = await _context.Users.Include(p => p.Photos).FirstOrDefaultAsync(u => u.UserId == id);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
             return user;
         }
         public void Add<T>(T entity) where T : class
@@ -91,24 +91,35 @@ namespace DatingApp.API.Data
                 // get the stuff from the database
                 var h = await _context.Currency.FirstOrDefaultAsync(a => a.date == current_date);
                 php_coeff = h.USDPHP;
-                eur_coeff = h.USDEUR;
-                yen_coeff = h.USDJPY;
+                eur_coeff = h.EURPHP;
+                yen_coeff = h.JPYPHP;
             }
             else
-            { // get the stuff from the currency api
+            { 
+                // is there a live internet connection ???
+                var live_connection = false;
+                if(live_connection){
+                
+                // get the stuff from the currency api
                 var h = await _gen.convertCurrency();
 
                 php_coeff = Convert.ToDouble(h.quotes.USDPHP);
-                eur_coeff = Convert.ToDouble(h.quotes.USDEUR);
-                yen_coeff = Convert.ToDouble(h.quotes.USDJPY);
+                eur_coeff = Convert.ToDouble(h.quotes.EURPHP);
+                yen_coeff = Convert.ToDouble(h.quotes.JPYPHP);
                 // and make a new record in the database
                 var nr = new Model_Currency();
                 nr.date = current_date;
                 nr.USDPHP = php_coeff;
-                nr.USDEUR = eur_coeff;
-                nr.USDJPY = yen_coeff;
+                nr.EURPHP = eur_coeff;
+                nr.JPYPHP = yen_coeff;
                 _context.Currency.Add(nr);
                 if (await SaveAll()) { }
+                }
+                else {
+                php_coeff = 60;
+                eur_coeff = 65;
+                yen_coeff = 23;
+                }
             }
 
             var price = 0.00F;
@@ -137,15 +148,13 @@ namespace DatingApp.API.Data
                 {
                     if (currency == "EUR")
                     {
-                        var usd = price / php_coeff;
-                        help = usd * eur_coeff;
+                        help = price / eur_coeff;
                     }
                     else
                     {
                         if (currency == "YEN")
                         {
-                            var usd = price / php_coeff;
-                            help = usd * yen_coeff;
+                            help = price / yen_coeff;
                         }
                     }
                 }

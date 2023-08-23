@@ -18,22 +18,10 @@ namespace myPicoAPI.Controllers {
             _repo = repo;
         }
 
-        [Route ("api/dates/{month}/{year}")]
+        [Route ("api/dates/{picoUnit}/{month}/{year}")]
         [HttpGet]
-        public async Task<IActionResult> GDN (int month, int year) {
-            var helpMonth = await _repo.GetMonthYear (month, year);
-            return Ok (helpMonth);
-        }
-
-        [Route ("api/occupancy/{picoUnit}/{month}/{year}")]
-        [HttpGet]
-        public async Task<IActionResult> GetDateOccupancy (int picoUnit, int month, int year) {
-            var helpMonth = await _repo.GetOccupancy (picoUnit, month, year);
-
-            if(helpMonth == null){return BadRequest("error adding month");}
-            else {
-                // find the appointments an put them on this month
-            }
+        public async Task<IActionResult> GDN (int picoUnit, int month, int year) {
+            var helpMonth = await _repo.GetMonthYear (picoUnit,month, year);
             return Ok (helpMonth);
         }
 
