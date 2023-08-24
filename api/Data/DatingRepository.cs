@@ -124,7 +124,10 @@ namespace DatingApp.API.Data
         {
             var dn = new List<int>();
             var occ = new List<int>();
-            int daysInMonth = DateTime.DaysInMonth(year, month);
+            int daysInMonth = DateTime.DaysInMonth(year, month); 
+            var helpList = new List<int>();
+            for (int a = 0; a < 43; a++) { helpList.Add(0); } // set up with all 0
+            for (int a = 0; a < daysInMonth; a++) { helpList[a] = a+1; } // start at zero with writng the day number
 
             await Task.Run(() =>
             {
@@ -132,14 +135,14 @@ namespace DatingApp.API.Data
                 var help = firstDay.DayOfWeek;
                 switch (firstDay.DayOfWeek)
                 {
-
-                    case DayOfWeek.Monday: dn = fillMonth(0, daysInMonth); break;
-                    case DayOfWeek.Tuesday: dn = fillMonth(1, daysInMonth); break;
-                    case DayOfWeek.Wednesday: dn = fillMonth(2, daysInMonth); break;
-                    case DayOfWeek.Thursday: dn = fillMonth(3, daysInMonth);  break;
-                    case DayOfWeek.Friday: dn = fillMonth(4, daysInMonth);  break;
-                    case DayOfWeek.Saturday: dn = fillMonth(5, daysInMonth); break;
-                    case DayOfWeek.Sunday: dn = fillMonth(6, daysInMonth);  break;
+                    // depending on the firstday of the week the number of leading empty spaces is different
+                    case DayOfWeek.Monday: dn = fillMonth(helpList,0); break;
+                    case DayOfWeek.Tuesday: dn = fillMonth(helpList,1); break;
+                    case DayOfWeek.Wednesday: dn = fillMonth(helpList,2); break;
+                    case DayOfWeek.Thursday: dn = fillMonth(helpList,3);  break;
+                    case DayOfWeek.Friday: dn = fillMonth(helpList,4);  break;
+                    case DayOfWeek.Saturday: dn = fillMonth(helpList,5); break;
+                    case DayOfWeek.Sunday: dn = fillMonth(helpList,6);  break;
                 }
 
                
@@ -198,13 +201,13 @@ namespace DatingApp.API.Data
                     var help = firstDay.DayOfWeek;
                     switch (firstDay.DayOfWeek)
                     {
-                        case DayOfWeek.Monday: strip = fillOccupancyMonth(strip, 0, daysInMonth); break;
-                        case DayOfWeek.Tuesday: strip = fillOccupancyMonth(strip, 1, daysInMonth); break;
-                        case DayOfWeek.Wednesday: strip = fillOccupancyMonth(strip, 2, daysInMonth); break;
-                        case DayOfWeek.Thursday: strip = fillOccupancyMonth(strip, 3, daysInMonth); break;
-                        case DayOfWeek.Friday: strip = fillOccupancyMonth(strip, 4, daysInMonth); break;
-                        case DayOfWeek.Saturday: strip = fillOccupancyMonth(strip, 5, daysInMonth); break;
-                        case DayOfWeek.Sunday: strip = fillOccupancyMonth(strip, 6, daysInMonth); break;
+                        case DayOfWeek.Monday: strip = fillOccupancyMonth(strip, 0); break;
+                        case DayOfWeek.Tuesday: strip = fillOccupancyMonth(strip, 1); break;
+                        case DayOfWeek.Wednesday: strip = fillOccupancyMonth(strip, 2); break;
+                        case DayOfWeek.Thursday: strip = fillOccupancyMonth(strip, 3); break;
+                        case DayOfWeek.Friday: strip = fillOccupancyMonth(strip, 4); break;
+                        case DayOfWeek.Saturday: strip = fillOccupancyMonth(strip, 5); break;
+                        case DayOfWeek.Sunday: strip = fillOccupancyMonth(strip, 6); break;
                     }
                 });
                 newrecord.MonthId = month;
@@ -261,47 +264,41 @@ namespace DatingApp.API.Data
 
 
 
-        private List<int> fillMonth(int help, int noDays)
+        private List<int> fillMonth(List<int> helpList, int help)
         {
-            var helpList = new List<int>();
             var offset = 0;
-            for (int a = 0; a < 43; a++) { helpList.Add(0); } // set up with all 0
-            for (int a = 0; a <= noDays; a++) { helpList[a] = a; } // start at help with writing
-
-
             switch (help)
             {
                 case 0: offset = 0; break;
-                case 1: offset = 1 + noDays; helpList.Insert(0, 0); break;
-                case 2: offset = 2 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); break;
-                case 3: offset = 3 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); break;
-                case 4: offset = 4 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); break;
-                case 5: offset = 5 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); helpList.Insert(4, 0); break;
-                case 6: offset = 6 + noDays; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); helpList.Insert(4, 0); helpList.Insert(5, 0); break;
+                case 1: offset = 1; helpList.Insert(0, 0); break;
+                case 2: offset = 2; helpList.Insert(0, 0); helpList.Insert(1, 0); break;
+                case 3: offset = 3; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); break;
+                case 4: offset = 4; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); break;
+                case 5: offset = 5; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); helpList.Insert(4, 0); break;
+                case 6: offset = 6; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); helpList.Insert(4, 0); helpList.Insert(5, 0); break;
             }
-
-            for (int a = offset; a < 43; a++) { helpList.Add(0); } // remove any data beyound the dates
-
+            while(helpList.Count() > 43){helpList.Remove(helpList.Count() + offset);}
             return helpList;
         }
-        private List<int> fillOccupancyMonth(List<int> helpList, int help, int noDays)
+        private List<int> fillOccupancyMonth(List<int> helpList, int help)
         {
             var offset = 0;
-
             switch (help)
             {
                 case 0: offset = 0; break;
-                case 1: offset = 1 + noDays; helpList.Insert(0, 3); break;
-                case 2: offset = 2 + noDays; helpList.Insert(0, 3); helpList.Insert(1, 3); break;
-                case 3: offset = 3 + noDays; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); break;
-                case 4: offset = 4 + noDays; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); break;
-                case 5: offset = 5 + noDays; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3); break;
-                case 6: offset = 6 + noDays; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3); helpList.Insert(5, 3); break;
-            }
+                case 1: offset = 1 ; helpList.Insert(0, 3); break;
+                case 2: offset = 2 ; helpList.Insert(0, 3); helpList.Insert(1, 3); break;
+                case 3: offset = 3 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3);  break;
+                case 4: offset = 4 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); break;
+                case 5: offset = 5 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3);  break;
+                case 6: offset = 6 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3); helpList.Insert(5, 3); break;
+            } 
+            while(helpList.Count() > 43){helpList.Remove(helpList.Count() + offset);}
 
-            var startOcc = offset;
-            var startTail = startOcc + noDays + 1;
-            for (int a = startTail; a < 43; a++) { helpList.Add(3); } // write 3 to the tails
+
+
+           
+            //for (int a = offset; a < 43; a++) { helpList.Remove(a); } // write 3 to the tails
 
             return helpList;
         }

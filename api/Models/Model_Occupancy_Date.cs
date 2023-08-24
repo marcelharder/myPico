@@ -9,7 +9,7 @@ namespace myPicoAPI.Models
 
     public Model_Occupancy_Date (List<int> d, List<int> o) {
             Dates = d;
-            Occupancy = Occupancy;
+            Occupancy = o;
         }
     
 }}
