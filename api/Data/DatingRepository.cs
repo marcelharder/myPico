@@ -14,6 +14,7 @@ using CloudinaryDotNet.Actions;
 using System.Net;
 using Org.BouncyCastle.Asn1.Ntt;
 using System.ComponentModel;
+using Microsoft.EntityFrameworkCore.Query;
 
 namespace DatingApp.API.Data
 {
@@ -266,41 +267,36 @@ namespace DatingApp.API.Data
 
         private List<int> fillMonth(List<int> helpList, int help)
         {
-            var offset = 0;
+            var returnList = new List<int>();
             switch (help)
             {
-                case 0: offset = 0; break;
-                case 1: offset = 1; helpList.Insert(0, 0); break;
-                case 2: offset = 2; helpList.Insert(0, 0); helpList.Insert(1, 0); break;
-                case 3: offset = 3; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); break;
-                case 4: offset = 4; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); break;
-                case 5: offset = 5; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); helpList.Insert(4, 0); break;
-                case 6: offset = 6; helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); helpList.Insert(4, 0); helpList.Insert(5, 0); break;
+                case 0: returnList = helpList; break;
+                case 1: helpList.Insert(0, 0); returnList = helpList.SkipLast(1).ToList();break;
+                case 2: helpList.Insert(0, 0); helpList.Insert(1, 0); returnList = helpList.SkipLast(2).ToList();break;
+                case 3: helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); returnList = helpList.SkipLast(3).ToList();break;
+                case 4: helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); returnList = helpList.SkipLast(4).ToList();break;
+                case 5: helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); helpList.Insert(4, 0); returnList = helpList.SkipLast(5).ToList();break;
+                case 6: helpList.Insert(0, 0); helpList.Insert(1, 0); helpList.Insert(2, 0); helpList.Insert(3, 0); helpList.Insert(4, 0); helpList.Insert(5, 0); returnList = helpList.SkipLast(6).ToList();break;
             }
-            while(helpList.Count() > 43){helpList.Remove(helpList.Count() + offset);}
-            return helpList;
+           
+          
+            return returnList;
         }
         private List<int> fillOccupancyMonth(List<int> helpList, int help)
         {
-            var offset = 0;
+            var returnList = new List<int>();
             switch (help)
             {
-                case 0: offset = 0; break;
-                case 1: offset = 1 ; helpList.Insert(0, 3); break;
-                case 2: offset = 2 ; helpList.Insert(0, 3); helpList.Insert(1, 3); break;
-                case 3: offset = 3 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3);  break;
-                case 4: offset = 4 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); break;
-                case 5: offset = 5 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3);  break;
-                case 6: offset = 6 ; helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3); helpList.Insert(5, 3); break;
+                case 0: returnList = helpList;break;
+                case 1: helpList.Insert(0, 3); break;
+                case 2: helpList.Insert(0, 3); helpList.Insert(1, 3); break;
+                case 3: helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3);  break;
+                case 4: helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); break;
+                case 5: helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3);  break;
+                case 6: helpList.Insert(0, 3); helpList.Insert(1, 3); helpList.Insert(2, 3); helpList.Insert(3, 3); helpList.Insert(4, 3); helpList.Insert(5, 3); break;
             } 
-            while(helpList.Count() > 43){helpList.Remove(helpList.Count() + offset);}
-
-
-
            
-            //for (int a = offset; a < 43; a++) { helpList.Remove(a); } // write 3 to the tails
-
-            return helpList;
+            return returnList;
         }
 
         public Task<IEnumerable<Message>> GetMessageThread(int userId, int recipientId)
