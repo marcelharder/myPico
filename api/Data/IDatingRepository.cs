@@ -14,7 +14,6 @@ namespace DatingApp.API.Data
         Task<bool> SaveAll();
         Task<PagedList<User>> GetUsers(UserParams userParams);
         Task<Model_Occupancy_Date> GetMonthYear(int picoUnitId, int m, int y);
-        Task<SeasonForReturnDTO> GetOccupancy(int picoUnit, int month, int year);
         Task<int> UpdateOccupancy(SeasonForReturnDTO doc);
         Task<int> DeleteOccupancy(int id);
         Task<User> GetUser(int id);

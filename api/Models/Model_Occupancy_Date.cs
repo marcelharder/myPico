@@ -3,13 +3,20 @@ using iTextSharp.text;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace myPicoAPI.Models
-{ public class Model_Occupancy_Date {
-    public List<int> Dates { get; set; }
-    public List<int> Occupancy { get; set; }
+{
+    public class Model_Occupancy_Date
+    {
 
-    public Model_Occupancy_Date (List<int> d, List<int> o) {
-            Dates = d;
-            Occupancy = o;
+        public int monthId;
+        public List<int> dates { get; set; }
+        public List<int> occupancy { get; set; }
+
+        public Model_Occupancy_Date(int month, List<int> d, List<int> o)
+        {
+            monthId = month;
+            dates = d;
+            occupancy = o;
         }
-    
-}}
+
+    }
+}
