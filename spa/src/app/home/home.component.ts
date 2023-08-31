@@ -11,7 +11,7 @@ export class HomeComponent implements OnInit {
   constructor(private gen: GeneralService) { }
 
   ngOnInit() {
-    this.gen.changeChosen(false);
+    
   }
 
 }

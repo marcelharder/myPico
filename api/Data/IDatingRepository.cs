@@ -13,8 +13,7 @@ namespace DatingApp.API.Data
         void Delete<T>(T entity) where T : class;
         Task<bool> SaveAll();
         Task<PagedList<User>> GetUsers(UserParams userParams);
-        Task<dateNumber> GetMonthYear(int m, int y);
-        Task<SeasonForReturnDTO> GetOccupancy(int picoUnit, int month, int year);
+        Task<Model_Occupancy_Date> GetMonthYear(int picoUnitId, int m, int y);
         Task<int> UpdateOccupancy(SeasonForReturnDTO doc);
         Task<int> DeleteOccupancy(int id);
         Task<User> GetUser(int id);

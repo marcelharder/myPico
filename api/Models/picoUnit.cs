@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using DatingApp.API.Models;
 
 namespace myPicoAPI.Models {
     public class picoUnit {
@@ -22,8 +23,11 @@ namespace myPicoAPI.Models {
         public string Caretaker { get; set; }
         public string CaretakerMobile { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
+        public ICollection<Photo> Photos { get; set; }
+     
         public picoUnit () {
             Appointments = new Collection<Appointment> ();
+            Photos = new Collection<Photo>();
         }
 
     }

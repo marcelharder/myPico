@@ -16,6 +16,7 @@
           <li><a class="dropdown-item" (click)="showDetails('./unitRatings/')">Ratings</a></li>
         </ul>
       </li>
+      <li class="nav-item"><a class="nav-link"  *ngIf="unitChosen()" (click)="selectAnotherUnit()">Select another unit</a></li>
       <li class="nav-item dropdown" id="myDropdown2" *ngIf="!unitChosen()">
         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Select Unit</a>
         <ul class="dropdown-menu">
@@ -39,6 +40,9 @@
     <ul class="nav navbar-nav navbar-right">
       <li class="nav-item" *ngIf="!loggedIn()">
         <a class="nav-link" href="./login" >Login</a>
+      </li>
+      <li class="nav-item" *ngIf="!loggedIn()">
+        <a class="nav-link" href="./register" >Register</a>
       </li>
       <li class="nav-item dropdown" id="myDropdown02" *ngIf="loggedIn()">
         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Welcome {{ this.auth.decodedToken?.unique_name | titlecase }}</a>

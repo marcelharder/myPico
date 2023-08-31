@@ -44,125 +44,124 @@ export class FirstMonthComponent implements AfterContentInit {
   constructor(
     private dayService: DaysService,
     private auth: AuthService,
-    private alertify: AlertifyService,
-    private gen: GeneralService,
-    private occupancyService: OccupancyService) { }
+    private gen: GeneralService) { }
 
     ngAfterContentInit() {
     this.auth.firstMonth.subscribe((next)=>{
       this.requestedMonth = next;
       this.currentYear = this.requestedMonth.year; // write this to the html
-      this.getOccDates(this.requestedMonth.month, this.requestedMonth.year);
-      this.getOccupancy(this.requestedMonth.picoUnit,this.requestedMonth.month, this.requestedMonth.year);
+      this.getOccDates(this.requestedMonth.picoUnit,this.requestedMonth.month, this.requestedMonth.year);
     })
   }
 
   nextMonth(m: RequestedMonth){
     //this.monthName = this.gen.getMonthFromNo(m.month);
     this.currentYear = m.year; // write this to the html
-    this.getOccDates(m.month, m.year);
-    this.getOccupancy(m.picoUnit,m.month, m.year);
+    this.getOccDates(m.picoUnit,m.month, m.year);
   }
 
-  getOccDates(month: number, year: number) {
-    this.dayService.getDays(month,year).subscribe((res) => {
+  getOccDates(picoUnit: number,month: number, year: number) {
+    this.dayService.getDays(picoUnit,month,year).subscribe((res) => {
 
-      this.element_1 = this.decodeDateNumbers(res.day_1);
-      this.element_2 = this.decodeDateNumbers(res.day_2);
-      this.element_3 = this.decodeDateNumbers(res.day_3);
-      this.element_4 = this.decodeDateNumbers(res.day_4);
-      this.element_5 = this.decodeDateNumbers(res.day_5);
-      this.element_6 = this.decodeDateNumbers(res.day_6);
-      this.element_7 = this.decodeDateNumbers(res.day_7);
-      this.element_8 = this.decodeDateNumbers(res.day_8);
-      this.element_9 = this.decodeDateNumbers(res.day_9);
-      this.element_10 = this.decodeDateNumbers(res.day_10);
-      this.element_11 = this.decodeDateNumbers(res.day_11);
-      this.element_12 = this.decodeDateNumbers(res.day_12);
-      this.element_13 = this.decodeDateNumbers(res.day_13);
-      this.element_14 = this.decodeDateNumbers(res.day_14);
-      this.element_15 = this.decodeDateNumbers(res.day_15);
-      this.element_16 = this.decodeDateNumbers(res.day_16);
-      this.element_17 = this.decodeDateNumbers(res.day_17);
-      this.element_18 = this.decodeDateNumbers(res.day_18);
-      this.element_19 = this.decodeDateNumbers(res.day_19);
-      this.element_20 = this.decodeDateNumbers(res.day_20);
-      this.element_21 = this.decodeDateNumbers(res.day_21);
-      this.element_22 = this.decodeDateNumbers(res.day_22);
-      this.element_23 = this.decodeDateNumbers(res.day_23);
-      this.element_24 = this.decodeDateNumbers(res.day_24);
-      this.element_25 = this.decodeDateNumbers(res.day_25);
-      this.element_26 = this.decodeDateNumbers(res.day_26);
-      this.element_27 = this.decodeDateNumbers(res.day_27);
-      this.element_28 = this.decodeDateNumbers(res.day_28);
-      this.element_29 = this.decodeDateNumbers(res.day_29);
-      this.element_30 = this.decodeDateNumbers(res.day_30);
-      this.element_31 = this.decodeDateNumbers(res.day_31);
-      this.element_32 = this.decodeDateNumbers(res.day_32);
-      this.element_33 = this.decodeDateNumbers(res.day_33);
-      this.element_34 = this.decodeDateNumbers(res.day_34);
-      this.element_35 = this.decodeDateNumbers(res.day_35);
-      this.element_36 = this.decodeDateNumbers(res.day_36);
-      this.element_37 = this.decodeDateNumbers(res.day_37);
-      this.element_38 = this.decodeDateNumbers(res.day_38);
-      this.element_39 = this.decodeDateNumbers(res.day_39);
-      this.element_40 = this.decodeDateNumbers(res.day_40);
-      this.element_41 = this.decodeDateNumbers(res.day_41);
-      this.element_42 = this.decodeDateNumbers(res.day_42);
-     
-      this.monthName = this.gen.getMonthFromNo(res.MonthId);
-      //this.currentYear = res.Year;
+      this.element_1 = this.decodeDateNumbers(res.dates[0]);
+      this.element_2 = this.decodeDateNumbers(res.dates[1]);
+      this.element_3 = this.decodeDateNumbers(res.dates[2]);
+      this.element_4 = this.decodeDateNumbers(res.dates[3]);
+      this.element_5 = this.decodeDateNumbers(res.dates[4]);
+      this.element_6 = this.decodeDateNumbers(res.dates[5]);
+      this.element_7 = this.decodeDateNumbers(res.dates[6]);
+      this.element_8 = this.decodeDateNumbers(res.dates[7]);
+      this.element_9 = this.decodeDateNumbers(res.dates[8]);
+      this.element_10 = this.decodeDateNumbers(res.dates[9]);
+      this.element_11 = this.decodeDateNumbers(res.dates[10]);
+      this.element_12 = this.decodeDateNumbers(res.dates[11]);
+      this.element_13 = this.decodeDateNumbers(res.dates[12]);
+      this.element_14 = this.decodeDateNumbers(res.dates[13]);
+      this.element_15 = this.decodeDateNumbers(res.dates[14]);
+      this.element_16 = this.decodeDateNumbers(res.dates[15]);
+      this.element_17 = this.decodeDateNumbers(res.dates[16]);
+      this.element_18 = this.decodeDateNumbers(res.dates[17]);
+      this.element_19 = this.decodeDateNumbers(res.dates[18]);
+      this.element_20 = this.decodeDateNumbers(res.dates[19]);
+      this.element_21 = this.decodeDateNumbers(res.dates[20]);
+      this.element_22 = this.decodeDateNumbers(res.dates[21]);
+      this.element_23 = this.decodeDateNumbers(res.dates[22]);
+      this.element_24 = this.decodeDateNumbers(res.dates[23]);
+      this.element_25 = this.decodeDateNumbers(res.dates[24]);
+      this.element_26 = this.decodeDateNumbers(res.dates[25]);
+      this.element_27 = this.decodeDateNumbers(res.dates[26]);
+      this.element_28 = this.decodeDateNumbers(res.dates[27]);
+      this.element_29 = this.decodeDateNumbers(res.dates[28]);
+      this.element_30 = this.decodeDateNumbers(res.dates[29]);
+      this.element_31 = this.decodeDateNumbers(res.dates[30]);
+      this.element_32 = this.decodeDateNumbers(res.dates[31]);
+      this.element_33 = this.decodeDateNumbers(res.dates[32]);
+      this.element_34 = this.decodeDateNumbers(res.dates[33]);
+      this.element_35 = this.decodeDateNumbers(res.dates[34]);
+      this.element_36 = this.decodeDateNumbers(res.dates[35]);
+      this.element_37 = this.decodeDateNumbers(res.dates[36]);
+      this.element_38 = this.decodeDateNumbers(res.dates[37]);
+      this.element_39 = this.decodeDateNumbers(res.dates[38]);
+      this.element_40 = this.decodeDateNumbers(res.dates[39]);
+      this.element_41 = this.decodeDateNumbers(res.dates[40]);
+      this.element_42 = this.decodeDateNumbers(res.dates[41]);
+
+      this.element_1_class = this.decodeColor(res.occupancy[0]);
+      this.element_2_class = this.decodeColor(res.occupancy[1]);
+      this.element_3_class = this.decodeColor(res.occupancy[2]);
+      this.element_4_class = this.decodeColor(res.occupancy[3]);
+      this.element_5_class = this.decodeColor(res.occupancy[4]);
+      this.element_6_class = this.decodeColor(res.occupancy[5]);
+      this.element_7_class = this.decodeColor(res.occupancy[6]);
+      this.element_8_class = this.decodeColor(res.occupancy[7]);
+      this.element_9_class = this.decodeColor(res.occupancy[8]);
+      this.element_10_class = this.decodeColor(res.occupancy[9]);
+      this.element_11_class = this.decodeColor(res.occupancy[10]);
+      this.element_12_class = this.decodeColor(res.occupancy[11]);
+      this.element_13_class = this.decodeColor(res.occupancy[12]);
+      this.element_14_class = this.decodeColor(res.occupancy[13]);
+      this.element_15_class = this.decodeColor(res.occupancy[14]);
+      this.element_16_class = this.decodeColor(res.occupancy[15]);
+      this.element_17_class = this.decodeColor(res.occupancy[16]);
+      this.element_18_class = this.decodeColor(res.occupancy[17]);
+      this.element_19_class = this.decodeColor(res.occupancy[18]);
+      this.element_20_class = this.decodeColor(res.occupancy[19]);
+      this.element_21_class = this.decodeColor(res.occupancy[20]);
+      this.element_22_class = this.decodeColor(res.occupancy[21]);
+      this.element_23_class = this.decodeColor(res.occupancy[22]);
+      this.element_24_class = this.decodeColor(res.occupancy[23]);
+      this.element_25_class = this.decodeColor(res.occupancy[24]);
+      this.element_26_class = this.decodeColor(res.occupancy[25]);
+      this.element_27_class = this.decodeColor(res.occupancy[26]);
+      this.element_28_class = this.decodeColor(res.occupancy[27]);
+      this.element_29_class = this.decodeColor(res.occupancy[28]);
+      this.element_30_class = this.decodeColor(res.occupancy[29]);
+      this.element_31_class = this.decodeColor(res.occupancy[30]);
+      this.element_32_class = this.decodeColor(res.occupancy[31]);
+      this.element_33_class = this.decodeColor(res.occupancy[32]);
+      this.element_34_class = this.decodeColor(res.occupancy[33]);
+      this.element_35_class = this.decodeColor(res.occupancy[34]);
+      this.element_36_class = this.decodeColor(res.occupancy[35]);
+      this.element_37_class = this.decodeColor(res.occupancy[36]);
+      this.element_38_class = this.decodeColor(res.occupancy[37]);
+      this.element_39_class = this.decodeColor(res.occupancy[39]);
+      this.element_40_class = this.decodeColor(res.occupancy[39]);
+      this.element_41_class = this.decodeColor(res.occupancy[40]);
+      this.element_42_class = this.decodeColor(res.occupancy[41]);
+
+      this.monthName = this.gen.getMonthFromNo(res.monthId);
+
+
+
+
+
+      
       
 
     });
 
   }
-  getOccupancy(unit: number, month: number, year: number) {
-    this.occupancyService.getOccupancy(unit, month, year).subscribe((res) => {
-      this.element_1_class = this.decodeColor(res.day_1);
-      this.element_2_class = this.decodeColor(res.day_2);
-      this.element_3_class = this.decodeColor(res.day_3);
-      this.element_4_class = this.decodeColor(res.day_4);
-      this.element_5_class = this.decodeColor(res.day_5);
-      this.element_6_class = this.decodeColor(res.day_6);
-      this.element_7_class = this.decodeColor(res.day_7);
-      this.element_8_class = this.decodeColor(res.day_8);
-      this.element_9_class = this.decodeColor(res.day_9);
-      this.element_10_class = this.decodeColor(res.day_10);
-      this.element_11_class = this.decodeColor(res.day_11);
-      this.element_12_class = this.decodeColor(res.day_12);
-      this.element_13_class = this.decodeColor(res.day_13);
-      this.element_14_class = this.decodeColor(res.day_14);
-      this.element_15_class = this.decodeColor(res.day_15);
-      this.element_16_class = this.decodeColor(res.day_16);
-      this.element_17_class = this.decodeColor(res.day_17);
-      this.element_18_class = this.decodeColor(res.day_18);
-      this.element_19_class = this.decodeColor(res.day_19);
-      this.element_20_class = this.decodeColor(res.day_20);
-      this.element_21_class = this.decodeColor(res.day_21);
-      this.element_22_class = this.decodeColor(res.day_22);
-      this.element_23_class = this.decodeColor(res.day_23);
-      this.element_24_class = this.decodeColor(res.day_24);
-      this.element_25_class = this.decodeColor(res.day_25);
-      this.element_26_class = this.decodeColor(res.day_26);
-      this.element_27_class = this.decodeColor(res.day_27);
-      this.element_28_class = this.decodeColor(res.day_28);
-      this.element_29_class = this.decodeColor(res.day_29);
-      this.element_30_class = this.decodeColor(res.day_30);
-      this.element_31_class = this.decodeColor(res.day_31);
-      this.element_32_class = this.decodeColor(res.day_32);
-      this.element_33_class = this.decodeColor(res.day_33);
-      this.element_34_class = this.decodeColor(res.day_34);
-      this.element_35_class = this.decodeColor(res.day_35);
-      this.element_36_class = this.decodeColor(res.day_36);
-      this.element_37_class = this.decodeColor(res.day_37);
-      this.element_38_class = this.decodeColor(res.day_38);
-      this.element_39_class = this.decodeColor(res.day_39);
-      this.element_40_class = this.decodeColor(res.day_40);
-      this.element_41_class = this.decodeColor(res.day_41);
-      this.element_42_class = this.decodeColor(res.day_42);
-    });
-  }
+ 
   getDataForTable($event: any) {
     let id = 0;
     let value = "";

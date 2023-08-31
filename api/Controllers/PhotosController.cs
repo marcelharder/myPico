@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -51,10 +50,6 @@ namespace DatingApp.API.Controllers
         public async Task<IActionResult> AddPhotoForUser(int userId, PhotoForCreationDto photoDto)
         {
 
-
-
-
-
             var user = await _repo.GetUser(userId);
             if (user == null) return BadRequest("Could not find user");
             var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -77,12 +72,8 @@ namespace DatingApp.API.Controllers
             photoDto.PublicId = uploadResult.PublicId;
 
             var photo = _mapper.Map<Photo>(photoDto);
-            photo.User = user;
-
-            if (!user.Photos.Any(m => m.IsMain))
-                photo.IsMain = true;
-
-            user.Photos.Add(photo);
+            user.ProfileImage = uploadResult.Uri.ToString();
+            
           
 
             if (await _repo.SaveAll())
@@ -135,9 +126,9 @@ namespace DatingApp.API.Controllers
             if (photoFromRepo == null)
                 return NotFound();
 
-            if (photoFromRepo.IsMain)
+          /*   if (photoFromRepo.IsMain)
                 return BadRequest("You cannot delete the main photo");
-
+ */
             // tot hier ben ik gekomen
             if (photoFromRepo.PublicId != null)
             {

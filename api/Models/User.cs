@@ -9,10 +9,12 @@ namespace DatingApp.API.Models {
         
         [Key]
         public int UserId { get; set; }
+        public int OwnerId {get; set;}
         public string Username { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public string Gender { get; set; }
+        public string ProfileImage { get; set; }
         public DateTime DateOfBirth { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastActive { get; set; }
@@ -27,11 +29,9 @@ namespace DatingApp.API.Models {
         public string Mobile { get; set; }
         public string DatabaseRole { get; set; }
         public string Country { get; set; }
-        public ICollection<Photo> Photos { get; set; }
         public ICollection<Message> MessagesSent { get; set; }
         public ICollection<Message> MessagesReceived { get; set; }
         public User () {
-            Photos = new Collection<Photo> ();
             }
 
     }

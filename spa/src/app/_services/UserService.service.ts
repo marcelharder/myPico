@@ -35,7 +35,6 @@ getMessages(id: number, page: any, itemsPerPage: any, messageContainer: string) 
         })
           );
 }
-// tslint:disable-next-line: max-line-length
 getMessageThread(id: number, recipientId: number) { return this.http.get<Message[]>(this.baseUrl + 'users/' + id + '/messages/thread/' + recipientId); }
 
 sendMessage(id: number, message: Message) {

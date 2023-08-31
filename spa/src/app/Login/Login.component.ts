@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
     if(this.model.username !== undefined && this.model.password !== undefined){
     this.authService.register(this.model);
     
-    this.alertify.success('register ...');
+    this.alertify.success('registered ...');
     }
     else {this.alertify.error('Pls enter username/password');}
   }

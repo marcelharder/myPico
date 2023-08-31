@@ -47,8 +47,8 @@ public class help
 public class quote
 {
     public string USDPHP { get; set; }
-    public string USDEUR { get; set; }
-    public string USDJPY { get; set; }
+    public string EURPHP { get; set; }
+    public string JPYPHP { get; set; }
 
 
 }

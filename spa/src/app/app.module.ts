@@ -35,9 +35,10 @@ import { OccupancyService } from './_services/occupancy.service';
 import { AuthService } from './_services/Auth.service';
 import { TimeagoModule } from 'ngx-timeago';
 import { RequestStayComponent } from './unitStuff/requestStay/requestStay.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
-  declarations: [	
+  declarations: [		
      					
       AppComponent,
       NavBarComponent,
@@ -59,7 +60,8 @@ import { RequestStayComponent } from './unitStuff/requestStay/requestStay.compon
       SecondMonthSummaryComponent,
       ListofAppointmentsComponent,
       MessageComponent,
-      RequestStayComponent
+      RequestStayComponent,
+      RegisterComponent
    ],
   imports: [
     TimeagoModule.forRoot(),
