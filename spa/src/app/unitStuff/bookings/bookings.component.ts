@@ -247,13 +247,11 @@ export class BookingsComponent implements OnInit {
     this.appt.requestedDays = this.firstMonthRequestedDays;
     this.appt.rent = 900;
     this.appt.month = this.firstMonth.month;
+    this.appt.year = this.firstMonth.year;
     if(this.auth.loggedIn()){this.appt.userId = this.auth.decodedToken.name_id;};
     this.appt.status = "0";
     
     // send message to the caretaker of this unit to nofify that appointment arrived
-
-    
-
     this.request = 1;
 
 
